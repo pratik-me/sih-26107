@@ -1,0 +1,1 @@
+{"version":3,"file":"citation-builder.d.ts","sourceRoot":"","sources":["citation-builder.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,QAAQ,EAAE,QAAQ,EAAE,MAAM,mBAAmB,CAAC;AAEvD,qBAAa,eAAe;IAC1B;;OAEG;IACH,cAAc,CAAC,YAAY,EAAE,QAAQ,EAAE,GAAG,QAAQ,EAAE;IAgBpD;;OAEG;IACH,2BAA2B,CAAC,IAAI,EAAE,MAAM,EAAE,SAAS,EAAE,QAAQ,EAAE,GAAG,MAAM;CAOzE"}
