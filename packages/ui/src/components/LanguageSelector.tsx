@@ -1,7 +1,13 @@
 import React from 'react';
 import { IndianLanguage } from '@bis/shared-types';
 import { Globe } from 'lucide-react';
-
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 interface LanguageSelectorProps {
   selectedLanguage: IndianLanguage;
   onLanguageChange: (lang: IndianLanguage) => void;
