@@ -2,8 +2,7 @@
   "extends": "@bis/typescript-config/node.json",
   "compilerOptions": {
     "outDir": "./dist",
-    "rootDir": "./src",
-    "baseUrl": "./"
+    "rootDir": "./src"
   },
   "include": ["src/**/*"]
 }

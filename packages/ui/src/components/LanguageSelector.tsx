@@ -41,7 +41,7 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
   className = ''
 }) => {
   return (
-    <div className={`relative inline-flex items-center gap-1.5 ${className}`}>
+    <div className={`inline-flex items-center gap-1.5 ${className}`}>
       <Globe className="w-4 h-4 text-slate-500" />
       <select
         value={selectedLanguage}
