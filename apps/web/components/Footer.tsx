@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { AshokaMotif } from '@bis/ui';
 import { ExternalLink, ShieldCheck } from 'lucide-react';
+import Image from 'next/image';
 
 export function Footer() {
   return (
@@ -11,7 +12,8 @@ export function Footer() {
           {/* Col 1 */}
           <div className="space-y-3 md:col-span-1">
             <div className="flex items-center gap-2 text-white font-bold text-sm">
-              <AshokaMotif size={24} className="text-blue-500" />
+              {/* <AshokaMotif size={24} className="text-blue-500" /> */}
+              <Image src={"/BIS-LOGO.png"} alt='BIS-LOGO' height={24} width={24} />
               <span>BIS IntelliGuide</span>
             </div>
             <p className="text-xs text-slate-400 leading-relaxed">

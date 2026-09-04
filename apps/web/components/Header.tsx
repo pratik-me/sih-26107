@@ -19,6 +19,7 @@ import {
   X,
   Compass,
 } from "lucide-react";
+import Image from "next/image";
 
 export function Header() {
   const pathname = usePathname();
@@ -49,10 +50,11 @@ export function Header() {
           {/* Logo & Title */}
           <Link href="/" className="flex items-center gap-3 group">
             <div className="relative">
-              <AshokaMotif
+              {/* <AshokaMotif
                 size={36}
                 className="text-blue-700 dark:text-blue-500 group-hover:rotate-45 transition-transform duration-500"
-              />
+              /> */}
+              <Image src={"/BIS-LOGO.png"} alt='BIS-LOGO' height={36} width={36} />
             </div>
             <div>
               <div className="flex items-center justify-center gap-1.5">
