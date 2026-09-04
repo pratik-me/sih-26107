@@ -3,8 +3,12 @@
   "compilerOptions": {
     "outDir": "./dist",
     "rootDir": "./src",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "es2022",
+    "lib": ["ES2015", "DOM", "DOM.Iterable"],
     "declaration": true,
-    "declarationMap": true
+    "declarationMap": true,
   },
   "include": ["src/**/*"]
 }
