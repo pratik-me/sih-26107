@@ -506,14 +506,25 @@ function ChatContent() {
 
       {/* 3. RIGHT EVIDENCE PANEL */}
       {isEvidencePanelOpen && (
-        <aside className="w-full h-72 sm:h-80 lg:h-full lg:w-80 xl:w-96 shrink-0 bg-white dark:bg-slate-900 border-t lg:border-t-0 lg:border-l border-slate-200 dark:border-slate-800 overflow-y-auto">
-          <EvidencePanel
-            evidenceList={activeEvidenceList}
-            activeEvidenceId={activeEvidenceId}
-            onSelectEvidence={setActiveEvidenceId}
-            onClose={() => setIsEvidencePanelOpen(false)}
+        <>
+          {/* Mobile Backdrop */}
+          <div
+            onClick={() => setIsEvidencePanelOpen(false)}
+            className="fixed inset-0 bg-black/40 z-40 lg:hidden"
           />
-        </aside>
+
+          <aside className="fixed inset-x-0 bottom-0 z-50 h-[65vh] rounded-t-2xl shadow-xl lg:static lg:h-full lg:w-80 xl:w-96 lg:rounded-none lg:shadow-none lg:border-t-0 lg:border-l border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-y-auto transition-transform">
+            <div className="lg:hidden flex justify-center py-2">
+              <div className="w-10 h-1 rounded-full bg-slate-300 dark:bg-slate-700" />
+            </div>
+            <EvidencePanel
+              evidenceList={activeEvidenceList}
+              activeEvidenceId={activeEvidenceId}
+              onSelectEvidence={setActiveEvidenceId}
+              onClose={() => setIsEvidencePanelOpen(false)}
+            />
+          </aside>
+        </>
       )}
     </div>
   );
