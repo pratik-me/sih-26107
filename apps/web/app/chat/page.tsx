@@ -40,6 +40,11 @@ import {
   FileBarChart2,
 } from "lucide-react";
 import Link from "next/link";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 function ChatContent() {
   const searchParams = useSearchParams();
@@ -336,18 +341,28 @@ function ChatContent() {
                           </span>
                         )}
                       </div>
-                      <button
-                        type="button"
-                        onClick={() => handleCopyMessage(msg.id, msg.content)}
-                        className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1"
-                        title="Copy answer"
-                      >
-                        {copiedMsgId === msg.id ? (
-                          <Check className="w-3.5 h-3.5 text-emerald-600" />
-                        ) : (
-                          <Copy className="w-3.5 h-3.5" />
-                        )}
-                      </button>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              handleCopyMessage(msg.id, msg.content)
+                            }
+                            className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1 inline-flex items-center justify-center"
+                          >
+                            {copiedMsgId === msg.id ? (
+                              <Check className="w-3.5 h-3.5 text-emerald-600" />
+                            ) : (
+                              <Copy className="w-3.5 h-3.5" />
+                            )}
+                          </button>
+                        </TooltipTrigger>
+                        <TooltipContent className="px-2 py-0.5 text-[11px] rounded bg-gray-500 text-white shadow-sm">
+                          <p>
+                            {copiedMsgId === msg.id ? "Copied" : "Copy answer"}
+                          </p>
+                        </TooltipContent>
+                      </Tooltip>
                     </div>
                   )}
 
@@ -402,17 +417,31 @@ function ChatContent() {
                         })}
                       </span>
                       <div className="flex items-center gap-1.5">
-                        <button
-                          type="button"
-                          onClick={() => handleFeedback(msg.id, "HELPFUL")}
-                          className={`p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800 ${
-                            msg.feedback === "HELPFUL" ? "text-emerald-600" : ""
-                          }`}
-                          title="Helpful response"
-                        >
-                          <ThumbsUp className="w-3.5 h-3.5" />
-                        </button>
-                        <button
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <button
+                              type="button"
+                              onClick={() => handleFeedback(msg.id, "HELPFUL")}
+                              className={`p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800 ${
+                                msg.feedback === "HELPFUL"
+                                  ? "text-emerald-600"
+                                  : ""
+                              }`}
+                            >
+                              <ThumbsUp className="w-3.5 h-3.5" />
+                            </button>
+                          </TooltipTrigger>
+                          <TooltipContent className="px-2 py-0.5 text-[11px] rounded bg-gray-500 text-white shadow-sm" sideOffset={7} side="bottom">
+                            <p>
+                              Helpful response
+                            </p>
+                          </TooltipContent>
+                        </Tooltip>
+
+                        
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <button
                           type="button"
                           onClick={() => handleFeedback(msg.id, "NOT_HELPFUL")}
                           className={`p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800 ${
@@ -420,20 +449,34 @@ function ChatContent() {
                               ? "text-rose-600"
                               : ""
                           }`}
-                          title="Not helpful"
                         >
                           <ThumbsDown className="w-3.5 h-3.5" />
                         </button>
-                        <button
+                          </TooltipTrigger>
+                          <TooltipContent className="px-2 py-0.5 text-[11px] rounded bg-gray-500 text-white shadow-sm" sideOffset={7} side="bottom">
+                            <p>
+                              Not helpful
+                            </p>
+                          </TooltipContent>
+                        </Tooltip>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <button
                           type="button"
                           onClick={() => handleFeedback(msg.id, "REPORTED")}
                           className={`p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800 ${
                             msg.feedback === "REPORTED" ? "text-amber-600" : ""
                           }`}
-                          title="Report inaccurate citation"
                         >
                           <Flag className="w-3.5 h-3.5" />
                         </button>
+                          </TooltipTrigger>
+                          <TooltipContent className="px-2 py-0.5 text-[11px] rounded bg-gray-500 text-white shadow-sm" sideOffset={7} side="bottom">
+                            <p>
+                              Report inaccurate citation
+                            </p>
+                          </TooltipContent>
+                        </Tooltip>
                       </div>
                     </div>
                   )}
