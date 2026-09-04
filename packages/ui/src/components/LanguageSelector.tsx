@@ -11,6 +11,7 @@ import {
 interface LanguageSelectorProps {
   selectedLanguage: IndianLanguage;
   onLanguageChange: (lang: IndianLanguage) => void;
+  onDashboard?: boolean;
   className?: string;
 }
 
@@ -44,11 +45,12 @@ export const INDIAN_LANGUAGES_LIST = [
 export const DASHBOARD_LANGUARGES_LIST = [
   { code: IndianLanguage.EN, label: "English" },
   { code: IndianLanguage.HI, label: "हिन्दी (Hindi)" },
-]
+];
 
 export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
   selectedLanguage,
   onLanguageChange,
+  onDashboard,
   className = "",
 }) => {
   return (
@@ -58,16 +60,29 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
         <SelectTrigger className="h-8 text-xs font-medium border-0 bg-transparent shadow-none focus:ring-0 cursor-pointer">
           <SelectValue placeholder="Select language" />
         </SelectTrigger>
-        <SelectContent position="popper" className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-lg">
-          {DASHBOARD_LANGUARGES_LIST.map((lang) => (
-            <SelectItem
-              key={lang.code}
-              value={lang.code}
-              className="text-xs rounded-lg cursor-pointer my-0.5 focus:bg-slate-200 dark:focus:bg-slate-800 focus:ring-0 focus:ring-offset-0 focus-visible:ring-0 focus:outline-none"
-            >
-              {lang.label}
-            </SelectItem>
-          ))}
+        <SelectContent
+          position="popper"
+          className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-lg"
+        >
+          {onDashboard
+            ? DASHBOARD_LANGUARGES_LIST.map((lang) => (
+                <SelectItem
+                  key={lang.code}
+                  value={lang.code}
+                  className="text-xs rounded-lg cursor-pointer my-0.5 focus:bg-slate-200 dark:focus:bg-slate-800 focus:ring-0 focus:ring-offset-0 focus-visible:ring-0 focus:outline-none"
+                >
+                  {lang.label}
+                </SelectItem>
+              ))
+            : INDIAN_LANGUAGES_LIST.map((lang) => (
+                <SelectItem
+                  key={lang.code}
+                  value={lang.code}
+                  className="text-xs rounded-lg cursor-pointer my-0.5 focus:bg-slate-200 dark:focus:bg-slate-800 focus:ring-0 focus:ring-offset-0 focus-visible:ring-0 focus:outline-none"
+                >
+                  {lang.label}
+                </SelectItem>
+              ))}
         </SelectContent>
       </Select>
     </div>

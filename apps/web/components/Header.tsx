@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion } from "framer-motion";
 import { IndianLanguage, UserRole } from "@bis/shared-types";
 import { AshokaMotif, LanguageSelector } from "@bis/ui";
 import {
@@ -44,19 +43,6 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 bg-white/95 dark:bg-slate-900/95 backdrop-blur border-b border-slate-200 dark:border-slate-800">
-      {/* Top Gov Banner */}
-      <div className="bg-slate-900 text-slate-300 text-[11px] py-1 px-4 border-b border-slate-800">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          {/* <div className="flex items-center gap-2">
-            <span className="font-semibold text-white tracking-wider uppercase text-[10px]">
-              Government Decision-Support Platform
-            </span>
-            <span className="opacity-40">|</span>
-            <span className="hidden sm:inline">Bureau of Indian Standards Knowledge Base</span>
-          </div> */}
-        </div>
-      </div>
-
       {/* Main Nav Bar */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
@@ -90,11 +76,10 @@ export function Header() {
           <nav className="hidden xl:flex items-center gap-5">
             {navLinks.map((link, index) => {
               const isActive =
-                pathname === link.href ||
-                (link.href !== "/" && pathname.startsWith(link.href));
+                pathname === link.href;
               const Icon = link.icon;
               return (
-                <div>
+                <div key={index}>
                   <Link
                     href={link.href}
                     className={`group/link inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
@@ -115,6 +100,7 @@ export function Header() {
 
           <div className="flex items-center gap-2">
             <LanguageSelector
+              onDashboard={true}
               selectedLanguage={selectedLanguage}
               onLanguageChange={setSelectedLanguage}
             />
