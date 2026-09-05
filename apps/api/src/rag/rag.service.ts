@@ -11,14 +11,14 @@ import {
 import {
   HybridBISCrossReranker,
   IndicLanguageEngine,
-  MultilingualLocalEmbeddingProvider
+  getEmbeddingProvider
 } from '@bis/ai';
 import { SEED_STANDARDS } from '../common/seed-data';
 
 @Injectable()
 export class RAGService {
   private languageEngine = new IndicLanguageEngine();
-  private embedder = new MultilingualLocalEmbeddingProvider();
+  private embedder = getEmbeddingProvider();
   private reranker = new HybridBISCrossReranker();
 
   constructor(private prisma: PrismaService) {}
@@ -36,65 +36,183 @@ export class RAGService {
     // 3. Classify intent
     const intent = this.classifyIntent(translatedText);
 
-    // 4. Retrieve candidates from Standards & Document Chunks (Hybrid BM25 + Vector)
-    const candidates: Evidence[] = [];
-    const queryVector = await this.embedder.embedText(translatedText);
+    // Candidate accumulator map keyed by evidence id
+    const candidateMap = new Map<string, Evidence>();
 
-    // Try DB first if available
+    // Step 4.1: Vector search via pgvector (cosine distance)
     try {
-      const chunks = await this.prisma.documentChunk.findMany({
-        take: 20,
-        include: { document: true }
-      });
-      for (const ch of chunks) {
-        candidates.push({
-          id: ch.id,
-          documentTitle: ch.document.title,
-          standardNumber: ch.standardNumber,
-          section: ch.section || undefined,
-          clause: ch.clause,
-          page: ch.page,
-          publicationDate: ch.document.publicationDate,
-          status: ch.status as StandardStatus,
-          sourceUrl: ch.document.sourceUrl,
-          excerpt: ch.content,
-          similarityScore: 0.85,
-          isOutdated: ch.status === StandardStatus.OUTDATED
+      const queryVector = await this.embedder.embedText(translatedText);
+      const vectorString = `[${queryVector.join(',')}]`;
+
+      const rawVectorRows: any[] = await this.prisma.$queryRaw`
+        SELECT
+          dc.id,
+          dc."documentId",
+          dc."standardNumber",
+          dc.section,
+          dc.clause,
+          dc.page,
+          dc.content,
+          dc.status,
+          d.title as "documentTitle",
+          d."publicationDate",
+          d."sourceUrl",
+          1 - (dc."vectorEmbedding" <=> ${vectorString}::vector) as similarity
+        FROM document_chunks dc
+        JOIN documents d ON d.id = dc."documentId"
+        WHERE dc."vectorEmbedding" IS NOT NULL
+        ORDER BY dc."vectorEmbedding" <=> ${vectorString}::vector ASC
+        LIMIT 20;
+      `;
+
+      for (const r of rawVectorRows) {
+        const sim = Number(r.similarity || 0.75);
+        candidateMap.set(r.id, {
+          id: r.id,
+          documentTitle: r.documentTitle || r.standardNumber,
+          standardNumber: r.standardNumber,
+          section: r.section || undefined,
+          clause: r.clause,
+          page: Number(r.page || 1),
+          publicationDate: r.publicationDate || '2024-01-01',
+          status: (r.status as StandardStatus) || StandardStatus.ACTIVE,
+          sourceUrl: r.sourceUrl || 'https://www.services.bis.gov.in',
+          excerpt: r.content,
+          similarityScore: sim,
+          isOutdated: r.status === StandardStatus.OUTDATED
         });
       }
-    } catch {
+    } catch (err) {
+      // If vector column isn't populated or native query fails, proceed to FTS / Exact match
+    }
+
+    // Step 4.2: Full-text search (BM25-style keyword matching in PostgreSQL)
+    try {
+      const cleanTerms = translatedText.replace(/[^a-zA-Z0-9\s]/g, ' ').trim();
+      if (cleanTerms) {
+        const rawFtsRows: any[] = await this.prisma.$queryRaw`
+          SELECT
+            dc.id,
+            dc."documentId",
+            dc."standardNumber",
+            dc.section,
+            dc.clause,
+            dc.page,
+            dc.content,
+            dc.status,
+            d.title as "documentTitle",
+            d."publicationDate",
+            d."sourceUrl",
+            ts_rank(to_tsvector('english', dc.content), plainto_tsquery('english', ${cleanTerms})) as rank
+          FROM document_chunks dc
+          JOIN documents d ON d.id = dc."documentId"
+          WHERE to_tsvector('english', dc.content) @@ plainto_tsquery('english', ${cleanTerms})
+          ORDER BY rank DESC
+          LIMIT 20;
+        `;
+
+        for (const r of rawFtsRows) {
+          const rankScore = Math.min(0.5 + Number(r.rank || 0) * 0.5, 0.95);
+          if (!candidateMap.has(r.id) || (candidateMap.get(r.id)?.similarityScore || 0) < rankScore) {
+            candidateMap.set(r.id, {
+              id: r.id,
+              documentTitle: r.documentTitle || r.standardNumber,
+              standardNumber: r.standardNumber,
+              section: r.section || undefined,
+              clause: r.clause,
+              page: Number(r.page || 1),
+              publicationDate: r.publicationDate || '2024-01-01',
+              status: (r.status as StandardStatus) || StandardStatus.ACTIVE,
+              sourceUrl: r.sourceUrl || 'https://www.services.bis.gov.in',
+              excerpt: r.content,
+              similarityScore: rankScore,
+              isOutdated: r.status === StandardStatus.OUTDATED
+            });
+          }
+        }
+      }
+    } catch (err) {
       // ignore
     }
 
-    // In-memory seed documents matching
-    if (candidates.length === 0) {
-      const qTokens = translatedText.toLowerCase().split(/\s+/).filter(t => t.length > 2);
-
-      for (const std of (SEED_STANDARDS as any[])) {
-        const fullContent = `${std.standardNumber} ${std.title} ${std.scope} ${std.abstract} ${std.keywords.join(' ')}`.toLowerCase();
-        let matchCount = 0;
-        for (const token of qTokens) {
-          if (fullContent.includes(token)) matchCount++;
-        }
-
-        const isExactStd = preservedEntities.some(e => std.standardNumber.toLowerCase().includes(e.toLowerCase()));
-
-        if (matchCount > 0 || isExactStd) {
-          const baseSim = isExactStd ? 0.95 : Math.min(0.5 + matchCount * 0.1, 0.92);
-          candidates.push({
-            id: `ev-${std.standardNumber}-main`,
-            documentTitle: std.title,
-            standardNumber: std.standardNumber,
-            section: 'General Requirements & Scope',
-            clause: '4.1',
-            page: 3,
-            publicationDate: std.publicationDate,
-            status: std.status,
-            sourceUrl: std.sourceUrl,
-            excerpt: `${std.scope} ${std.abstract}`,
-            similarityScore: baseSim,
-            isOutdated: std.status === StandardStatus.OUTDATED
+    // Step 4.3: Exact standard / clause match against DB rows
+    if (preservedEntities.length > 0) {
+      try {
+        for (const entity of preservedEntities) {
+          const dbChunks = await this.prisma.documentChunk.findMany({
+            where: {
+              OR: [
+                { standardNumber: { contains: entity, mode: 'insensitive' } },
+                { clause: { contains: entity, mode: 'insensitive' } },
+                { content: { contains: entity, mode: 'insensitive' } }
+              ]
+            },
+            take: 10,
+            include: { document: true }
           });
+
+          for (const ch of dbChunks) {
+            if (!candidateMap.has(ch.id)) {
+              candidateMap.set(ch.id, {
+                id: ch.id,
+                documentTitle: ch.document.title,
+                standardNumber: ch.standardNumber,
+                section: ch.section || undefined,
+                clause: ch.clause,
+                page: ch.page,
+                publicationDate: ch.document.publicationDate,
+                status: ch.status as StandardStatus,
+                sourceUrl: ch.document.sourceUrl,
+                excerpt: ch.content,
+                similarityScore: 0.95,
+                isOutdated: ch.status === StandardStatus.OUTDATED
+              });
+            }
+          }
+        }
+      } catch (err) {
+        // ignore
+      }
+    }
+
+    let candidates = Array.from(candidateMap.values());
+
+    // Step 4.4: Fallback to SEED_STANDARDS only if DocumentChunk table is empty
+    if (candidates.length === 0) {
+      const dbCount = await this.prisma.documentChunk.count().catch(() => 0);
+      if (dbCount === 0) {
+        console.warn(
+          '[RAGService] WARNING: DocumentChunk database table is empty. Falling back to in-memory SEED_STANDARDS dataset for dev environment.'
+        );
+
+        const qTokens = translatedText.toLowerCase().split(/\s+/).filter(t => t.length > 2);
+
+        for (const std of (SEED_STANDARDS as any[])) {
+          const fullContent = `${std.standardNumber} ${std.title} ${std.scope} ${std.abstract} ${std.keywords.join(' ')}`.toLowerCase();
+          let matchCount = 0;
+          for (const token of qTokens) {
+            if (fullContent.includes(token)) matchCount++;
+          }
+
+          const isExactStd = preservedEntities.some(e => std.standardNumber.toLowerCase().includes(e.toLowerCase()));
+
+          if (matchCount > 0 || isExactStd) {
+            const baseSim = isExactStd ? 0.95 : Math.min(0.5 + matchCount * 0.1, 0.92);
+            candidates.push({
+              id: `ev-${std.standardNumber}-main`,
+              documentTitle: std.title,
+              standardNumber: std.standardNumber,
+              section: 'General Requirements & Scope',
+              clause: '4.1',
+              page: 3,
+              publicationDate: std.publicationDate,
+              status: std.status,
+              sourceUrl: std.sourceUrl,
+              excerpt: `${std.scope} ${std.abstract}`,
+              similarityScore: baseSim,
+              isOutdated: std.status === StandardStatus.OUTDATED
+            });
+          }
         }
       }
     }

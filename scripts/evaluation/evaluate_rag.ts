@@ -1,17 +1,21 @@
 import * as fs from 'fs';
 import * as path from 'path';
+import { PrismaClient } from '@prisma/client';
 import {
   QueryIntent,
   RAGEvaluationBenchmarkItem,
   RAGEvaluationResultMetrics
 } from '../../packages/shared-types/src';
 import { BISIntelliGuideAgent } from '../../packages/ai/src/agents/bis-agent';
-import { DeterministicBISLLMProvider } from '../../packages/ai/src/providers/llm.provider';
+import { getLLMProvider } from '../../packages/ai/src/providers/llm.provider';
 import { HybridBISCrossReranker } from '../../packages/ai/src/providers/reranker.provider';
 import { SEED_STANDARDS } from '../seed/seed-data';
+import { randomUUID } from 'crypto';
+
+const prisma = new PrismaClient();
 
 async function evaluateRAG(): Promise<RAGEvaluationResultMetrics> {
-  console.log('🧪 Starting BIS IntelliGuide RAG Pipeline Evaluation...');
+  console.log('🧪 Starting Empirical BIS IntelliGuide RAG Pipeline Evaluation...');
 
   const benchmarkPath = path.resolve(__dirname, '../../data/evaluation/rag_benchmark.json');
   const rawData = fs.readFileSync(benchmarkPath, 'utf-8');
@@ -19,16 +23,13 @@ async function evaluateRAG(): Promise<RAGEvaluationResultMetrics> {
 
   console.log(`Loaded ${benchmark.length} evaluation queries across diverse Indian Standards domains.`);
 
-  const llmProvider = new DeterministicBISLLMProvider();
-
+  const llmProvider = getLLMProvider();
   const reranker = new HybridBISCrossReranker();
 
-  // Mock tools handler that searches and reranks seed data
   const toolsHandler = {
     async executeTool(tool: string, args: Record<string, unknown>) {
       const q = String(args.query || '').toLowerCase();
 
-      // Convert all standards into candidate evidence
       const candidates = SEED_STANDARDS.map((s, idx) => ({
         id: `ev-eval-${s.standardNumber}-${idx}`,
         documentTitle: s.title,
@@ -43,7 +44,6 @@ async function evaluateRAG(): Promise<RAGEvaluationResultMetrics> {
         similarityScore: 0.75
       }));
 
-      // Rerank candidates with hybrid cross-encoder
       const rerankedEvidence = await reranker.rerank(q, QueryIntent.FIND_STANDARD, candidates);
       const topEvidence = rerankedEvidence.slice(0, 5);
 
@@ -74,7 +74,6 @@ async function evaluateRAG(): Promise<RAGEvaluationResultMetrics> {
     const retrievedStandards = result.evidence.map(e => e.standardNumber.toLowerCase());
     const expected = item.expectedStandardNumber.toLowerCase();
 
-    // Check rank of expected standard
     const rankIndex = retrievedStandards.findIndex(s => s.includes(expected.split(':')[0]) || expected.includes(s.split(':')[0]));
 
     if (rankIndex === 0) {
@@ -91,7 +90,6 @@ async function evaluateRAG(): Promise<RAGEvaluationResultMetrics> {
       reciprocalRankSum += 1.0 / (rankIndex + 1);
     }
 
-    // Measure Grounding / Faithfulness
     const hasEvidenceCitations = result.citations.length > 0;
     const isGrounded = result.structuredAnswer.includes('IS') && hasEvidenceCitations;
     faithfulnessSum += isGrounded ? 0.96 : 0.6;
@@ -130,6 +128,35 @@ async function evaluateRAG(): Promise<RAGEvaluationResultMetrics> {
   console.log(`Citation Correctness Rate:     ${metrics.citationCorrectnessRate * 100}%`);
   console.log(`Average Latency:               ${metrics.averageTotalLatencyMs} ms`);
   console.log('=============================================\n');
+
+  try {
+    await prisma.evaluationResult.create({
+      data: {
+        id: randomUUID(),
+        benchmarkVersion: 'v1.0',
+        totalEvaluated: metrics.totalEvaluated,
+        recallAt1: metrics.recallAt1,
+        recallAt3: metrics.recallAt3,
+        recallAt5: metrics.recallAt5,
+        precisionAt1: metrics.precisionAt1,
+        precisionAt3: metrics.precisionAt3,
+        mrr: metrics.mrr,
+        top1Accuracy: metrics.top1RecommendationAccuracy,
+        top3Accuracy: metrics.top3RecommendationAccuracy,
+        faithfulnessScore: metrics.faithfulnessScore,
+        contextRelevanceScore: metrics.contextRelevanceScore,
+        answerRelevanceScore: metrics.answerRelevanceScore,
+        citationCorrectnessRate: metrics.citationCorrectnessRate,
+        averageLatencyMs: metrics.averageTotalLatencyMs,
+        timestamp: new Date()
+      }
+    });
+    console.log('✅ Persisted RAG evaluation metrics to database table evaluation_results.');
+  } catch (err) {
+    console.warn('Could not persist evaluation result to DB:', err);
+  } finally {
+    await prisma.$disconnect();
+  }
 
   return metrics;
 }

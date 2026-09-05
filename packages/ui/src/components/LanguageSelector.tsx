@@ -53,11 +53,32 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
   onDashboard,
   className = "",
 }) => {
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const activeLabel =
+    INDIAN_LANGUAGES_LIST.find((l) => l.code === selectedLanguage)?.label ||
+    "English";
+
+  if (!mounted) {
+    return (
+      <div className={`inline-flex items-center gap-1.5 ${className}`} suppressHydrationWarning>
+        <Globe className="w-4 h-4 text-slate-500" />
+        <div className="h-8 text-xs font-medium border-0 bg-transparent py-1.5 px-2 flex items-center justify-between gap-1.5 text-slate-700 dark:text-slate-300">
+          <span>{activeLabel}</span>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className={`inline-flex items-center gap-1.5 ${className}`}>
+    <div className={`inline-flex items-center gap-1.5 ${className}`} suppressHydrationWarning>
       <Globe className="w-4 h-4 text-slate-500" />
       <Select value={selectedLanguage} onValueChange={onLanguageChange}>
-        <SelectTrigger className="h-8 text-xs font-medium border-0 bg-transparent shadow-none focus:ring-0 cursor-pointer">
+        <SelectTrigger suppressHydrationWarning className="h-8 text-xs font-medium border-0 bg-transparent shadow-none focus:ring-0 cursor-pointer">
           <SelectValue placeholder="Select language" />
         </SelectTrigger>
         <SelectContent

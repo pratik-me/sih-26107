@@ -1,4 +1,11 @@
-import { Citation, ConfidenceLevel, Evidence, GroundingValidationResult, QueryIntent } from '@bis/shared-types';
+import { Citation, ConfidenceLevel, Evidence, GroundingValidationResult } from '@bis/shared-types';
+import { ChatAnthropic } from '@langchain/anthropic';
+import { ChatOpenAI } from '@langchain/openai';
+import { BaseChatModel } from '@langchain/core/language_models/chat_models';
+import { SystemMessage, HumanMessage } from '@langchain/core/messages';
+import { BIS_SYSTEM_PROMPT } from '../prompts/bis-prompts';
+import { GroundingValidator } from '../grounding/grounding-validator';
+import { CitationBuilder } from '../citations/citation-builder';
 
 export interface LLMGenerateOptions {
   temperature?: number;
@@ -122,4 +129,148 @@ export class DeterministicBISLLMProvider implements ILLMProvider {
     }
     return result;
   }
+}
+
+/**
+ * LangChain-backed Real BIS LLM Provider with Fallback to Deterministic Provider
+ */
+export class LangChainBISLLMProvider implements ILLMProvider {
+  name = 'langchain-bis-llm';
+  private fallbackProvider = new DeterministicBISLLMProvider();
+  private groundingValidator = new GroundingValidator();
+  private citationBuilder = new CitationBuilder();
+
+  private getModel(options?: LLMGenerateOptions): BaseChatModel | null {
+    const provider = (process.env.LLM_PROVIDER || '').toLowerCase();
+    if (provider === 'deterministic') {
+      return null;
+    }
+
+    const anthropicKey = process.env.ANTHROPIC_API_KEY;
+    const openaiKey = process.env.OPENAI_API_KEY;
+
+    if (provider === 'anthropic' || (anthropicKey && provider !== 'openai')) {
+      return new ChatAnthropic({
+        modelName: process.env.ANTHROPIC_MODEL || 'claude-3-5-sonnet-20241022',
+        apiKey: anthropicKey,
+        temperature: options?.temperature ?? 0.2
+      }) as unknown as BaseChatModel;
+    }
+
+    if (provider === 'openai' || openaiKey) {
+      return new ChatOpenAI({
+        modelName: process.env.OPENAI_MODEL || 'gpt-4o-mini',
+        openAIApiKey: openaiKey,
+        temperature: options?.temperature ?? 0.2
+      }) as unknown as BaseChatModel;
+    }
+
+    return null;
+  }
+
+  private formatEvidenceContext(contextEvidence: Evidence[]): string {
+    if (!contextEvidence || contextEvidence.length === 0) {
+      return 'AUTHORITATIVE EVIDENCE: None provided. If evidence is missing, state clearly that you cannot verify the requirement without speculating.';
+    }
+
+    return contextEvidence
+      .map(
+        (ev, i) => `
+[AUTHORITATIVE EVIDENCE BLOCK ${i + 1}]
+- Evidence ID: ${ev.id}
+- Standard Number: ${ev.standardNumber}
+- Document Title: ${ev.documentTitle}
+- Clause: ${ev.clause} (Section: ${ev.section || 'N/A'}, Page: ${ev.page})
+- Publication Date: ${ev.publicationDate}
+- Status: ${ev.status}
+- Source URL: ${ev.sourceUrl}
+- Excerpt: "${ev.excerpt}"
+`
+      )
+      .join('\n');
+  }
+
+  async generateText(prompt: string, contextEvidence: Evidence[], options?: LLMGenerateOptions): Promise<LLMGenerateResult> {
+    const model = this.getModel(options);
+    if (!model) {
+      return this.fallbackProvider.generateText(prompt, contextEvidence, options);
+    }
+
+    const systemPromptText = `${options?.systemPrompt || BIS_SYSTEM_PROMPT}\n\n${this.formatEvidenceContext(contextEvidence)}`;
+
+    try {
+      const response = await model.invoke([
+        new SystemMessage(systemPromptText),
+        new HumanMessage(prompt)
+      ]);
+
+      const text = typeof response.content === 'string' ? response.content : JSON.stringify(response.content);
+      const groundingStatus = this.groundingValidator.validate(text, contextEvidence);
+      const citations = this.citationBuilder.buildCitations(contextEvidence);
+
+      return {
+        text,
+        citations,
+        confidence: groundingStatus.confidenceLevel,
+        groundingStatus
+      };
+    } catch (error) {
+      console.warn('[LangChainBISLLMProvider] Real LLM call failed or key unconfigured, falling back to DeterministicBISLLMProvider:', error);
+      return this.fallbackProvider.generateText(prompt, contextEvidence, options);
+    }
+  }
+
+  async streamText(
+    prompt: string,
+    contextEvidence: Evidence[],
+    onChunk: (chunk: string) => void,
+    options?: LLMGenerateOptions
+  ): Promise<LLMGenerateResult> {
+    const model = this.getModel(options);
+    if (!model) {
+      return this.fallbackProvider.streamText(prompt, contextEvidence, onChunk, options);
+    }
+
+    const systemPromptText = `${options?.systemPrompt || BIS_SYSTEM_PROMPT}\n\n${this.formatEvidenceContext(contextEvidence)}`;
+
+    try {
+      const stream = await model.stream([
+        new SystemMessage(systemPromptText),
+        new HumanMessage(prompt)
+      ]);
+
+      let fullText = '';
+      for await (const chunk of stream) {
+        const content = typeof chunk.content === 'string' ? chunk.content : (chunk.content ? JSON.stringify(chunk.content) : '');
+        if (content) {
+          fullText += content;
+          onChunk(content);
+        }
+      }
+
+      const groundingStatus = this.groundingValidator.validate(fullText, contextEvidence);
+      const citations = this.citationBuilder.buildCitations(contextEvidence);
+
+      return {
+        text: fullText,
+        citations,
+        confidence: groundingStatus.confidenceLevel,
+        groundingStatus
+      };
+    } catch (error) {
+      console.warn('[LangChainBISLLMProvider] Streaming LLM call failed, falling back to DeterministicBISLLMProvider:', error);
+      return this.fallbackProvider.streamText(prompt, contextEvidence, onChunk, options);
+    }
+  }
+}
+
+/**
+ * Factory helper returning the active LLM provider instance based on environment config
+ */
+export function getLLMProvider(): ILLMProvider {
+  const provider = (process.env.LLM_PROVIDER || '').toLowerCase();
+  if (provider === 'deterministic') {
+    return new DeterministicBISLLMProvider();
+  }
+  return new LangChainBISLLMProvider();
 }

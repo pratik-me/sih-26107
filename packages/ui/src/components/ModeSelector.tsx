@@ -39,6 +39,7 @@ export const ModeSelector: React.FC<ModeSelectorProps> = ({ currentMode, onModeC
           <button
             key={m.id}
             type="button"
+            suppressHydrationWarning
             onClick={() => onModeChange(m.id)}
             className={`p-4 rounded-xl border text-left transition-all ${
               isSelected

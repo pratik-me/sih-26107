@@ -84,6 +84,7 @@ export default function LandingPage() {
             <Search className="w-5 h-5 text-slate-400 ml-3 shrink-0" />
             <input
               type="text"
+              suppressHydrationWarning
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Ask about Indian Standards, certification, testing, hallmarking, or clauses..."
@@ -91,6 +92,7 @@ export default function LandingPage() {
             />
             <button
               type="submit"
+              suppressHydrationWarning
               className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-blue-700 hover:bg-blue-800 text-white shadow transition-all shrink-0"
             >
               <span>Ask AI</span>
@@ -109,6 +111,7 @@ export default function LandingPage() {
               <button
                 key={idx}
                 type="button"
+                suppressHydrationWarning
                 onClick={() => handlePromptClick(prompt)}
                 className="text-xs px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 hover:border-blue-400 text-slate-700 dark:text-slate-300 hover:text-blue-700 dark:hover:text-blue-300 transition-colors text-left"
               >

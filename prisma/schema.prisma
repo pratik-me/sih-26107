@@ -171,7 +171,7 @@ model DocumentChunk {
   subclause       String?
   page            Int
   content         String          @db.Text
-  vectorEmbedding Json?           // Store embedding vector array for hybrid search
+  vectorEmbedding Unsupported("vector(1536)")?
   metadata        Json?
   status          StandardStatus  @default(ACTIVE)
   createdAt       DateTime        @default(now())
