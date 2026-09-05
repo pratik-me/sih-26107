@@ -1,7 +1,7 @@
 import { Controller, Post, Body, Get, Param } from '@nestjs/common';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { LaboratoriesService } from './laboratories.service';
-import { LaboratorySearchFilter } from '@bis/shared-types';
+import { type LaboratorySearchFilter } from '@bis/shared-types';
 
 @ApiTags('Laboratories')
 @Controller('laboratories')

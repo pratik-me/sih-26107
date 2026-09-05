@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Param, Query } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { StandardsService } from './standards.service';
-import { ProductProfileQuery } from '@bis/shared-types';
+import { type ProductProfileQuery } from '@bis/shared-types';
 
 @ApiTags('Indian Standards')
 @Controller('standards')

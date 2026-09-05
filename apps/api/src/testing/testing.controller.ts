@@ -1,7 +1,7 @@
 import { Controller, Post, Body } from '@nestjs/common';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { TestingService } from './testing.service';
-import { TestingSearchFilter } from '@bis/shared-types';
+import { type TestingSearchFilter } from '@bis/shared-types';
 
 @ApiTags('Testing Requirements')
 @Controller('testing')

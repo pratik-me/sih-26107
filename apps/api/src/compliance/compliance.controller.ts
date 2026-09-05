@@ -1,7 +1,7 @@
 import { Controller, Post, Body } from '@nestjs/common';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { ComplianceService } from './compliance.service';
-import { ProductProfileQuery } from '@bis/shared-types';
+import { type ProductProfileQuery } from '@bis/shared-types';
 
 @ApiTags('Compliance Reports')
 @Controller('compliance')
