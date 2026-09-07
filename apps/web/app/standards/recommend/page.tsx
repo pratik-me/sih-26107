@@ -15,16 +15,18 @@ import {
   ArrowRight,
   ShieldCheck,
 } from "lucide-react";
+import { SampleFormData } from "@/lib/sample";
 
 export default function FindMyStandardPage() {
   const router = useRouter();
   const [formData, setFormData] = useState<ProductProfileQuery>({
-    productName: "",
-    material: "",
-    intendedApplication: "",
-    industry: "",
-    capacity: "",
-    technicalCharacteristics: "",
+    productName: "Stainless steel vacuum insulated water bottle",
+    material: "Grade 304 / 316 Austenitic Stainless Steel",
+    intendedApplication: "Domestic beverage storage and thermal retention",
+    industry: "Utensils and Metal Fabrication",
+    capacity: "750 ml / 1000 ml double wall",
+    technicalCharacteristics:
+      "Vacuum sealed insulation, leak proof silicone gasket, food contact grade",
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -38,6 +40,8 @@ export default function FindMyStandardPage() {
 
     setIsLoading(true);
     try {
+      if (formData.productName == "") setFormData(SampleFormData);
+      console.log(formData.productName);
       const res = await apiClient.recommendStandards(formData);
       setResult(res);
     } catch (err) {

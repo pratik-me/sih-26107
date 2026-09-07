@@ -23,10 +23,5 @@
     "typescript": "^5.5.4",
     "tsx": "^4.19.1"
   },
-  "packageManager": "pnpm@11.25.0",
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "protobufjs"
-    ]
-  }
+  "packageManager": "pnpm@11.25.0"
 }
