@@ -14,90 +14,162 @@ import {
   Sparkles,
   ShieldCheck,
   FileBarChart2,
-  BarChart3,
   Menu,
   X,
   Compass,
+  ChevronDown,
 } from "lucide-react";
 import Image from "next/image";
 
 export function Header() {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [standardsDropdownOpen, setStandardsDropdownOpen] = useState(false);
+  const [mobileStandardsOpen, setMobileStandardsOpen] = useState(true);
   const [selectedLanguage, setSelectedLanguage] = useState<IndianLanguage>(
     IndianLanguage.EN,
   );
   const [userRole, setUserRole] = useState<UserRole>(UserRole.INDUSTRY);
 
-  const navLinks = [
-    { href: "/chat", label: "AI Workspace", icon: MessageSquare },
-    { href: "/standards/recommend", label: "Find My Standard", icon: Compass },
-    { href: "/standards", label: "Standards", icon: Search },
+  const isStandardsActive =
+    pathname === "/standards" || pathname === "/standards/recommend";
+
+  const otherNavLinks = [
     { href: "/certification", label: "Certification", icon: Award },
     { href: "/testing", label: "Testing", icon: FlaskConical },
     { href: "/laboratories", label: "Labs", icon: Building2 },
-    { href: "/hallmarking", label: "Hallmarking", icon: Sparkles },
-    { href: "/consumer", label: "Consumer Hub", icon: ShieldCheck },
-    { href: "/reports", label: "Compliance Reports", icon: FileBarChart2 },
-    { href: "/dashboard", label: "Analytics", icon: BarChart3 },
+    { href: "/hallmarking", label: "Hallmark", icon: Sparkles },
+    { href: "/consumer", label: "Consumer", icon: ShieldCheck },
+    { href: "/reports", label: "Reports", icon: FileBarChart2 },
   ];
 
   return (
     <header className="sticky top-0 z-50 bg-white/95 dark:bg-slate-900/95 backdrop-blur border-b border-slate-200 dark:border-slate-800">
       {/* Main Nav Bar */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="flex items-center justify-between h-16">
+      <div className="max-w-[1520px] mx-auto px-3 sm:px-5 lg:px-6">
+        <div className="flex items-center justify-between h-16 gap-2">
           {/* Logo & Title */}
-          <Link href="/" className="flex items-center gap-3 group">
-            <div className="relative">
-              {/* <AshokaMotif
-                size={36}
-                className="text-blue-700 dark:text-blue-500 group-hover:rotate-45 transition-transform duration-500"
-              /> */}
-              <Image src={"/BIS-LOGO.png"} alt='BIS-LOGO' height={36} width={36} />
+          <Link href="/" className="flex items-center gap-2.5 shrink-0 group mr-1">
+            <div className="relative shrink-0">
+              <Image src={"/BIS-LOGO.png"} alt='BIS-LOGO' height={34} width={34} />
             </div>
-            <div>
-              <div className="flex items-center justify-center gap-1.5">
-                <span className="text-md font-black tracking-tight text-slate-900 dark:text-slate-100">
+            <div className="hidden sm:block">
+              <div className="flex items-center gap-1">
+                <span className="text-sm font-black tracking-tight text-slate-900 dark:text-slate-100 whitespace-nowrap">
                   BIS{" "}
-                  <span className="text-blue-700 dark:text-blue-400 font-extrabold">
+                  <span className="text-[#0077B6] dark:text-[#48CAE4] font-extrabold">
                     IntelliGuide
                   </span>
                 </span>
               </div>
-              <p className="text-[11px] text-slate-500 font-medium leading-none">
-                Indian Standards & Services Intelligence
+              <p className="text-[10px] text-slate-500 font-medium leading-none whitespace-nowrap">
+                Indian Standards Intelligence
               </p>
             </div>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden xl:flex items-center gap-5">
-            {navLinks.map((link, index) => {
-              const isActive =
-                pathname === link.href;
-              const Icon = link.icon;
-              return (
-                <div key={index}>
+          <nav className="hidden lg:flex items-center gap-1 xl:gap-2 flex-nowrap">
+            {/* Standards Dropdown Heading */}
+            <div
+              className="relative group"
+              onMouseEnter={() => setStandardsDropdownOpen(true)}
+              onMouseLeave={() => setStandardsDropdownOpen(false)}
+            >
+              <button
+                type="button"
+                onClick={() => setStandardsDropdownOpen((prev) => !prev)}
+                className={`inline-flex items-center gap-1 px-2 xl:px-2.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all duration-200 cursor-pointer ${
+                  isStandardsActive
+                    ? "bg-[#CAF0F8]/80 text-[#023E8A] dark:bg-[#03045E]/60 dark:text-[#90E0EF] font-bold shadow-2xs"
+                    : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-[#CAF0F8]/30 dark:hover:bg-slate-800"
+                }`}
+              >
+                <Search
+                  className={`w-3.5 h-3.5 shrink-0 ${
+                    isStandardsActive
+                      ? "text-[#023E8A] dark:text-[#48CAE4]"
+                      : "text-slate-500 dark:text-slate-400"
+                  }`}
+                />
+                <span>Standards</span>
+                <ChevronDown
+                  className={`w-3 h-3 transition-transform duration-200 ${
+                    standardsDropdownOpen ? "rotate-180 text-[#0077B6]" : "text-slate-400"
+                  }`}
+                />
+              </button>
+
+              {/* Dropdown Menu */}
+              {standardsDropdownOpen && (
+                <div className="absolute top-full left-0 mt-0.5 w-64 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl py-1.5 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
                   <Link
-                    href={link.href}
-                    className={`group/link inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
-                      isActive
-                        ? "bg-blue-50 text-blue-800 dark:bg-blue-950/60 dark:text-blue-300 font-bold"
-                        : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800/60"
+                    href="/standards/recommend"
+                    onClick={() => setStandardsDropdownOpen(false)}
+                    className={`flex items-start gap-3 px-3 py-2.5 hover:bg-[#CAF0F8]/30 dark:hover:bg-slate-800/70 transition-colors ${
+                      pathname === "/standards/recommend"
+                        ? "bg-[#CAF0F8]/70 dark:bg-[#03045E]/50 text-[#023E8A] dark:text-[#90E0EF] font-semibold"
+                        : "text-slate-700 dark:text-slate-200"
                     }`}
                   >
-                    <Icon className="w-3.5 h-3.5 shrink-0" />
-                    <span className="whitespace-nowrap overflow-hidden max-w-0 group-hover/link:max-w-[120px] opacity-0 group-hover/link:opacity-100 transition-all duration-500">
-                      {link.label}
-                    </span>
+                    <Compass className="w-4 h-4 text-[#0077B6] mt-0.5 shrink-0" />
+                    <div>
+                      <div className="text-xs font-bold">Find Your Standards</div>
+                      <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-tight mt-0.5">
+                        AI product profiler matching your product to IS
+                      </p>
+                    </div>
+                  </Link>
+
+                  <Link
+                    href="/standards"
+                    onClick={() => setStandardsDropdownOpen(false)}
+                    className={`flex items-start gap-3 px-3 py-2.5 hover:bg-[#CAF0F8]/30 dark:hover:bg-slate-800/70 transition-colors ${
+                      pathname === "/standards"
+                        ? "bg-[#CAF0F8]/70 dark:bg-[#03045E]/50 text-[#023E8A] dark:text-[#90E0EF] font-semibold"
+                        : "text-slate-700 dark:text-slate-200"
+                    }`}
+                  >
+                    <Search className="w-4 h-4 text-[#0077B6] mt-0.5 shrink-0" />
+                    <div>
+                      <div className="text-xs font-bold">Standards</div>
+                      <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-tight mt-0.5">
+                        Search and explore Indian Standards catalogue
+                      </p>
+                    </div>
                   </Link>
                 </div>
+              )}
+            </div>
+
+            {/* Remaining Nav Links */}
+            {otherNavLinks.map((link) => {
+              const isActive = pathname === link.href;
+              const Icon = link.icon;
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`inline-flex items-center gap-1 px-2 xl:px-2.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all duration-200 ${
+                    isActive
+                      ? "bg-[#CAF0F8]/80 text-[#023E8A] dark:bg-[#03045E]/60 dark:text-[#90E0EF] font-bold shadow-2xs"
+                      : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-[#CAF0F8]/30 dark:hover:bg-slate-800"
+                  }`}
+                >
+                  <Icon
+                    className={`w-3.5 h-3.5 shrink-0 ${
+                      isActive
+                        ? "text-[#023E8A] dark:text-[#48CAE4]"
+                        : "text-slate-500 dark:text-slate-400"
+                    }`}
+                  />
+                  <span>{link.label}</span>
+                </Link>
               );
             })}
           </nav>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0 ml-1">
             <LanguageSelector
               onDashboard={true}
               selectedLanguage={selectedLanguage}
@@ -105,19 +177,20 @@ export function Header() {
             />
 
             {/* Action Button & Mobile Toggle */}
-            <div className="gap-2.5">
+            <div className="flex items-center gap-2">
               <Link
                 href="/chat"
-                className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold bg-blue-700 hover:bg-blue-800 text-white shadow-sm transition-all"
+                className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold bg-gradient-to-r from-[#023E8A] to-[#0077B6] hover:from-[#03045E] hover:to-[#023E8A] text-white shadow-sm shadow-[#0077B6]/25 transition-all whitespace-nowrap"
               >
                 <MessageSquare className="w-3.5 h-3.5" />
-                <span>Ask BIS AI</span>
+                <span className="hidden sm:inline">Ask BIS AI</span>
+                <span className="sm:hidden">Ask AI</span>
               </Link>
 
               <button
                 type="button"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="xl:hidden p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+                className="lg:hidden p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
                 aria-label="Toggle navigation menu"
               >
                 {mobileMenuOpen ? (
@@ -133,8 +206,59 @@ export function Header() {
 
       {/* Mobile Menu Dropdown */}
       {mobileMenuOpen && (
-        <div className="xl:hidden border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 pt-2 pb-4 space-y-1 shadow-lg">
-          {navLinks.map((link) => {
+        <div className="lg:hidden border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 pt-2 pb-4 space-y-1 shadow-lg">
+          {/* Mobile Standards Dropdown Accordion */}
+          <div className="py-1">
+            <button
+              type="button"
+              onClick={() => setMobileStandardsOpen(!mobileStandardsOpen)}
+              className={`flex items-center justify-between w-full px-3 py-2 rounded-lg text-sm font-semibold ${
+                isStandardsActive
+                  ? "bg-blue-50 text-blue-800 dark:bg-blue-950/60 dark:text-blue-300 font-bold"
+                  : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+              }`}
+            >
+              <div className="flex items-center gap-2.5">
+                <Search className="w-4 h-4 text-blue-600" />
+                <span>Standards</span>
+              </div>
+              <ChevronDown
+                className={`w-4 h-4 transition-transform duration-200 ${
+                  mobileStandardsOpen ? "rotate-180" : ""
+                }`}
+              />
+            </button>
+            {mobileStandardsOpen && (
+              <div className="pl-6 pt-1 pb-1 space-y-1">
+                <Link
+                  href="/standards/recommend"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-medium ${
+                    pathname === "/standards/recommend"
+                      ? "bg-blue-100/70 text-blue-800 dark:bg-blue-900/50 dark:text-blue-200 font-bold"
+                      : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100"
+                  }`}
+                >
+                  <Compass className="w-3.5 h-3.5 text-blue-500" />
+                  <span>Find Your Standards</span>
+                </Link>
+                <Link
+                  href="/standards"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-medium ${
+                    pathname === "/standards"
+                      ? "bg-blue-100/70 text-blue-800 dark:bg-blue-900/50 dark:text-blue-200 font-bold"
+                      : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100"
+                  }`}
+                >
+                  <Search className="w-3.5 h-3.5 text-blue-500" />
+                  <span>Standards</span>
+                </Link>
+              </div>
+            )}
+          </div>
+
+          {otherNavLinks.map((link) => {
             const isActive = pathname === link.href;
             const Icon = link.icon;
             return (
