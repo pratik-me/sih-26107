@@ -1,7 +1,8 @@
-import { Controller, Post, Body, Get, Param, Delete } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, Delete, Sse, Query } from '@nestjs/common';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { ChatService } from './chat.service';
 import { IndianLanguage } from '@bis/shared-types';
+import { Observable } from 'rxjs';
 
 @ApiTags('Chat & AI Assistant')
 @Controller('chat')
@@ -21,6 +22,15 @@ export class ChatController {
     }
   ) {
     return this.chatService.sendMessage(body);
+  }
+
+  @Sse('stream')
+  @ApiOperation({ summary: 'Server-Sent Events streaming chat endpoint for real-time token delivery' })
+  streamMessage(
+    @Query('message') message: string,
+    @Query('language') language?: IndianLanguage
+  ): Observable<{ data: string }> {
+    return this.chatService.streamMessage({ message: message || '', language });
   }
 
   @Get('sessions')

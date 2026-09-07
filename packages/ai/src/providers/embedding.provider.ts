@@ -1,3 +1,5 @@
+import { OpenAIEmbeddings } from '@langchain/openai';
+
 export interface IEmbeddingProvider {
   name: string;
   dimension: number;
@@ -9,10 +11,11 @@ export interface IEmbeddingProvider {
 /**
  * Multilingual Local Embedding Provider
  * Computes deterministic multi-dimensional normalized vectors supporting multilingual and Hindi/Hinglish token spaces.
+ * Functions as an offline fallback when cloud embedding API keys are not available.
  */
 export class MultilingualLocalEmbeddingProvider implements IEmbeddingProvider {
   name = 'local-multilingual-embedder';
-  dimension = 384;
+  dimension = 1536;
 
   async embedText(text: string): Promise<number[]> {
     return this.generateDeterministicVector(text, this.dimension);
@@ -65,4 +68,62 @@ export class MultilingualLocalEmbeddingProvider implements IEmbeddingProvider {
 
     return vector;
   }
+}
+
+/**
+ * OpenAI / Hosted Multilingual Embedding Provider with automatic fallback
+ */
+export class OpenAIEmbeddingProvider implements IEmbeddingProvider {
+  name = 'openai-embeddings';
+  dimension = 1536;
+  private fallback = new MultilingualLocalEmbeddingProvider();
+
+  private getEmbedder(): OpenAIEmbeddings | null {
+    const provider = (process.env.EMBEDDING_PROVIDER || '').toLowerCase();
+    if (provider === 'local-multilingual') return null;
+
+    const apiKey = process.env.EMBEDDING_API_KEY || process.env.OPENAI_API_KEY;
+    if (!apiKey) return null;
+
+    return new OpenAIEmbeddings({
+      openAIApiKey: apiKey,
+      modelName: process.env.EMBEDDING_MODEL || 'text-embedding-3-small'
+    });
+  }
+
+  async embedText(text: string): Promise<number[]> {
+    const embedder = this.getEmbedder();
+    if (!embedder) return this.fallback.embedText(text);
+
+    try {
+      return await embedder.embedQuery(text);
+    } catch (err) {
+      console.warn('[OpenAIEmbeddingProvider] Error calling OpenAI Embeddings API, falling back to local embedder:', err);
+      return this.fallback.embedText(text);
+    }
+  }
+
+  async embedBatch(texts: string[]): Promise<number[][]> {
+    const embedder = this.getEmbedder();
+    if (!embedder) return this.fallback.embedBatch(texts);
+
+    try {
+      return await embedder.embedDocuments(texts);
+    } catch (err) {
+      console.warn('[OpenAIEmbeddingProvider] Error batch calling OpenAI Embeddings API, falling back to local embedder:', err);
+      return this.fallback.embedBatch(texts);
+    }
+  }
+
+  computeSimilarity(vecA: number[], vecB: number[]): number {
+    return this.fallback.computeSimilarity(vecA, vecB);
+  }
+}
+
+export function getEmbeddingProvider(): IEmbeddingProvider {
+  const provider = (process.env.EMBEDDING_PROVIDER || '').toLowerCase();
+  if (provider === 'local-multilingual') {
+    return new MultilingualLocalEmbeddingProvider();
+  }
+  return new OpenAIEmbeddingProvider();
 }

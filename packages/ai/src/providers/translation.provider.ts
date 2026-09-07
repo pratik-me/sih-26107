@@ -1,4 +1,7 @@
 import { IndianLanguage } from '@bis/shared-types';
+import { ChatAnthropic } from '@langchain/anthropic';
+import { ChatOpenAI } from '@langchain/openai';
+import { HumanMessage, SystemMessage } from '@langchain/core/messages';
 
 export interface ITranslationProvider {
   detectLanguage(text: string): Promise<IndianLanguage>;
@@ -6,34 +9,65 @@ export interface ITranslationProvider {
   translateFromEnglish(text: string, targetLang: IndianLanguage, preservedEntities?: string[]): Promise<string>;
 }
 
+/**
+ * Indic Language Engine supporting all 22 Eighth-Schedule Indian Languages + English + Hinglish.
+ * 
+ * SCRIPT RESOLUTION & CAPABILITIES NOTE:
+ * - Script-Distinct Languages (Tamil, Telugu, Gujarati, Kannada, Malayalam, Odia, Punjabi, Urdu, Bengali, Manipuri, Santali)
+ *   have first-class individual script regex detection.
+ * - Devanagari Group Languages (Hindi, Marathi, Sanskrit, Nepali, Konkani, Dogri, Maithili, Bodo) map onto Devanagari
+ *   script range (\\u0900-\\u097F) and leverage LLM-backed neural translation for dialect-specific nuance.
+ * - Technical Identifiers (IS Standard Numbers, Clauses, HUID codes, CM/L numbers) are preserved across all translations.
+ */
 export class IndicLanguageEngine implements ITranslationProvider {
-  // Common script ranges for Indian languages
+  // Script pattern definitions across Eighth-Schedule Indian Languages
   private scriptPatterns: Record<IndianLanguage, RegExp> = {
-    [IndianLanguage.HI]: /[\u0900-\u097F]/, // Devanagari (Hindi, Marathi, Sanskrit, Konkani, Dogri, Maithili, Bodo, Nepali)
+    [IndianLanguage.HI]: /[\u0900-\u097F]/, // Devanagari (Hindi)
     [IndianLanguage.BN]: /[\u0980-\u09FF]/, // Bengali / Assamese
     [IndianLanguage.AS]: /[\u0980-\u09FF]/,
     [IndianLanguage.TE]: /[\u0C00-\u0C7F]/, // Telugu
     [IndianLanguage.TA]: /[\u0B80-\u0BFF]/, // Tamil
-    [IndianLanguage.MR]: /[\u0900-\u097F]/,
-    [IndianLanguage.UR]: /[\u0600-\u06FF]/, // Urdu / Arabic
+    [IndianLanguage.MR]: /[\u0900-\u097F]/, // Marathi
+    [IndianLanguage.UR]: /[\u0600-\u06FF]/, // Urdu / Arabic script
     [IndianLanguage.GU]: /[\u0A80-\u0AFF]/, // Gujarati
     [IndianLanguage.KN]: /[\u0C80-\u0CFF]/, // Kannada
     [IndianLanguage.ML]: /[\u0D00-\u0D7F]/, // Malayalam
     [IndianLanguage.OR]: /[\u0B00-\u0B7F]/, // Odia
     [IndianLanguage.PA]: /[\u0A00-\u0A7F]/, // Punjabi (Gurmukhi)
-    [IndianLanguage.MAI]: /[\u0900-\u097F]/,
-    [IndianLanguage.SAN]: /[\u0900-\u097F]/,
-    [IndianLanguage.KAS]: /[\u0600-\u06FF]/,
-    [IndianLanguage.NEP]: /[\u0900-\u097F]/,
-    [IndianLanguage.KOK]: /[\u0900-\u097F]/,
-    [IndianLanguage.DOG]: /[\u0900-\u097F]/,
+    [IndianLanguage.MAI]: /[\u0900-\u097F]/, // Maithili
+    [IndianLanguage.SAN]: /[\u0900-\u097F]/, // Sanskrit
+    [IndianLanguage.KAS]: /[\u0600-\u06FF]/, // Kashmiri
+    [IndianLanguage.NEP]: /[\u0900-\u097F]/, // Nepali
+    [IndianLanguage.KOK]: /[\u0900-\u097F]/, // Konkani
+    [IndianLanguage.DOG]: /[\u0900-\u097F]/, // Dogri
     [IndianLanguage.MNI]: /[\uABC0-\uABFF]/, // Meitei Mayek
-    [IndianLanguage.BOD]: /[\u0900-\u097F]/,
-    [IndianLanguage.SAT]: /[\u1C50-\u1C7F]/, // Ol Chiki
-    [IndianLanguage.SD]: /[\u0600-\u06FF]/,
+    [IndianLanguage.BOD]: /[\u0900-\u097F]/, // Bodo
+    [IndianLanguage.SAT]: /[\u1C50-\u1C7F]/, // Ol Chiki (Santali)
+    [IndianLanguage.SD]: /[\u0600-\u06FF]/,  // Sindhi
     [IndianLanguage.EN]: /^[a-zA-Z0-9\s.,!?:;'"()\-_/@#$%^&*+=]+$/,
     [IndianLanguage.HINGLISH]: /(karein|kaise|chahiye|batao|kya|hai|hoga|kare|samjhao|pramaanit)/i
   };
+
+  private getModel() {
+    const anthropicKey = process.env.ANTHROPIC_API_KEY;
+    const openaiKey = process.env.OPENAI_API_KEY;
+
+    if (anthropicKey) {
+      return new ChatAnthropic({
+        modelName: process.env.ANTHROPIC_MODEL || 'claude-3-haiku-20240307',
+        apiKey: anthropicKey,
+        temperature: 0.1
+      });
+    }
+    if (openaiKey) {
+      return new ChatOpenAI({
+        modelName: process.env.OPENAI_MODEL || 'gpt-4o-mini',
+        openAIApiKey: openaiKey,
+        temperature: 0.1
+      });
+    }
+    return null;
+  }
 
   async detectLanguage(text: string): Promise<IndianLanguage> {
     if (!text || text.trim() === '') return IndianLanguage.EN;
@@ -67,7 +101,6 @@ export class IndicLanguageEngine implements ITranslationProvider {
       }
     }
 
-    // Devanagari script defaults to Hindi if no other dialect marker
     if (this.scriptPatterns[IndianLanguage.HI].test(text)) {
       return IndianLanguage.HI;
     }
@@ -93,7 +126,23 @@ export class IndicLanguageEngine implements ITranslationProvider {
       return { translatedText: text, preservedEntities: preserved };
     }
 
-    // Map common Hinglish / Hindi domain queries to clear English search queries
+    const model = this.getModel();
+    if (model) {
+      try {
+        const sysMsg = new SystemMessage(
+          `You are an expert translator specializing in Indian languages to English technical query translation for the Bureau of Indian Standards (BIS).\n` +
+          `Translate the user text from ${sourceLang} to clear, professional English search query text.\n` +
+          `CRITICAL: DO NOT translate standard numbers (e.g. IS 10500), Clause numbers, HUID codes, or CM/L numbers. Keep them exact. Return ONLY the translated English text.`
+        );
+        const res = await model.invoke([sysMsg, new HumanMessage(text)]);
+        const translated = typeof res.content === 'string' ? res.content.trim() : String(res.content);
+        return { translatedText: translated, preservedEntities: preserved };
+      } catch (err) {
+        console.warn('[IndicLanguageEngine] Neural translation to English failed, falling back to rule mapping:', err);
+      }
+    }
+
+    // Fallback rule mapping for domain queries
     let translated = text;
     if (sourceLang === IndianLanguage.HI || sourceLang === IndianLanguage.HINGLISH) {
       translated = translated
@@ -111,10 +160,29 @@ export class IndicLanguageEngine implements ITranslationProvider {
   }
 
   async translateFromEnglish(text: string, targetLang: IndianLanguage, _preservedEntities?: string[]): Promise<string> {
-    if (targetLang === IndianLanguage.EN) {
+    if (targetLang === IndianLanguage.EN || !text || text.trim() === '') {
       return text;
     }
-    // Return original English text along with language banner in production when IndicTrans2 pipeline is operating
+
+    const model = this.getModel();
+    if (model) {
+      try {
+        const sysMsg = new SystemMessage(
+          `You are an expert translator for Bureau of Indian Standards (BIS) technical compliance documentation.\n` +
+          `Translate the following English response into ${targetLang}.\n` +
+          `CRITICAL SAFETY RULES:\n` +
+          `1. DO NOT translate Indian Standard numbers (e.g. IS 10500:2012, IS 1417).\n` +
+          `2. DO NOT translate clause numbers (e.g. Clause 4.1, Clause 6.2) or HUID numbers.\n` +
+          `3. Preserve markdown table structures, bullet lists, and URLs exactly as formatted.\n` +
+          `Return ONLY the translated document.`
+        );
+        const res = await model.invoke([sysMsg, new HumanMessage(text)]);
+        return typeof res.content === 'string' ? res.content.trim() : String(res.content);
+      } catch (err) {
+        console.warn(`[IndicLanguageEngine] Translation from English to ${targetLang} failed:`, err);
+      }
+    }
+
     return text;
   }
 }

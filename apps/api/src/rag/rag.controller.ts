@@ -1,7 +1,7 @@
 import { Controller, Post, Body } from '@nestjs/common';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { RAGService } from './rag.service';
-import { RAGSearchRequest } from '@bis/shared-types';
+import { type RAGSearchRequest } from '@bis/shared-types';
 
 @ApiTags('RAG Retrieval')
 @Controller('rag')

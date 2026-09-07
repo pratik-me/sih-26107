@@ -7,6 +7,7 @@ import { UserRole } from '@bis/shared-types';
 import { apiClient } from '@bis/api-client';
 import { AshokaMotif } from '@bis/ui';
 import { Lock, Mail, User, Building, ArrowRight } from 'lucide-react';
+import Image from 'next/image';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -43,7 +44,8 @@ export default function RegisterPage() {
     <div className="min-h-[80vh] flex items-center justify-center px-4 py-12 bg-ashoka-pattern">
       <div className="max-w-md w-full bg-white dark:bg-slate-900 p-8 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xl space-y-6">
         <div className="text-center space-y-2">
-          <AshokaMotif size={42} className="mx-auto text-blue-700 dark:text-blue-500" />
+          {/* <AshokaMotif size={42} className="mx-auto text-blue-700 dark:text-blue-500" /> */}
+          <Image src={"/BIS-LOGO.png"} alt='BIS-LOGO' height={42} width={42} />
           <h1 className="text-2xl font-black text-slate-900 dark:text-slate-100 tracking-tight">
             Register Account
           </h1>

@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useRef } from 'react';
-import { useSearchParams } from 'next/navigation';
+import React, { useState, useEffect, useRef } from "react";
+import { useSearchParams } from "next/navigation";
 import {
   ChatMessage,
   ChatSession,
@@ -9,16 +9,16 @@ import {
   ConfidenceLevel,
   Evidence,
   IndianLanguage,
-  UserRole
-} from '@bis/shared-types';
-import { apiClient } from '@bis/api-client';
+  UserRole,
+} from "@bis/shared-types";
+import { apiClient } from "@bis/api-client";
 import {
   CitationBadge,
   ConfidenceBadge,
   EvidencePanel,
   LanguageSelector,
-  SourceFreshnessBadge
-} from '@bis/ui';
+  SourceFreshnessBadge,
+} from "@bis/ui";
 import {
   Send,
   Plus,
@@ -37,23 +37,34 @@ import {
   FileText,
   Copy,
   Check,
-  FileBarChart2
-} from 'lucide-react';
-import Link from 'next/link';
+  FileBarChart2,
+} from "lucide-react";
+import Link from "next/link";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 function ChatContent() {
   const searchParams = useSearchParams();
-  const initialQuery = searchParams.get('q') || '';
-  const initialRole = (searchParams.get('role') as UserRole) || UserRole.INDUSTRY;
+  const initialQuery = searchParams.get("q") || "";
+  const initialRole =
+    (searchParams.get("role") as UserRole) || UserRole.INDUSTRY;
 
   const [sessions, setSessions] = useState<ChatSession[]>([]);
-  const [currentSessionId, setCurrentSessionId] = useState<string>('default-session');
+  const [currentSessionId, setCurrentSessionId] =
+    useState<string>("default-session");
   const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [inputQuery, setInputQuery] = useState('');
+  const [inputQuery, setInputQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState<IndianLanguage>(IndianLanguage.EN);
+  const [selectedLanguage, setSelectedLanguage] = useState<IndianLanguage>(
+    IndianLanguage.EN,
+  );
   const [activeEvidenceList, setActiveEvidenceList] = useState<Evidence[]>([]);
-  const [activeEvidenceId, setActiveEvidenceId] = useState<string | undefined>();
+  const [activeEvidenceId, setActiveEvidenceId] = useState<
+    string | undefined
+  >();
   const [isEvidencePanelOpen, setIsEvidencePanelOpen] = useState(true);
   const [copiedMsgId, setCopiedMsgId] = useState<string | null>(null);
 
@@ -63,18 +74,18 @@ function ChatContent() {
     // Initial greeting if no messages
     if (messages.length === 0 && !initialQuery) {
       const welcomeMessage: ChatMessage = {
-        id: 'welcome-msg',
+        id: "welcome-msg",
         sessionId: currentSessionId,
-        role: 'assistant',
-        content: `### Welcome to BIS IntelliGuide 👋\n\nI am your evidence-backed decision assistant for **Indian Standards (IS)**, BIS certification schemes, testing clauses, laboratory accreditation, and hallmarking.\n\n#### What would you like to explore?\n- **Product Compliance**: *"I manufacture stainless steel bottles. Which standard applies?"*\n- **Testing Requirements**: *"What are the routine tests required for TMT steel bars?"*\n- **Certification Guidance**: *"Do I need Compulsory Registration Scheme (CRS) for electronics?"*\n- **Hallmarking**: *"How do I verify a 6-digit HUID code on BIS Care App?"*\n- **Clause Explanation**: *"Explain IS 10500 Clause 4.2 in simple language."*`,
+        role: "assistant",
+        content: `Welcome to BIS IntelliGuide 👋\nI am your evidence-backed decision assistant for Indian Standards (IS), BIS certification schemes, testing clauses, laboratory accreditation, and hallmarking.\n\nWhat would you like to explore?\n- Product Compliance: "I manufacture stainless steel bottles. Which standard applies?"\n- Testing Requirements: "What are the routine tests required for TMT steel bars?"\n- Certification Guidance: "Do I need Compulsory Registration Scheme (CRS) for electronics?"\n- Hallmarking: "How do I verify a 6-digit HUID code on BIS Care App?"\n- Clause Explanation: "Explain IS 10500 Clause 4.2 in simple language."`,
         confidence: ConfidenceLevel.HIGH,
         suggestedFollowUps: [
-          'Find standard for my product',
-          'Do I need BIS certification?',
-          'What tests are required?',
-          'How to verify a gold hallmark?'
+          "Find standard for my product",
+          "Do I need BIS certification?",
+          "What tests are required?",
+          "How to verify a gold hallmark?",
         ],
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
       };
       setMessages([welcomeMessage]);
     }
@@ -87,37 +98,37 @@ function ChatContent() {
     }
   }, [initialQuery]);
 
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages, isLoading]);
+  // useEffect(() => {
+  //   messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  // }, [messages, isLoading]);
 
   const handleSendMessage = async (queryText?: string) => {
     const textToSend = queryText || inputQuery;
     if (!textToSend.trim() || isLoading) return;
 
-    setInputQuery('');
+    setInputQuery("");
     setIsLoading(true);
 
     const userMessage: ChatMessage = {
       id: `user-${Date.now()}`,
       sessionId: currentSessionId,
-      role: 'user',
+      role: "user",
       content: textToSend,
       originalLanguage: selectedLanguage,
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
     };
 
-    setMessages(prev => [...prev, userMessage]);
+    setMessages((prev) => [...prev, userMessage]);
 
     try {
       const res = await apiClient.sendMessage({
         sessionId: currentSessionId,
         message: textToSend,
         roleMode: initialRole,
-        language: selectedLanguage
+        language: selectedLanguage,
       });
 
-      setMessages(prev => [...prev, res.reply]);
+      setMessages((prev) => [...prev, res.reply]);
 
       if (res.reply.evidence && res.reply.evidence.length > 0) {
         setActiveEvidenceList(res.reply.evidence);
@@ -128,12 +139,12 @@ function ChatContent() {
       const errorMsg: ChatMessage = {
         id: `err-${Date.now()}`,
         sessionId: currentSessionId,
-        role: 'assistant',
-        content: `⚠️ **Unable to process query:** ${err.message || 'Server connection issue. Please verify backend API status.'}\n\nYou can also verify directly on the official BIS portal (https://www.services.bis.gov.in).`,
+        role: "assistant",
+        content: `⚠️ **Unable to process query:** ${err.message || "Server connection issue. Please verify backend API status."}\n\nYou can also verify directly on the official BIS portal (https://www.services.bis.gov.in).`,
         confidence: ConfidenceLevel.LOW,
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
       };
-      setMessages(prev => [...prev, errorMsg]);
+      setMessages((prev) => [...prev, errorMsg]);
     } finally {
       setIsLoading(false);
     }
@@ -146,11 +157,14 @@ function ChatContent() {
     }
   };
 
-  const handleFeedback = async (messageId: string, type: 'HELPFUL' | 'NOT_HELPFUL' | 'REPORTED') => {
+  const handleFeedback = async (
+    messageId: string,
+    type: "HELPFUL" | "NOT_HELPFUL" | "REPORTED",
+  ) => {
     try {
       await apiClient.submitFeedback({ messageId, feedback: type as any });
-      setMessages(prev =>
-        prev.map(m => (m.id === messageId ? { ...m, feedback: type } : m))
+      setMessages((prev) =>
+        prev.map((m) => (m.id === messageId ? { ...m, feedback: type } : m)),
       );
     } catch {
       // ignore
@@ -170,18 +184,18 @@ function ChatContent() {
       {
         id: `welcome-${Date.now()}`,
         sessionId: newId,
-        role: 'assistant',
-        content: `### New Session Started\nAsk any question regarding Indian Standards, testing, recognized laboratories, or certification schemes.`,
+        role: "assistant",
+        content: `New Session Started\nAsk any question regarding Indian Standards, testing, recognized laboratories, or certification schemes.`,
         confidence: ConfidenceLevel.HIGH,
-        createdAt: new Date().toISOString()
-      }
+        createdAt: new Date().toISOString(),
+      },
     ]);
     setActiveEvidenceList([]);
     setActiveEvidenceId(undefined);
   };
 
   return (
-    <div className="flex h-[calc(100vh-105px)] overflow-hidden bg-slate-100 dark:bg-slate-950">
+    <div className="flex flex-col lg:flex-row h-[calc(100dvh-105px)] overflow-hidden bg-slate-100 dark:bg-slate-950">
       {/* 1. LEFT SIDEBAR */}
       <aside className="hidden lg:flex flex-col w-64 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 shrink-0">
         <div className="p-3 border-b border-slate-200 dark:border-slate-800">
@@ -253,14 +267,16 @@ function ChatContent() {
             <ShieldCheck className="w-3.5 h-3.5" />
             <span>Grounded Retrieval Active</span>
           </div>
-          <p className="text-[10px]">Answers verified against published Gazette notifications.</p>
+          <p className="text-[10px]">
+            Answers verified against published Gazette notifications.
+          </p>
         </div>
       </aside>
 
       {/* 2. CENTER CONVERSATION AREA */}
-      <section className="flex-1 flex flex-col h-full bg-slate-50 dark:bg-slate-950 overflow-hidden relative">
+      <section className="flex-1 flex flex-col h-full bg-slate-50 dark:bg-slate-950 overflow-hidden relative min-h-0">
         {/* Top Chat Bar */}
-        <div className="px-4 py-2.5 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+        <div className="px-4 py-2.5 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-2">
             <div className="p-1 rounded bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-400">
               <Bot className="w-4 h-4" />
@@ -269,7 +285,9 @@ function ChatContent() {
               <h2 className="text-xs font-bold text-slate-800 dark:text-slate-200">
                 BIS IntelliGuide Conversation
               </h2>
-              <span className="text-[10px] text-slate-500">Mode: {initialRole}</span>
+              <span className="text-[10px] text-slate-500">
+                Mode: {initialRole}
+              </span>
             </div>
           </div>
 
@@ -279,8 +297,8 @@ function ChatContent() {
               onClick={() => setIsEvidencePanelOpen(!isEvidencePanelOpen)}
               className={`text-xs px-2.5 py-1 rounded font-medium border transition-colors ${
                 isEvidencePanelOpen
-                  ? 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950 dark:text-blue-300 dark:border-blue-800'
-                  : 'bg-white text-slate-600 border-slate-200 dark:bg-slate-800 dark:text-slate-300'
+                  ? "bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950 dark:text-blue-300 dark:border-blue-800"
+                  : "bg-white text-slate-600 border-slate-200 dark:bg-slate-800 dark:text-slate-300"
               }`}
             >
               Evidence Panel ({activeEvidenceList.length})
@@ -289,13 +307,13 @@ function ChatContent() {
         </div>
 
         {/* Messages Stream */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6 min-h-0">
           {messages.map((msg, index) => {
-            const isUser = msg.role === 'user';
+            const isUser = msg.role === "user";
             return (
               <div
                 key={msg.id || index}
-                className={`flex gap-3 max-w-4xl mx-auto ${isUser ? 'justify-end' : 'justify-start'}`}
+                className={`flex gap-3 max-w-4xl mx-auto ${isUser ? "justify-end" : "justify-start"}`}
               >
                 {!isUser && (
                   <div className="w-7 h-7 rounded-lg bg-blue-700 text-white flex items-center justify-center shrink-0 mt-0.5 shadow-sm">
@@ -306,33 +324,45 @@ function ChatContent() {
                 <div
                   className={`flex flex-col space-y-2 max-w-[85%] rounded-2xl p-4 shadow-sm ${
                     isUser
-                      ? 'bg-blue-700 text-white rounded-tr-none'
-                      : 'bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 rounded-tl-none'
+                      ? "bg-blue-700 text-white rounded-tr-none"
+                      : "bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 rounded-tl-none"
                   }`}
                 >
                   {/* Assistant Meta Header */}
                   {!isUser && (
                     <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2 mb-1">
                       <div className="flex items-center gap-2">
-                        {msg.confidence && <ConfidenceBadge level={msg.confidence} />}
+                        {msg.confidence && (
+                          <ConfidenceBadge level={msg.confidence} />
+                        )}
                         {msg.sourceFreshnessWarning && (
                           <span className="text-[10px] px-2 py-0.5 rounded bg-amber-50 text-amber-700 font-medium">
                             Source Notice
                           </span>
                         )}
                       </div>
-                      <button
-                        type="button"
-                        onClick={() => handleCopyMessage(msg.id, msg.content)}
-                        className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1"
-                        title="Copy answer"
-                      >
-                        {copiedMsgId === msg.id ? (
-                          <Check className="w-3.5 h-3.5 text-emerald-600" />
-                        ) : (
-                          <Copy className="w-3.5 h-3.5" />
-                        )}
-                      </button>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              handleCopyMessage(msg.id, msg.content)
+                            }
+                            className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1 inline-flex items-center justify-center"
+                          >
+                            {copiedMsgId === msg.id ? (
+                              <Check className="w-3.5 h-3.5 text-emerald-600" />
+                            ) : (
+                              <Copy className="w-3.5 h-3.5" />
+                            )}
+                          </button>
+                        </TooltipTrigger>
+                        <TooltipContent className="px-2 py-0.5 text-[11px] rounded bg-gray-500 text-white shadow-sm">
+                          <p>
+                            {copiedMsgId === msg.id ? "Copied" : "Copy answer"}
+                          </p>
+                        </TooltipContent>
+                      </Tooltip>
                     </div>
                   )}
 
@@ -360,56 +390,93 @@ function ChatContent() {
                   )}
 
                   {/* Suggested follow-up prompt pills */}
-                  {!isUser && msg.suggestedFollowUps && msg.suggestedFollowUps.length > 0 && (
-                    <div className="pt-2 flex flex-wrap gap-1.5">
-                      {msg.suggestedFollowUps.map((followUp, fIdx) => (
-                        <button
-                          key={fIdx}
-                          type="button"
-                          onClick={() => handleSendMessage(followUp)}
-                          className="text-[11px] px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-blue-50 hover:text-blue-700 dark:hover:bg-blue-950/60 dark:hover:text-blue-300 text-slate-600 dark:text-slate-300 transition-colors text-left"
-                        >
-                          {followUp} →
-                        </button>
-                      ))}
-                    </div>
-                  )}
+                  {!isUser &&
+                    msg.suggestedFollowUps &&
+                    msg.suggestedFollowUps.length > 0 && (
+                      <div className="pt-2 flex flex-wrap gap-1.5">
+                        {msg.suggestedFollowUps.map((followUp, fIdx) => (
+                          <button
+                            key={fIdx}
+                            type="button"
+                            onClick={() => handleSendMessage(followUp)}
+                            className="text-[11px] px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-blue-50 hover:text-blue-700 dark:hover:bg-blue-950/60 dark:hover:text-blue-300 text-slate-600 dark:text-slate-300 transition-colors text-left"
+                          >
+                            {followUp} →
+                          </button>
+                        ))}
+                      </div>
+                    )}
 
                   {/* Assistant Footer Feedback */}
                   {!isUser && (
                     <div className="pt-2 flex items-center justify-between text-[11px] text-slate-400">
-                      <span>{new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                      <span>
+                        {new Date(msg.createdAt).toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </span>
                       <div className="flex items-center gap-1.5">
-                        <button
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <button
+                              type="button"
+                              onClick={() => handleFeedback(msg.id, "HELPFUL")}
+                              className={`p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800 ${
+                                msg.feedback === "HELPFUL"
+                                  ? "text-emerald-600"
+                                  : ""
+                              }`}
+                            >
+                              <ThumbsUp className="w-3.5 h-3.5" />
+                            </button>
+                          </TooltipTrigger>
+                          <TooltipContent className="px-2 py-0.5 text-[11px] rounded bg-gray-500 text-white shadow-sm" sideOffset={7} side="bottom">
+                            <p>
+                              Helpful response
+                            </p>
+                          </TooltipContent>
+                        </Tooltip>
+
+                        
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <button
                           type="button"
-                          onClick={() => handleFeedback(msg.id, 'HELPFUL')}
+                          onClick={() => handleFeedback(msg.id, "NOT_HELPFUL")}
                           className={`p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800 ${
-                            msg.feedback === 'HELPFUL' ? 'text-emerald-600' : ''
+                            msg.feedback === "NOT_HELPFUL"
+                              ? "text-rose-600"
+                              : ""
                           }`}
-                          title="Helpful response"
-                        >
-                          <ThumbsUp className="w-3.5 h-3.5" />
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => handleFeedback(msg.id, 'NOT_HELPFUL')}
-                          className={`p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800 ${
-                            msg.feedback === 'NOT_HELPFUL' ? 'text-rose-600' : ''
-                          }`}
-                          title="Not helpful"
                         >
                           <ThumbsDown className="w-3.5 h-3.5" />
                         </button>
-                        <button
+                          </TooltipTrigger>
+                          <TooltipContent className="px-2 py-0.5 text-[11px] rounded bg-gray-500 text-white shadow-sm" sideOffset={7} side="bottom">
+                            <p>
+                              Not helpful
+                            </p>
+                          </TooltipContent>
+                        </Tooltip>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <button
                           type="button"
-                          onClick={() => handleFeedback(msg.id, 'REPORTED')}
+                          onClick={() => handleFeedback(msg.id, "REPORTED")}
                           className={`p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800 ${
-                            msg.feedback === 'REPORTED' ? 'text-amber-600' : ''
+                            msg.feedback === "REPORTED" ? "text-amber-600" : ""
                           }`}
-                          title="Report inaccurate citation"
                         >
                           <Flag className="w-3.5 h-3.5" />
                         </button>
+                          </TooltipTrigger>
+                          <TooltipContent className="px-2 py-0.5 text-[11px] rounded bg-gray-500 text-white shadow-sm" sideOffset={7} side="bottom">
+                            <p>
+                              Report inaccurate citation
+                            </p>
+                          </TooltipContent>
+                        </Tooltip>
                       </div>
                     </div>
                   )}
@@ -443,9 +510,9 @@ function ChatContent() {
         </div>
 
         {/* Bottom Input Form */}
-        <div className="p-4 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800">
+        <div className="p-4 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 shrink-0">
           <form
-            onSubmit={e => {
+            onSubmit={(e) => {
               e.preventDefault();
               handleSendMessage();
             }}
@@ -455,7 +522,7 @@ function ChatContent() {
               <input
                 type="text"
                 value={inputQuery}
-                onChange={e => setInputQuery(e.target.value)}
+                onChange={(e) => setInputQuery(e.target.value)}
                 placeholder="Ask about standards, certification, test methods, lab credentials, or clauses..."
                 disabled={isLoading}
                 className="w-full px-3 py-2 text-xs sm:text-sm text-slate-900 dark:text-slate-100 bg-transparent focus:outline-none placeholder:text-slate-400"
@@ -470,7 +537,10 @@ function ChatContent() {
               </button>
             </div>
             <div className="flex items-center justify-between px-2 pt-2 text-[10px] text-slate-400">
-              <span>Grounding: Strict adherence to Indian Standards. Never fabricates requirements.</span>
+              <span>
+                Grounding: Strict adherence to Indian Standards. Never
+                fabricates requirements.
+              </span>
               <span>BIS Act 2016 Compliant</span>
             </div>
           </form>
@@ -479,14 +549,25 @@ function ChatContent() {
 
       {/* 3. RIGHT EVIDENCE PANEL */}
       {isEvidencePanelOpen && (
-        <aside className="w-80 xl:w-96 shrink-0 h-full">
-          <EvidencePanel
-            evidenceList={activeEvidenceList}
-            activeEvidenceId={activeEvidenceId}
-            onSelectEvidence={setActiveEvidenceId}
-            onClose={() => setIsEvidencePanelOpen(false)}
+        <>
+          {/* Mobile Backdrop */}
+          <div
+            onClick={() => setIsEvidencePanelOpen(false)}
+            className="fixed inset-0 bg-black/40 z-40 lg:hidden"
           />
-        </aside>
+
+          <aside className="fixed inset-x-0 bottom-0 z-50 h-[65vh] rounded-t-2xl shadow-xl lg:static lg:h-full lg:w-80 xl:w-96 lg:rounded-none lg:shadow-none lg:border-t-0 lg:border-l border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-y-auto transition-transform">
+            <div className="lg:hidden flex justify-center py-2">
+              <div className="w-10 h-1 rounded-full bg-slate-300 dark:bg-slate-700" />
+            </div>
+            <EvidencePanel
+              evidenceList={activeEvidenceList}
+              activeEvidenceId={activeEvidenceId}
+              onSelectEvidence={setActiveEvidenceId}
+              onClose={() => setIsEvidencePanelOpen(false)}
+            />
+          </aside>
+        </>
       )}
     </div>
   );
@@ -494,9 +575,14 @@ function ChatContent() {
 
 export default function ChatWorkspacePage() {
   return (
-    <React.Suspense fallback={<div className="p-8 text-center text-xs text-slate-500">Loading BIS IntelliGuide Workspace...</div>}>
+    <React.Suspense
+      fallback={
+        <div className="p-8 text-center text-xs text-slate-500">
+          Loading BIS IntelliGuide Workspace...
+        </div>
+      }
+    >
       <ChatContent />
     </React.Suspense>
   );
 }
-

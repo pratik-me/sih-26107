@@ -4,7 +4,7 @@ import { AuthService } from './auth.service';
 import { LoginDto, RegisterDto } from './dto/auth.dto';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
-import { UserProfile } from '@bis/shared-types';
+import { type UserProfile } from '@bis/shared-types';
 
 @ApiTags('Authentication')
 @Controller('auth')

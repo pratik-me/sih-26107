@@ -18,6 +18,7 @@ import {
   Award,
   ExternalLink
 } from 'lucide-react';
+import Image from 'next/image';
 
 function ComplianceReportsContent() {
   const searchParams = useSearchParams();
@@ -93,7 +94,8 @@ function ComplianceReportsContent() {
         <div className="border-b-2 border-slate-900 dark:border-slate-100 pb-6 flex items-start justify-between">
           <div className="space-y-1">
             <div className="flex items-center gap-2 text-blue-800 dark:text-blue-400 font-bold text-xs uppercase tracking-wider">
-              <AshokaMotif size={24} />
+              {/* <AshokaMotif size={24} /> */}
+              <Image src={"/BIS-LOGO.png"} alt='BIS-LOGO' height={24} width={24} />
               <span>Government Compliance Assessment Document</span>
             </div>
             <h2 className="text-2xl font-black tracking-tight">

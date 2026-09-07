@@ -8,7 +8,7 @@ import {
 import {
   BISIntelliGuideAgent,
   BISAgentToolsHandler,
-  DeterministicBISLLMProvider
+  getLLMProvider
 } from '@bis/ai';
 import { StandardsService } from '../standards/standards.service';
 import { TestingService } from '../testing/testing.service';
@@ -20,7 +20,7 @@ import { RAGService } from '../rag/rag.service';
 @Injectable()
 export class AiAgentService implements BISAgentToolsHandler {
   private agent: BISIntelliGuideAgent;
-  private llmProvider = new DeterministicBISLLMProvider();
+  private llmProvider = getLLMProvider();
 
   constructor(
     private standardsService: StandardsService,

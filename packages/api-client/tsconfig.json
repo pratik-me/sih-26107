@@ -3,6 +3,9 @@
   "compilerOptions": {
     "outDir": "./dist",
     "rootDir": "./src",
+    "moduleResolution": "nodenext",
+    "module": "nodenext",
+    "lib": ["ES2015", "DOM", "DOM.Iterable"],
     "declaration": true,
     "declarationMap": true
   },

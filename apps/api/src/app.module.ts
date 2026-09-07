@@ -14,6 +14,7 @@ import { ComplianceModule } from './compliance/compliance.module';
 import { FeedbackModule } from './feedback/feedback.module';
 import { AnalyticsModule } from './analytics/analytics.module';
 import { AdminModule } from './admin/admin.module';
+import { DocumentsModule } from './documents/documents.module';
 import { PrismaService } from './common/prisma.service';
 
 @Module({
@@ -32,7 +33,8 @@ import { PrismaService } from './common/prisma.service';
     ComplianceModule,
     FeedbackModule,
     AnalyticsModule,
-    AdminModule
+    AdminModule,
+    DocumentsModule
   ],
   providers: [PrismaService],
   exports: [PrismaService]
