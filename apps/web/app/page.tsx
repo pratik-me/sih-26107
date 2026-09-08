@@ -353,7 +353,7 @@ export default function LandingPage() {
       <section className="py-16 px-4 sm:px-6 max-w-7xl mx-auto w-full">
         <div className="text-center max-w-2xl mx-auto mb-12">
           <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100">
-            How BIS IntelliGuide Works
+            How BIS Saarthi Works
           </h2>
           <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
             Strict adherence to{" "}
@@ -429,7 +429,7 @@ export default function LandingPage() {
               Trusted by MSMEs, Compliance Teams & Citizens
             </h3>
             <p className="text-xs text-slate-400 max-w-xl leading-relaxed">
-              BIS IntelliGuide never invents Indian Standard numbers, test
+              BIS Saarthi never invents Indian Standard numbers, test
               clauses, or lab recognition statuses. If official evidence is not
               available in the database, the system will explicitly state that
               the requirement cannot be verified.

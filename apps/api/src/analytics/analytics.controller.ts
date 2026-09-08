@@ -8,7 +8,7 @@ export class AnalyticsController {
   constructor(private analyticsService: AnalyticsService) {}
 
   @Get()
-  @ApiOperation({ summary: 'Get aggregated BIS IntelliGuide usage and system accuracy metrics' })
+  @ApiOperation({ summary: 'Get aggregated BIS Saarthi usage and system accuracy metrics' })
   async getAnalytics() {
     return this.analyticsService.getAnalytics();
   }

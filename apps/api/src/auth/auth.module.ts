@@ -14,7 +14,7 @@ import { PrismaService } from '../common/prisma.service';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
-        secret: config.get<string>('JWT_SECRET') || 'bis_intelliguide_jwt_secret_key_super_secure_2026_x99a',
+        secret: config.get<string>('JWT_SECRET') || 'bis_saarthi_jwt_secret_key_super_secure_2026_x99a',
         signOptions: { expiresIn: '1d' }
       })
     })

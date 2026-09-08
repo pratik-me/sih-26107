@@ -18,7 +18,7 @@ export class AdminController {
   }
 
   @Get('health')
-  @ApiOperation({ summary: 'Check BIS IntelliGuide system status and pipeline health' })
+  @ApiOperation({ summary: 'Check BIS Saarthi system status and pipeline health' })
   async getHealth() {
     return this.adminService.getSystemHealth();
   }

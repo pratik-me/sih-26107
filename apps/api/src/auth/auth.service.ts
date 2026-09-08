@@ -100,12 +100,12 @@ export class AuthService {
   private generateTokens(user: any) {
     const payload = { sub: user.id || user.email, email: user.email, role: user.role };
     const accessToken = this.jwtService.sign(payload, {
-      secret: this.configService.get<string>('JWT_SECRET') || 'bis_intelliguide_jwt_secret_key_super_secure_2026_x99a',
+      secret: this.configService.get<string>('JWT_SECRET') || 'bis_saarthi_jwt_secret_key_super_secure_2026_x99a',
       expiresIn: '1d'
     });
 
     const refreshToken = this.jwtService.sign(payload, {
-      secret: this.configService.get<string>('JWT_REFRESH_SECRET') || 'bis_intelliguide_jwt_refresh_secret_key_2026_super_safe',
+      secret: this.configService.get<string>('JWT_REFRESH_SECRET') || 'bis_saarthi_jwt_refresh_secret_key_2026_super_safe',
       expiresIn: '7d'
     });
 

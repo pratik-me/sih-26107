@@ -38,7 +38,7 @@ const AgentStateAnnotation = Annotation.Root({
   })
 });
 
-export class BISIntelliGuideAgent {
+export class BISSaarthiAgent {
   private citationBuilder = new CitationBuilder();
   private groundingValidator = new GroundingValidator();
   private languageEngine = new IndicLanguageEngine();
@@ -59,7 +59,7 @@ export class BISIntelliGuideAgent {
       return new ChatAnthropic({
         modelName: process.env.ANTHROPIC_MODEL || 'claude-3-5-sonnet-20241022',
         apiKey: anthropicKey,
-        temperature: 0.2
+        temperature: 0.5
       }) as unknown as BaseChatModel;
     }
 
@@ -67,7 +67,7 @@ export class BISIntelliGuideAgent {
       return new ChatOpenAI({
         modelName: process.env.OPENAI_MODEL || 'gpt-4o-mini',
         openAIApiKey: openaiKey,
-        temperature: 0.2
+        temperature: 0.5
       }) as unknown as BaseChatModel;
     }
 
@@ -127,7 +127,7 @@ export class BISIntelliGuideAgent {
       try {
         return await this.executeGraphAgent(query, translatedText, intent, model, detectedLang);
       } catch (err) {
-        console.warn('[BISIntelliGuideAgent] LangGraph execution failed, falling back to deterministic intent handler:', err);
+        console.warn('[BISSaarthiAgent] LangGraph execution failed, falling back to deterministic intent handler:', err);
       }
     }
 

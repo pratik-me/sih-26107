@@ -71,7 +71,7 @@ export class ComplianceService {
         'Discrepancy between model numbers in test reports and trade catalog'
       ],
       citations: rec.matches.flatMap(m => m.evidence),
-      disclaimer: 'This BIS Compliance Report is synthesized via BIS IntelliGuide based on current Bureau of Indian Standards publications and Gazette Quality Control Orders. Prior to statutory implementation, verify final requirements on manakonline.in.'
+      disclaimer: 'This BIS Compliance Report is synthesized via BIS Saarthi based on current Bureau of Indian Standards publications and Gazette Quality Control Orders. Prior to statutory implementation, verify final requirements on manakonline.in.'
     };
   }
 }

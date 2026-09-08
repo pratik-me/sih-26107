@@ -77,7 +77,7 @@ function ChatContent() {
         id: "welcome-msg",
         sessionId: currentSessionId,
         role: "assistant",
-        content: `Welcome to BIS IntelliGuide 👋\nI am your evidence-backed decision assistant for Indian Standards (IS), BIS certification schemes, testing clauses, laboratory accreditation, and hallmarking.\n\nWhat would you like to explore?\n- Product Compliance: "I manufacture stainless steel bottles. Which standard applies?"\n- Testing Requirements: "What are the routine tests required for TMT steel bars?"\n- Certification Guidance: "Do I need Compulsory Registration Scheme (CRS) for electronics?"\n- Hallmarking: "How do I verify a 6-digit HUID code on BIS Care App?"\n- Clause Explanation: "Explain IS 10500 Clause 4.2 in simple language."`,
+        content: `Welcome to BIS Saarthi 👋\nI am your evidence-backed decision assistant for Indian Standards (IS), BIS certification schemes, testing clauses, laboratory accreditation, and hallmarking.\n\nWhat would you like to explore?\n- Product Compliance: "I manufacture stainless steel bottles. Which standard applies?"\n- Testing Requirements: "What are the routine tests required for TMT steel bars?"\n- Certification Guidance: "Do I need Compulsory Registration Scheme (CRS) for electronics?"\n- Hallmarking: "How do I verify a 6-digit HUID code on BIS Care App?"\n- Clause Explanation: "Explain IS 10500 Clause 4.2 in simple language."`,
         confidence: ConfidenceLevel.HIGH,
         suggestedFollowUps: [
           "Find standard for my product",
@@ -283,7 +283,7 @@ function ChatContent() {
             </div>
             <div>
               <h2 className="text-xs font-bold text-slate-800 dark:text-slate-200">
-                BIS IntelliGuide Conversation
+                BIS Saarthi Conversation
               </h2>
               <span className="text-[10px] text-slate-500">
                 Mode: {initialRole}
@@ -578,7 +578,7 @@ export default function ChatWorkspacePage() {
     <React.Suspense
       fallback={
         <div className="p-8 text-center text-xs text-slate-500">
-          Loading BIS IntelliGuide Workspace...
+          Loading BIS Saarthi Workspace...
         </div>
       }
     >

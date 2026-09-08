@@ -1,9 +1,9 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('BIS IntelliGuide End-to-End User Workflows', () => {
+test.describe('BIS Saarthi End-to-End User Workflows', () => {
   test('Landing Page renders with government identity and mode selection', async ({ page }) => {
     await page.goto('/');
-    await expect(page).toHaveTitle(/BIS IntelliGuide/);
+    await expect(page).toHaveTitle(/BIS Saarthi/);
     await expect(page.getByRole('heading', { name: /Your AI Assistant for Indian Standards/i })).toBeVisible();
     await expect(page.getByText(/Industry \/ MSME/i)).toBeVisible();
     await expect(page.getByText(/Consumer/i)).toBeVisible();
@@ -26,7 +26,7 @@ test.describe('BIS IntelliGuide End-to-End User Workflows', () => {
 
   test('Chat Workspace renders 3-panel layout and provides grounded responses with citations', async ({ page }) => {
     await page.goto('/chat');
-    await expect(page.getByText(/BIS IntelliGuide Conversation/i)).toBeVisible();
+    await expect(page.getByText(/BIS Saarthi Conversation/i)).toBeVisible();
     await expect(page.getByPlaceholder(/Ask about standards/i)).toBeVisible();
 
     // Send query

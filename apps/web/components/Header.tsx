@@ -49,16 +49,24 @@ export function Header() {
       <div className="max-w-[1520px] mx-auto px-3 sm:px-5 lg:px-6">
         <div className="flex items-center justify-between h-16 gap-2">
           {/* Logo & Title */}
-          <Link href="/" className="flex items-center gap-2.5 shrink-0 group mr-1">
-            <div className="relative shrink-0">
-              <Image src={"/BIS-LOGO.png"} alt='BIS-LOGO' height={34} width={34} />
-            </div>
-            <div className="hidden sm:block">
+          <Link
+            href="/"
+            className="flex items-center gap-2.5 shrink-0 group mr-1"
+          >
+            <div className="hidden sm:flex flex-col items-center gap-y-1">
               <div className="flex items-center gap-1">
+                <div className="shrink-0">
+                  <Image
+                    src={"/BIS-LOGO.png"}
+                    alt="BIS-LOGO"
+                    height={34}
+                    width={34}
+                  />
+                </div>
                 <span className="text-sm font-black tracking-tight text-slate-900 dark:text-slate-100 whitespace-nowrap">
                   BIS{" "}
                   <span className="text-[#0077B6] dark:text-[#48CAE4] font-extrabold">
-                    IntelliGuide
+                    Saarthi
                   </span>
                 </span>
               </div>
@@ -95,7 +103,9 @@ export function Header() {
                 <span>Standards</span>
                 <ChevronDown
                   className={`w-3 h-3 transition-transform duration-200 ${
-                    standardsDropdownOpen ? "rotate-180 text-[#0077B6]" : "text-slate-400"
+                    standardsDropdownOpen
+                      ? "rotate-180 text-[#0077B6]"
+                      : "text-slate-400"
                   }`}
                 />
               </button>
@@ -114,7 +124,9 @@ export function Header() {
                   >
                     <Compass className="w-4 h-4 text-[#0077B6] mt-0.5 shrink-0" />
                     <div>
-                      <div className="text-xs font-bold">Find Your Standards</div>
+                      <div className="text-xs font-bold">
+                        Find Your Standards
+                      </div>
                       <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-tight mt-0.5">
                         AI product profiler matching your product to IS
                       </p>

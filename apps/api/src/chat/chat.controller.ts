@@ -10,7 +10,7 @@ export class ChatController {
   constructor(private chatService: ChatService) {}
 
   @Post('message')
-  @ApiOperation({ summary: 'Send a message to the BIS IntelliGuide AI Assistant and receive grounded responses with evidence' })
+  @ApiOperation({ summary: 'Send a message to the BIS Saarthi AI Assistant and receive grounded responses with evidence' })
   async sendMessage(
     @Body()
     body: {

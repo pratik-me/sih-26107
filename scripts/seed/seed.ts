@@ -10,7 +10,7 @@ import {
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log('🌱 Starting BIS IntelliGuide Database Seeding...');
+  console.log('Starting BIS Saarthi Database Seeding...');
 
   // 1. Seed Users
   console.log('Inserting seed users...');

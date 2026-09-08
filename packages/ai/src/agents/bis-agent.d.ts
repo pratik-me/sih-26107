@@ -6,7 +6,7 @@ export interface BISAgentToolsHandler {
         evidence: Evidence[];
     }>;
 }
-export declare class BISIntelliGuideAgent {
+export declare class BISSaarthiAgent {
     private llmProvider;
     private toolsHandler?;
     private citationBuilder;

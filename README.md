@@ -1,4 +1,4 @@
-# BIS IntelliGuide 🇮🇳
+# BIS Saarthi 🇮🇳
 ### AI-Powered Intelligent Assistant for Indian Standards & BIS Services
 
 [![Turborepo](https://img.shields.io/badge/monorepo-turborepo-blue.svg)](https://turbo.build/)
@@ -24,7 +24,7 @@ Indian manufacturers, MSMEs, startups, exporters, students, and citizens frequen
 6. **Hallmarking & HUID**: Understanding 24K, 22K (916), 18K (750) fineness and verifying 6-digit alphanumeric HUID codes.
 7. **Consumer Verification**: Spotting counterfeit ISI marks and verifying CM/L numbers on the BIS Care platform.
 
-**BIS IntelliGuide** solves these challenges through an evidence-backed, conversational, multi-step AI decision-support platform designed with a clean, accessible, modern Indian government + enterprise SaaS visual identity.
+**BIS Saarthi** solves these challenges through an evidence-backed, conversational, multi-step AI decision-support platform designed with a clean, accessible, modern Indian government + enterprise SaaS visual identity.
 
 ---
 
@@ -107,7 +107,7 @@ graph TD
 ## 5. Monorepo Structure
 
 ```
-bis-intelliguide/
+bis-saarthi/
 ├── apps/
 │   ├── web/                     # Next.js App Router Web Application
 │   │   ├── app/                 # Routes: Landing, /chat, /standards, /certification, /testing, etc.
@@ -239,9 +239,9 @@ To launch the complete application with Docker Compose:
 docker compose up --build -d
 ```
 Services initialized:
-- `bis_intelliguide_db`: PostgreSQL 16 with pgvector on port `5432`
-- `bis_intelliguide_api`: NestJS API on port `4000`
-- `bis_intelliguide_web`: Next.js frontend on port `3000`
+- `bis_saarthi_db`: PostgreSQL 16 with pgvector on port `5432`
+- `bis_saarthi_api`: NestJS API on port `4000`
+- `bis_saarthi_web`: Next.js frontend on port `3000`
 
 ---
 
