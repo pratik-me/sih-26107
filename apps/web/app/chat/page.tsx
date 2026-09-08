@@ -69,6 +69,7 @@ function ChatContent() {
   const [copiedMsgId, setCopiedMsgId] = useState<string | null>(null);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const initialQueryHandled = useRef(false);
 
   useEffect(() => {
     // Initial greeting if no messages
@@ -93,14 +94,19 @@ function ChatContent() {
 
   // Handle URL query parameter if passed from landing page
   useEffect(() => {
-    if (initialQuery && messages.length <= 1) {
+    if (initialQuery && !initialQueryHandled.current && messages.length <= 1) {
+      initialQueryHandled.current = true;
       handleSendMessage(initialQuery);
     }
   }, [initialQuery]);
 
-  // useEffect(() => {
-  //   messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  // }, [messages, isLoading]);
+  // Auto-scroll chat stream to bottom when messages update (chatbot behavior)
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "end",
+    });
+  }, [messages, isLoading]);
 
   const handleSendMessage = async (queryText?: string) => {
     const textToSend = queryText || inputQuery;
@@ -140,7 +146,7 @@ function ChatContent() {
         id: `err-${Date.now()}`,
         sessionId: currentSessionId,
         role: "assistant",
-        content: `⚠️ **Unable to process query:** ${err.message || "Server connection issue. Please verify backend API status."}\n\nYou can also verify directly on the official BIS portal (https://www.services.bis.gov.in).`,
+        content: `Unable to process query: ${err.message || "Server connection issue. Please verify backend API status."}\n\nYou can also verify directly on the official BIS portal (https://www.services.bis.gov.in).`,
         confidence: ConfidenceLevel.LOW,
         createdAt: new Date().toISOString(),
       };
