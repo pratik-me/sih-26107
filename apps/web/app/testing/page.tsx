@@ -32,8 +32,9 @@ function TestingRequirementsContent() {
   };
 
   useEffect(() => {
-    fetchRequirements();
-  }, [filterStd]);
+    if (stdParam) fetchRequirements();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 space-y-8">
@@ -59,6 +60,12 @@ function TestingRequirementsContent() {
             type="text"
             value={filterStd}
             onChange={e => setFilterStd(e.target.value)}
+            onKeyDown={e => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                fetchRequirements();
+              }
+            }}
             placeholder="Filter by Standard Number (e.g. IS 17526, IS 10500, IS 1786)..."
             className="w-full pl-9 pr-3 py-2 text-xs sm:text-sm rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-600"
           />

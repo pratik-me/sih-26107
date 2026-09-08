@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { IndianLanguage, UserRole } from "@bis/shared-types";
@@ -18,6 +18,7 @@ import {
   X,
   Compass,
   ChevronDown,
+  BarChart3,
 } from "lucide-react";
 import Image from "next/image";
 
@@ -30,6 +31,32 @@ export function Header() {
     IndianLanguage.EN,
   );
   const [userRole, setUserRole] = useState<UserRole>(UserRole.INDUSTRY);
+
+  // Keep the dropdown open while the cursor travels from the trigger
+  // to the menu. A small close delay + a padding bridge (no margin gap)
+  // prevents the flicker/accidental-close on mouseleave.
+  const closeTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const openStandardsMenu = () => {
+    if (closeTimeout.current) {
+      clearTimeout(closeTimeout.current);
+      closeTimeout.current = null;
+    }
+    setStandardsDropdownOpen(true);
+  };
+
+  const scheduleCloseStandardsMenu = (delay = 150) => {
+    if (closeTimeout.current) clearTimeout(closeTimeout.current);
+    closeTimeout.current = setTimeout(() => {
+      setStandardsDropdownOpen(false);
+    }, delay);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (closeTimeout.current) clearTimeout(closeTimeout.current);
+    };
+  }, []);
 
   const isStandardsActive =
     pathname === "/standards" || pathname === "/standards/recommend";
@@ -80,13 +107,29 @@ export function Header() {
           <nav className="hidden lg:flex items-center gap-1 xl:gap-2 flex-nowrap">
             {/* Standards Dropdown Heading */}
             <div
-              className="relative group"
-              onMouseEnter={() => setStandardsDropdownOpen(true)}
-              onMouseLeave={() => setStandardsDropdownOpen(false)}
+              className="relative"
+              onMouseEnter={openStandardsMenu}
+              onMouseLeave={() => scheduleCloseStandardsMenu()}
             >
               <button
                 type="button"
-                onClick={() => setStandardsDropdownOpen((prev) => !prev)}
+                aria-haspopup="menu"
+                aria-expanded={standardsDropdownOpen}
+                onClick={() => {
+                  if (standardsDropdownOpen) {
+                    if (closeTimeout.current) {
+                      clearTimeout(closeTimeout.current);
+                      closeTimeout.current = null;
+                    }
+                    setStandardsDropdownOpen(false);
+                  } else {
+                    openStandardsMenu();
+                  }
+                }}
+                onFocus={openStandardsMenu}
+                onKeyDown={(e) => {
+                  if (e.key === "Escape") setStandardsDropdownOpen(false);
+                }}
                 className={`inline-flex items-center gap-1 px-2 xl:px-2.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all duration-200 cursor-pointer ${
                   isStandardsActive
                     ? "bg-[#CAF0F8]/80 text-[#023E8A] dark:bg-[#03045E]/60 dark:text-[#90E0EF] font-bold shadow-2xs"
@@ -124,9 +167,7 @@ export function Header() {
                   >
                     <Compass className="w-4 h-4 text-[#0077B6] mt-0.5 shrink-0" />
                     <div>
-                      <div className="text-xs font-bold">
-                        Find Your Standards
-                      </div>
+                      <div className="text-xs font-bold">Find Your Standards</div>
                       <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-tight mt-0.5">
                         AI product profiler matching your product to IS
                       </p>

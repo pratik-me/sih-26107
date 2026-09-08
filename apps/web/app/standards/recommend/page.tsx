@@ -20,13 +20,12 @@ import { SampleFormData } from "@/lib/sample";
 export default function FindMyStandardPage() {
   const router = useRouter();
   const [formData, setFormData] = useState<ProductProfileQuery>({
-    productName: "Stainless steel vacuum insulated water bottle",
-    material: "Grade 304 / 316 Austenitic Stainless Steel",
-    intendedApplication: "Domestic beverage storage and thermal retention",
-    industry: "Utensils and Metal Fabrication",
-    capacity: "750 ml / 1000 ml double wall",
-    technicalCharacteristics:
-      "Vacuum sealed insulation, leak proof silicone gasket, food contact grade",
+    productName: "",
+    material: "",
+    intendedApplication: "",
+    industry: "",
+    capacity: "",
+    technicalCharacteristics: "",
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -34,21 +33,40 @@ export default function FindMyStandardPage() {
     null,
   );
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!formData.productName.trim()) return;
+  const runEvaluation = async (payload: ProductProfileQuery) => {
+    if (!payload.productName.trim()) return;
 
     setIsLoading(true);
     try {
-      if (formData.productName == "") setFormData(SampleFormData);
-      console.log(formData.productName);
-      const res = await apiClient.recommendStandards(formData);
+      const res = await apiClient.recommendStandards(payload);
       setResult(res);
     } catch (err) {
       console.error(err);
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleSubmit = async (e?: React.FormEvent) => {
+    e?.preventDefault();
+    await runEvaluation(formData);
+  };
+
+  const handleLoadSample = async () => {
+    setFormData(SampleFormData);
+    await runEvaluation(SampleFormData);
+  };
+
+  const handleClear = () => {
+    setFormData({
+      productName: "",
+      material: "",
+      intendedApplication: "",
+      industry: "",
+      capacity: "",
+      technicalCharacteristics: "",
+    });
+    setResult(null);
   };
 
   const handleSelectMatch = (match: any) => {
@@ -109,7 +127,7 @@ export default function FindMyStandardPage() {
               <input
                 type="text"
                 required
-                value={formData.productName}
+                value={formData.productName ?? ""}
                 onChange={(e) =>
                   setFormData({ ...formData, productName: e.target.value })
                 }
@@ -124,7 +142,7 @@ export default function FindMyStandardPage() {
               </label>
               <input
                 type="text"
-                value={formData.material}
+                value={formData.material ?? ""}
                 onChange={(e) =>
                   setFormData({ ...formData, material: e.target.value })
                 }
@@ -139,7 +157,7 @@ export default function FindMyStandardPage() {
               </label>
               <input
                 type="text"
-                value={formData.intendedApplication}
+                value={formData.intendedApplication ?? ""}
                 onChange={(e) =>
                   setFormData({
                     ...formData,
@@ -157,7 +175,7 @@ export default function FindMyStandardPage() {
               </label>
               <input
                 type="text"
-                value={formData.industry}
+                value={formData.industry ?? ""}
                 onChange={(e) =>
                   setFormData({ ...formData, industry: e.target.value })
                 }
@@ -168,11 +186,26 @@ export default function FindMyStandardPage() {
 
             <div>
               <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">
-                Technical Specifications & Capacity
+                Capacity / Size
+              </label>
+              <input
+                type="text"
+                value={formData.capacity ?? ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, capacity: e.target.value })
+                }
+                placeholder="e.g. 750 ml / 1000 ml double wall, 1.1kV, 12mm"
+                className="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-transparent text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-600"
+              />
+            </div>
+
+            <div>
+              <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                Technical Specifications
               </label>
               <textarea
                 rows={3}
-                value={formData.technicalCharacteristics}
+                value={formData.technicalCharacteristics ?? ""}
                 onChange={(e) =>
                   setFormData({
                     ...formData,
@@ -187,10 +220,21 @@ export default function FindMyStandardPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-2.5 px-4 rounded-xl text-xs font-bold bg-blue-700 hover:bg-blue-800 text-white shadow-sm transition-all flex items-center justify-center gap-2"
+              className="w-full py-2.5 px-4 rounded-xl text-xs font-bold bg-blue-700 hover:bg-blue-800 text-white shadow-sm transition-all flex items-center justify-center gap-2 disabled:opacity-50"
             >
               <span>Evaluate Applicable Standards</span>
             </button>
+
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={handleClear}
+                disabled={isLoading}
+                className="flex-1 py-2 px-3 rounded-xl text-xs font-semibold bg-transparent hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 border border-slate-200 dark:border-slate-700 transition-all"
+              >
+                Clear
+              </button>
+            </div>
           </form>
         </div>
 
@@ -235,7 +279,7 @@ export default function FindMyStandardPage() {
               description="Fill in the product specification attributes on the left and click 'Evaluate Applicable Standards' to generate matched Indian Standards with clause citations."
               icon={Compass}
               actionLabel="Run Sample Evaluation (SS Water Bottle)"
-              onAction={handleSubmit as any}
+              onAction={handleLoadSample}
             />
           )}
         </div>

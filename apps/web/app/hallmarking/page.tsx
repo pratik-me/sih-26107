@@ -83,11 +83,11 @@ export default function HallmarkingAssistantPage() {
         </div>
 
         <div className="p-3 rounded-xl bg-amber-800/60 border border-amber-700 text-xs text-amber-100 max-w-xs space-y-1">
-          <div className="font-bold flex items-center gap-1">
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+          <div className="font-bold flex items-center justify-center gap-1">
+            <ShieldCheck className='size-3.5 text-emerald-400' />
             <span>BIS Hallmarking Mandate</span>
           </div>
-          <p className="text-[11px] text-amber-200">
+          <p className="text-[11px] text-amber-200 text-center">
             Mandatory hallmarking is operative across notified districts in India. Only 3 marks are permitted on gold jewellery.
           </p>
         </div>
