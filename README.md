@@ -306,5 +306,3 @@ Try these sample queries in the AI Workspace (`/chat`):
 - **Input Validation**: Strict DTO validation using `class-validator` and `Zod`.
 
 ---
-
-© Bureau of Indian Standards Intelligence Guide • Built for Indian Industry, MSMEs & Citizens.

@@ -19,7 +19,10 @@ import { PrismaService } from './common/prisma.service';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: ['../../.env', '.env']
+    }),
     AuthModule,
     StandardsModule,
     CertificationModule,

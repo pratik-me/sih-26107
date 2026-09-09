@@ -5,30 +5,30 @@ const shared_types_1 = require("@bis/shared-types");
 class IndicLanguageEngine {
     // Common script ranges for Indian languages
     scriptPatterns = {
-        [shared_types_1.IndianLanguage.HI]: /[\u0900-\u097F]/, // Devanagari (Hindi, Marathi, Sanskrit, Konkani, Dogri, Maithili, Bodo, Nepali)
-        [shared_types_1.IndianLanguage.BN]: /[\u0980-\u09FF]/, // Bengali / Assamese
+        [shared_types_1.IndianLanguage.HI]: /[\u0900-\u097F]/,
+        [shared_types_1.IndianLanguage.BN]: /[\u0980-\u09FF]/,
         [shared_types_1.IndianLanguage.AS]: /[\u0980-\u09FF]/,
-        [shared_types_1.IndianLanguage.TE]: /[\u0C00-\u0C7F]/, // Telugu
-        [shared_types_1.IndianLanguage.TA]: /[\u0B80-\u0BFF]/, // Tamil
+        [shared_types_1.IndianLanguage.TE]: /[\u0C00-\u0C7F]/,
+        [shared_types_1.IndianLanguage.TA]: /[\u0B80-\u0BFF]/,
         [shared_types_1.IndianLanguage.MR]: /[\u0900-\u097F]/,
-        [shared_types_1.IndianLanguage.UR]: /[\u0600-\u06FF]/, // Urdu / Arabic
-        [shared_types_1.IndianLanguage.GU]: /[\u0A80-\u0AFF]/, // Gujarati
-        [shared_types_1.IndianLanguage.KN]: /[\u0C80-\u0CFF]/, // Kannada
-        [shared_types_1.IndianLanguage.ML]: /[\u0D00-\u0D7F]/, // Malayalam
-        [shared_types_1.IndianLanguage.OR]: /[\u0B00-\u0B7F]/, // Odia
-        [shared_types_1.IndianLanguage.PA]: /[\u0A00-\u0A7F]/, // Punjabi (Gurmukhi)
+        [shared_types_1.IndianLanguage.UR]: /[\u0600-\u06FF]/,
+        [shared_types_1.IndianLanguage.GU]: /[\u0A80-\u0AFF]/,
+        [shared_types_1.IndianLanguage.KN]: /[\u0C80-\u0CFF]/,
+        [shared_types_1.IndianLanguage.ML]: /[\u0D00-\u0D7F]/,
+        [shared_types_1.IndianLanguage.OR]: /[\u0B00-\u0B7F]/,
+        [shared_types_1.IndianLanguage.PA]: /[\u0A00-\u0A7F]/,
         [shared_types_1.IndianLanguage.MAI]: /[\u0900-\u097F]/,
         [shared_types_1.IndianLanguage.SAN]: /[\u0900-\u097F]/,
         [shared_types_1.IndianLanguage.KAS]: /[\u0600-\u06FF]/,
         [shared_types_1.IndianLanguage.NEP]: /[\u0900-\u097F]/,
         [shared_types_1.IndianLanguage.KOK]: /[\u0900-\u097F]/,
         [shared_types_1.IndianLanguage.DOG]: /[\u0900-\u097F]/,
-        [shared_types_1.IndianLanguage.MNI]: /[\uABC0-\uABFF]/, // Meitei Mayek
+        [shared_types_1.IndianLanguage.MNI]: /[\uABC0-\uABFF]/,
         [shared_types_1.IndianLanguage.BOD]: /[\u0900-\u097F]/,
-        [shared_types_1.IndianLanguage.SAT]: /[\u1C50-\u1C7F]/, // Ol Chiki
+        [shared_types_1.IndianLanguage.SAT]: /[\u1C50-\u1C7F]/,
         [shared_types_1.IndianLanguage.SD]: /[\u0600-\u06FF]/,
         [shared_types_1.IndianLanguage.EN]: /^[a-zA-Z0-9\s.,!?:;'"()\-_/@#$%^&*+=]+$/,
-        [shared_types_1.IndianLanguage.HINGLISH]: /(karein|kaise|chahiye|batao|kya|hai|hoga|kare|samjhao|pramaanit)/i
+        [shared_types_1.IndianLanguage.HINGLISH]: /(karein|kaise|chahiye|batao|kya|hai|hoga|kare|samjhao)/i
     };
     async detectLanguage(text) {
         if (!text || text.trim() === '')
@@ -59,14 +59,12 @@ class IndicLanguageEngine {
                 return lang;
             }
         }
-        // Devanagari script defaults to Hindi if no other dialect marker
         if (this.scriptPatterns[shared_types_1.IndianLanguage.HI].test(text)) {
             return shared_types_1.IndianLanguage.HI;
         }
         return shared_types_1.IndianLanguage.EN;
     }
     async translateToEnglish(text, sourceLang) {
-        // 1. Extract and preserve technical entities
         const isPattern = /IS\s*\d+(?::\d{4})?/gi;
         const clausePattern = /Clause\s*[0-9.]+/gi;
         const huidPattern = /[A-Z0-9]{6}/g;
@@ -79,7 +77,6 @@ class IndicLanguageEngine {
         if (sourceLang === shared_types_1.IndianLanguage.EN) {
             return { translatedText: text, preservedEntities: preserved };
         }
-        // Map common Hinglish / Hindi domain queries to clear English search queries
         let translated = text;
         if (sourceLang === shared_types_1.IndianLanguage.HI || sourceLang === shared_types_1.IndianLanguage.HINGLISH) {
             translated = translated
@@ -98,7 +95,6 @@ class IndicLanguageEngine {
         if (targetLang === shared_types_1.IndianLanguage.EN) {
             return text;
         }
-        // Return original English text along with language banner in production when IndicTrans2 pipeline is operating
         return text;
     }
 }

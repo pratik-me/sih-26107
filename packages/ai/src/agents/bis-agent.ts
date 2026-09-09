@@ -55,7 +55,11 @@ export class BISSaarthiAgent {
     const anthropicKey = process.env.ANTHROPIC_API_KEY;
     const openaiKey = process.env.OPENAI_API_KEY;
 
-    if (provider === 'anthropic' || (anthropicKey && provider !== 'openai')) {
+    const hasValidAnthropic = anthropicKey && !anthropicKey.includes('your_anthropic_api_key_here') && anthropicKey.trim().length > 10;
+    const hasValidOpenAI = openaiKey && !openaiKey.includes('your_openai_api_key_here') && openaiKey.trim().length > 10;
+
+    if (provider === 'anthropic' || (hasValidAnthropic && provider !== 'openai')) {
+      if (!hasValidAnthropic) return null;
       return new ChatAnthropic({
         modelName: process.env.ANTHROPIC_MODEL || 'claude-3-5-sonnet-20241022',
         apiKey: anthropicKey,
@@ -63,7 +67,8 @@ export class BISSaarthiAgent {
       }) as unknown as BaseChatModel;
     }
 
-    if (provider === 'openai' || openaiKey) {
+    if (provider === 'openai' || hasValidOpenAI) {
+      if (!hasValidOpenAI) return null;
       return new ChatOpenAI({
         modelName: process.env.OPENAI_MODEL || 'gpt-4o-mini',
         openAIApiKey: openaiKey,
@@ -388,6 +393,14 @@ export class BISSaarthiAgent {
         'How do I report a product with a fake or counterfeit ISI mark?',
         'What is the BIS Care App toll-free consumer helpline number?',
         'How to verify manufacturer license status online?'
+      ];
+    }
+    if (intent === QueryIntent.GENERAL_BIS_INFO) {
+      return [
+        'Find applicable Indian Standard for my product',
+        'How does BIS ISI Mark certification work?',
+        'What are the routine tests required for steel & cement?',
+        'How to verify a 6-digit HUID gold hallmark?'
       ];
     }
     return [

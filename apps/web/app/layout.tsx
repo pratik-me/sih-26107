@@ -11,7 +11,10 @@ const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 export const metadata: Metadata = {
   title: 'BIS Saarthi — AI Assistant for Indian Standards & Services',
   description: 'Evidence-backed AI decision-support platform for Indian Standards, BIS Certification, Testing Laboratories, and Hallmarking.',
-  keywords: 'BIS, Indian Standards, ISI Mark, Hallmarking, HUID, BIS Certification, Compulsory Registration Scheme, Lab Testing'
+  keywords: 'BIS, Indian Standards, ISI Mark, Hallmarking, HUID, BIS Certification, Compulsory Registration Scheme, Lab Testing',
+  icons: {
+    icon: "/BIS-LOGO.png"
+  }
 };
 
 export default function RootLayout({

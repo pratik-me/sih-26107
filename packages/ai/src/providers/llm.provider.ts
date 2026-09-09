@@ -42,7 +42,35 @@ export class DeterministicBISLLMProvider implements ILLMProvider {
   name = 'deterministic-bis-grounded';
 
   async generateText(prompt: string, contextEvidence: Evidence[], _options?: LLMGenerateOptions): Promise<LLMGenerateResult> {
+    const trimmed = (prompt || '').trim().toLowerCase();
+    const isGreeting = /^(hi|hello|hey|namaste|namaskar|greetings|good\s*(morning|afternoon|evening)|help|who\s*are\s*you|what\s*can\s*you\s*do|start)[\s!?.]*$/i.test(trimmed) || (trimmed.length <= 5 && !/\d/.test(trimmed));
+
     if (!contextEvidence || contextEvidence.length === 0) {
+      if (isGreeting) {
+        const greetingText = `Hello! 👋 I am **BIS Saarthi**, your official AI-powered Intelligent Assistant for Indian Standards and Bureau of Indian Standards (BIS) services.\n\n` +
+          `Here are the core areas I can help you with:\n\n` +
+          `1. 📌 **Find My Standard**: Discover which Indian Standard (IS) applies to your product, material grade, or industrial category.\n` +
+          `2. 📜 **Certification Schemes & Roadmap**: Navigate ISI Mark (Scheme I), Compulsory Registration Scheme (CRS / Scheme II), and FMCS step-by-step.\n` +
+          `3. 🔬 **Testing & Laboratories**: View routine and type test requirements, sampling guidelines, and locate recognized NABL/BIS testing laboratories.\n` +
+          `4. 🏅 **Gold & Silver Hallmarking**: Understand 24K, 22K (916), and 18K purity marks, verify 6-digit HUID codes, and check statutory consumer guarantees.\n` +
+          `5. 🛡️ **Consumer Protection**: Verify authentic 7/8-digit CM/L licence numbers and check for counterfeit ISI marks.\n\n` +
+          `What product, standard, or service would you like to explore today?`;
+
+        return {
+          text: greetingText,
+          citations: [],
+          confidence: ConfidenceLevel.HIGH,
+          groundingStatus: {
+            isFullyGrounded: true,
+            supportedClaimsCount: 1,
+            unsupportedClaimsCount: 0,
+            confidenceScore: 1.0,
+            confidenceLevel: ConfidenceLevel.HIGH,
+            groundingDetails: [{ claim: 'General BIS Saarthi introduction', isSupported: true }]
+          }
+        };
+      }
+
       return {
         text: `I could not verify this information from the available authoritative Bureau of Indian Standards (BIS) publications.\n\nTo provide an accurate answer without speculating, please provide additional product specifications (e.g., material grade, voltage, capacity, or specific test parameters), or verify directly on the official BIS portal (https://www.services.bis.gov.in).`,
         citations: [],
@@ -149,7 +177,11 @@ export class LangChainBISLLMProvider implements ILLMProvider {
     const anthropicKey = process.env.ANTHROPIC_API_KEY;
     const openaiKey = process.env.OPENAI_API_KEY;
 
-    if (provider === 'anthropic' || (anthropicKey && provider !== 'openai')) {
+    const hasValidAnthropic = anthropicKey && !anthropicKey.includes('your_anthropic_api_key_here') && anthropicKey.trim().length > 10;
+    const hasValidOpenAI = openaiKey && !openaiKey.includes('your_openai_api_key_here') && openaiKey.trim().length > 10;
+
+    if (provider === 'anthropic' || (hasValidAnthropic && provider !== 'openai')) {
+      if (!hasValidAnthropic) return null;
       return new ChatAnthropic({
         modelName: process.env.ANTHROPIC_MODEL || 'claude-3-5-sonnet-20241022',
         apiKey: anthropicKey,
@@ -157,7 +189,8 @@ export class LangChainBISLLMProvider implements ILLMProvider {
       }) as unknown as BaseChatModel;
     }
 
-    if (provider === 'openai' || openaiKey) {
+    if (provider === 'openai' || hasValidOpenAI) {
+      if (!hasValidOpenAI) return null;
       return new ChatOpenAI({
         modelName: process.env.OPENAI_MODEL || 'gpt-4o-mini',
         openAIApiKey: openaiKey,
