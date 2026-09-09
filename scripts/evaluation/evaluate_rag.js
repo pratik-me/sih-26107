@@ -42,7 +42,7 @@ const llm_provider_1 = require("../../packages/ai/src/providers/llm.provider");
 const reranker_provider_1 = require("../../packages/ai/src/providers/reranker.provider");
 const seed_data_1 = require("../seed/seed-data");
 async function evaluateRAG() {
-    console.log('🧪 Starting BIS IntelliGuide RAG Pipeline Evaluation...');
+    console.log('🧪 Starting BIS Saarthi RAG Pipeline Evaluation...');
     const benchmarkPath = path.resolve(__dirname, '../../data/evaluation/rag_benchmark.json');
     const rawData = fs.readFileSync(benchmarkPath, 'utf-8');
     const benchmark = JSON.parse(rawData);
@@ -74,7 +74,7 @@ async function evaluateRAG() {
             return { data: matchedStandards, evidence: topEvidence };
         }
     };
-    const agent = new bis_agent_1.BISIntelliGuideAgent(llmProvider, toolsHandler);
+    const agent = new bis_agent_1.BISSaarthiAgent(llmProvider, toolsHandler);
     let hitsAt1 = 0;
     let hitsAt3 = 0;
     let hitsAt5 = 0;

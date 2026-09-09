@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.BISIntelliGuideAgent = void 0;
+exports.BISSaarthiAgent = void 0;
 const shared_types_1 = require("@bis/shared-types");
 const citation_builder_1 = require("../citations/citation-builder");
 const grounding_validator_1 = require("../grounding/grounding-validator");
 const translation_provider_1 = require("../providers/translation.provider");
-class BISIntelliGuideAgent {
+class BISSaarthiAgent {
     llmProvider;
     toolsHandler;
     citationBuilder = new citation_builder_1.CitationBuilder();
@@ -125,5 +125,5 @@ class BISIntelliGuideAgent {
         };
     }
 }
-exports.BISIntelliGuideAgent = BISIntelliGuideAgent;
+exports.BISSaarthiAgent = BISSaarthiAgent;
 //# sourceMappingURL=bis-agent.js.map

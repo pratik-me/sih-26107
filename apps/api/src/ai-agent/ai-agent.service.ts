@@ -6,7 +6,7 @@ import {
   ToolName
 } from '@bis/shared-types';
 import {
-  BISIntelliGuideAgent,
+  BISSaarthiAgent,
   BISAgentToolsHandler,
   getLLMProvider
 } from '@bis/ai';
@@ -19,7 +19,7 @@ import { RAGService } from '../rag/rag.service';
 
 @Injectable()
 export class AiAgentService implements BISAgentToolsHandler {
-  private agent: BISIntelliGuideAgent;
+  private agent: BISSaarthiAgent;
   private llmProvider = getLLMProvider();
 
   constructor(
@@ -30,7 +30,7 @@ export class AiAgentService implements BISAgentToolsHandler {
     private consumerService: ConsumerService,
     private ragService: RAGService
   ) {
-    this.agent = new BISIntelliGuideAgent(this.llmProvider, this);
+    this.agent = new BISSaarthiAgent(this.llmProvider, this);
   }
 
   async executeTool(tool: ToolName, args: Record<string, unknown>): Promise<{ data: unknown; evidence: Evidence[] }> {

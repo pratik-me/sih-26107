@@ -14,7 +14,7 @@ export function Footer() {
             <div className="flex items-center gap-2 text-white font-bold text-sm">
               {/* <AshokaMotif size={24} className="text-blue-500" /> */}
               <Image src={"/BIS-LOGO.png"} alt='BIS-LOGO' height={24} width={24} />
-              <span>BIS IntelliGuide</span>
+              <span>BIS Saarthi</span>
             </div>
             <p className="text-xs text-slate-400 leading-relaxed">
               AI-Powered Decision-Support Platform for Indian Standards, Certification Schemes, Laboratory Testing, and Hallmarking.
@@ -130,7 +130,7 @@ export function Footer() {
 
         <div className="pt-6 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-slate-500">
           <div>
-            © {new Date().getFullYear()} BIS IntelliGuide. Built for Indian Industry, MSMEs & Citizens.
+            © {new Date().getFullYear()} BIS Saarthi. Built for Indian Industry, MSMEs & Citizens.
           </div>
           <div className="flex items-center gap-4">
             <Link href="/consumer" className="hover:text-slate-300">

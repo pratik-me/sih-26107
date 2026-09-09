@@ -62,7 +62,7 @@ export class AdminService {
 
     return {
       status: 'HEALTHY',
-      service: 'BIS IntelliGuide API Gateway',
+      service: 'BIS Saarthi API Gateway',
       version: '1.0.0',
       database: 'PostgreSQL + pgvector (Active)',
       embeddingProvider: `${embedder} (1536-d)`,

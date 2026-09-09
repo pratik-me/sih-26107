@@ -27,7 +27,7 @@ async function bootstrap() {
 
   // Swagger OpenAPI Setup
   const config = new DocumentBuilder()
-    .setTitle('BIS IntelliGuide API')
+    .setTitle('BIS Saarthi API')
     .setDescription('AI-Powered Intelligent Assistant for Indian Standards and Bureau of Indian Standards (BIS) Services')
     .setVersion('1.0.0')
     .addBearerAuth()
@@ -50,7 +50,7 @@ async function bootstrap() {
 
   const port = process.env.PORT || 4000;
   await app.listen(port);
-  console.log(`🚀 BIS IntelliGuide API running on http://localhost:${port}/api/v1`);
+  console.log(`🚀 BIS Saarthi API running on http://localhost:${port}/api/v1`);
   console.log(`📚 Swagger documentation available at http://localhost:${port}/api/docs`);
 }
 

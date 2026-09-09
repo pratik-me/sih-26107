@@ -77,7 +77,7 @@ export default function AnalyticsDashboardPage() {
           <span>System Observability & Query Analytics</span>
         </div>
         <h1 className="text-3xl font-black text-slate-900 dark:text-slate-100 tracking-tight">
-          BIS IntelliGuide Intelligence Analytics
+          BIS Saarthi Intelligence Analytics
         </h1>
         <p className="text-sm text-slate-600 dark:text-slate-400 max-w-2xl">
           Real-time metrics on user intents, popular standards, multilingual breakdown, retrieval latencies, and zero-hallucination accuracy.

@@ -18,6 +18,17 @@ module.exports = {
           slate: '#F8FAFC',
           gold: '#B45309'
         },
+        bis: {
+          900: '#03045E', // Deep Twilight
+          800: '#023E8A', // French Blue
+          700: '#0077B6', // Bright Teal Blue
+          600: '#0096C7', // Blue Green
+          500: '#00B4D8', // Turquoise Surf
+          400: '#48CAE4', // Sky Aqua
+          300: '#90E0EF', // Frosted Blue
+          200: '#ADE8F4', // Frosted Blue Light
+          100: '#CAF0F8', // Light Cyan
+        },
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',

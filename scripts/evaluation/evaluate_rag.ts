@@ -6,7 +6,7 @@ import {
   RAGEvaluationBenchmarkItem,
   RAGEvaluationResultMetrics
 } from '../../packages/shared-types/src';
-import { BISIntelliGuideAgent } from '../../packages/ai/src/agents/bis-agent';
+import { BISSaarthiAgent } from '../../packages/ai/src/agents/bis-agent';
 import { getLLMProvider } from '../../packages/ai/src/providers/llm.provider';
 import { HybridBISCrossReranker } from '../../packages/ai/src/providers/reranker.provider';
 import { SEED_STANDARDS } from '../seed/seed-data';
@@ -15,7 +15,7 @@ import { randomUUID } from 'crypto';
 const prisma = new PrismaClient();
 
 async function evaluateRAG(): Promise<RAGEvaluationResultMetrics> {
-  console.log('🧪 Starting Empirical BIS IntelliGuide RAG Pipeline Evaluation...');
+  console.log('Starting Empirical BIS Saarthi RAG Pipeline Evaluation...');
 
   const benchmarkPath = path.resolve(__dirname, '../../data/evaluation/rag_benchmark.json');
   const rawData = fs.readFileSync(benchmarkPath, 'utf-8');
@@ -55,7 +55,7 @@ async function evaluateRAG(): Promise<RAGEvaluationResultMetrics> {
     }
   };
 
-  const agent = new BISIntelliGuideAgent(llmProvider, toolsHandler);
+  const agent = new BISSaarthiAgent(llmProvider, toolsHandler);
 
   let hitsAt1 = 0;
   let hitsAt3 = 0;

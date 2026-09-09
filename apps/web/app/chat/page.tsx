@@ -69,6 +69,7 @@ function ChatContent() {
   const [copiedMsgId, setCopiedMsgId] = useState<string | null>(null);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const initialQueryHandled = useRef(false);
 
   useEffect(() => {
     // Initial greeting if no messages
@@ -77,7 +78,7 @@ function ChatContent() {
         id: "welcome-msg",
         sessionId: currentSessionId,
         role: "assistant",
-        content: `Welcome to BIS IntelliGuide 👋\nI am your evidence-backed decision assistant for Indian Standards (IS), BIS certification schemes, testing clauses, laboratory accreditation, and hallmarking.\n\nWhat would you like to explore?\n- Product Compliance: "I manufacture stainless steel bottles. Which standard applies?"\n- Testing Requirements: "What are the routine tests required for TMT steel bars?"\n- Certification Guidance: "Do I need Compulsory Registration Scheme (CRS) for electronics?"\n- Hallmarking: "How do I verify a 6-digit HUID code on BIS Care App?"\n- Clause Explanation: "Explain IS 10500 Clause 4.2 in simple language."`,
+        content: `Welcome to BIS Saarthi 👋\nI am your evidence-backed decision assistant for Indian Standards (IS), BIS certification schemes, testing clauses, laboratory accreditation, and hallmarking.\n\nWhat would you like to explore?\n- Product Compliance: "I manufacture stainless steel bottles. Which standard applies?"\n- Testing Requirements: "What are the routine tests required for TMT steel bars?"\n- Certification Guidance: "Do I need Compulsory Registration Scheme (CRS) for electronics?"\n- Hallmarking: "How do I verify a 6-digit HUID code on BIS Care App?"\n- Clause Explanation: "Explain IS 10500 Clause 4.2 in simple language."`,
         confidence: ConfidenceLevel.HIGH,
         suggestedFollowUps: [
           "Find standard for my product",
@@ -93,14 +94,19 @@ function ChatContent() {
 
   // Handle URL query parameter if passed from landing page
   useEffect(() => {
-    if (initialQuery && messages.length <= 1) {
+    if (initialQuery && !initialQueryHandled.current && messages.length <= 1) {
+      initialQueryHandled.current = true;
       handleSendMessage(initialQuery);
     }
   }, [initialQuery]);
 
-  // useEffect(() => {
-  //   messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  // }, [messages, isLoading]);
+  // Auto-scroll chat stream to bottom when messages update (chatbot behavior)
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "end",
+    });
+  }, [messages, isLoading]);
 
   const handleSendMessage = async (queryText?: string) => {
     const textToSend = queryText || inputQuery;
@@ -140,7 +146,7 @@ function ChatContent() {
         id: `err-${Date.now()}`,
         sessionId: currentSessionId,
         role: "assistant",
-        content: `⚠️ **Unable to process query:** ${err.message || "Server connection issue. Please verify backend API status."}\n\nYou can also verify directly on the official BIS portal (https://www.services.bis.gov.in).`,
+        content: `Unable to process query: ${err.message || "Server connection issue. Please verify backend API status."}\n\nYou can also verify directly on the official BIS portal (https://www.services.bis.gov.in).`,
         confidence: ConfidenceLevel.LOW,
         createdAt: new Date().toISOString(),
       };
@@ -202,7 +208,7 @@ function ChatContent() {
           <button
             type="button"
             onClick={startNewChat}
-            className="flex items-center justify-center gap-2 w-full py-2 px-3 rounded-lg text-xs font-bold bg-blue-700 hover:bg-blue-800 text-white shadow-sm transition-all"
+            className="flex items-center justify-center gap-2 w-full py-2 px-3 rounded-lg text-xs font-bold bg-gradient-to-r from-[#023E8A] via-[#0077B6] to-[#0096C7] hover:from-[#03045E] hover:to-[#023E8A] text-white shadow-sm shadow-[#0077B6]/25 transition-all cursor-pointer"
           >
             <Plus className="w-4 h-4" />
             <span>New Chat Session</span>
@@ -283,7 +289,7 @@ function ChatContent() {
             </div>
             <div>
               <h2 className="text-xs font-bold text-slate-800 dark:text-slate-200">
-                BIS IntelliGuide Conversation
+                BIS Saarthi Conversation
               </h2>
               <span className="text-[10px] text-slate-500">
                 Mode: {initialRole}
@@ -578,7 +584,7 @@ export default function ChatWorkspacePage() {
     <React.Suspense
       fallback={
         <div className="p-8 text-center text-xs text-slate-500">
-          Loading BIS IntelliGuide Workspace...
+          Loading BIS Saarthi Workspace...
         </div>
       }
     >

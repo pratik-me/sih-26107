@@ -37,7 +37,7 @@ export default function LoginPage() {
           {/* <AshokaMotif size={42} className="mx-auto text-blue-700 dark:text-blue-500" /> */}
           <Image src={"/BIS-LOGO.png"} alt='BIS-LOGO' height={42} width={42} />
           <h1 className="text-2xl font-black text-slate-900 dark:text-slate-100 tracking-tight">
-            BIS IntelliGuide Login
+            BIS Saarthi Login
           </h1>
           <p className="text-xs text-slate-500">
             Sign in to access your saved standards investigations, compliance reports, and audit logs.

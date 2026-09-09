@@ -77,13 +77,13 @@ export class DeterministicBISLLMProvider implements ILLMProvider {
     const primaryEvidence = contextEvidence[0];
     const isOutdated = contextEvidence.some(e => e.isOutdated);
 
-    let answer = `### Relevant Indian Standard Assessment\n\n`;
+    let answer = `Relevant Indian Standard Assessment\n\n`;
     answer += `Based on the official Bureau of Indian Standards documentation, the applicable standard is **${primaryEvidence.standardNumber}** (*${primaryEvidence.documentTitle}*) [1].\n\n`;
 
-    answer += `#### Authoritative Requirements:\n`;
+    answer += `Authoritative Requirements:\n`;
     contextEvidence.forEach((ev, i) => {
       const citeRef = `[${i + 1}]`;
-      answer += `- **Clause ${ev.clause} (Page ${ev.page})**: ${ev.excerpt} ${citeRef}\n`;
+      answer += `- *Clause ${ev.clause} (Page ${ev.page})*: ${ev.excerpt} ${citeRef}\n`;
       supportedClaims.push({
         claim: `Clause ${ev.clause} requirement from ${ev.standardNumber}`,
         isSupported: true,
@@ -92,13 +92,13 @@ export class DeterministicBISLLMProvider implements ILLMProvider {
     });
 
     if (isOutdated) {
-      answer += `\n> **⚠️ Warning on Source Freshness**: One or more referenced documents have status **OUTDATED** or **UNDER_REVIEW**. Always cross-verify against the latest Gazette notification or BIS Gazette circular before commercial implementation.\n`;
+      answer += `\n> *Warning on Source Freshness*: One or more referenced documents have status OUTDATED or UNDER_REVIEW. Always cross-verify against the latest Gazette notification or BIS Gazette circular before commercial implementation.\n`;
     }
 
-    answer += `\n#### Recommended Next Steps:\n`;
-    answer += `1. **Verify Conformity Scheme**: Check whether this standard falls under Mandatory Certification (Scheme I / ISI Mark) or Compulsory Registration Scheme (CRS / Scheme II).\n`;
-    answer += `2. **Testing & Evaluation**: Ensure your prototype satisfies sampling and testing requirements before submission to a BIS-recognized laboratory.\n`;
-    answer += `3. **Evidence Verification**: Review the full text of [${primaryEvidence.standardNumber}]( ${primaryEvidence.sourceUrl} ) for comprehensive clause schedules.\n`;
+    answer += `\n Recommended Next Steps:\n`;
+    answer += `1. Verify Conformity Scheme: Check whether this standard falls under Mandatory Certification (Scheme I / ISI Mark) or Compulsory Registration Scheme (CRS / Scheme II).\n`;
+    answer += `2. Testing & Evaluation: Ensure your prototype satisfies sampling and testing requirements before submission to a BIS-recognized laboratory.\n`;
+    answer += `3. Evidence Verification: Review the full text of [${primaryEvidence.standardNumber}]( ${primaryEvidence.sourceUrl} ) for comprehensive clause schedules.\n`;
 
     return {
       text: answer,
