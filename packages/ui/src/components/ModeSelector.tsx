@@ -105,15 +105,15 @@ export const ModeSelector: React.FC<ModeSelectorProps> = ({
             )}
 
             <div className="flex items-center justify-between gap-2 mb-2">
-              <div className="flex items-center gap-2.5">
+              <div className="flex items-center gap-2.5 min-w-0">
                 <span
-                  className={`p-2 rounded-xl transition-all duration-300 group-hover:scale-110 group-hover:-rotate-3 ${
+                  className={`p-2 rounded-xl transition-all duration-300 group-hover:scale-110 group-hover:-rotate-3 shrink-0 ${
                     isSelected ? theme.activeIcon : theme.inactiveIcon
                   }`}
                 >
                   <Icon className="w-4 h-4 transition-transform duration-300" />
                 </span>
-                <div>
+                <div className="min-w-0">
                   <h4
                     className={`text-sm font-bold transition-colors duration-200 ${
                       isSelected
@@ -127,16 +127,16 @@ export const ModeSelector: React.FC<ModeSelectorProps> = ({
               </div>
 
               {/* Status indicator / pill */}
-              <div>
+              <div className="shrink-0">
                 {isSelected ? (
                   <span
-                    className={`inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border shadow-xs transition-all duration-300 ${theme.activeBadge}`}
+                    className={`inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border shadow-xs transition-all duration-300 whitespace-nowrap ${theme.activeBadge}`}
                   >
                     <Check className="w-3 h-3 stroke-[2.5]" />
                     Active
                   </span>
                 ) : (
-                  <span className="inline-flex items-center text-[11px] font-semibold text-slate-400 dark:text-slate-500 group-hover:text-slate-700 dark:group-hover:text-slate-200 opacity-0 group-hover:opacity-100 transition-all duration-200 translate-x-1 group-hover:translate-x-0">
+                  <span className="inline-flex items-center whitespace-nowrap text-[11px] font-semibold text-slate-400 dark:text-slate-500 group-hover:text-slate-700 dark:group-hover:text-slate-200 opacity-0 group-hover:opacity-100 transition-all duration-200 translate-x-1 group-hover:translate-x-0">
                     Switch &rarr;
                   </span>
                 )}

@@ -31,6 +31,16 @@ export function Header() {
     IndianLanguage.EN,
   );
   const [userRole, setUserRole] = useState<UserRole>(UserRole.INDUSTRY);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   // Keep the dropdown open while the cursor travels from the trigger
   // to the menu. A small close delay + a padding bridge (no margin gap)
@@ -71,7 +81,13 @@ export function Header() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 bg-white/95 dark:bg-slate-900/95 backdrop-blur border-b border-slate-200 dark:border-slate-800">
+    <header
+      className={`sticky top-0 z-50 transition-all duration-300 backdrop-blur-xl supports-[backdrop-filter]:bg-white/70 dark:supports-[backdrop-filter]:bg-slate-900/75 backdrop-saturate-180 ${
+        isScrolled
+          ? "bg-white/80 dark:bg-slate-900/85 border-b border-slate-200/80 dark:border-slate-800/80 shadow-sm shadow-[#03045E]/5"
+          : "bg-white/60 dark:bg-slate-900/60 border-b border-slate-200/40 dark:border-slate-800/40"
+      }`}
+    >
       {/* Main Nav Bar */}
       <div className="max-w-[1520px] mx-auto px-3 sm:px-5 lg:px-6">
         <div className="flex items-center justify-between h-16 gap-2">
