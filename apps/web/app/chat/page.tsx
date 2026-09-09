@@ -208,7 +208,7 @@ function ChatContent() {
           <button
             type="button"
             onClick={startNewChat}
-            className="flex items-center justify-center gap-2 w-full py-2 px-3 rounded-lg text-xs font-bold bg-blue-700 hover:bg-blue-800 text-white shadow-sm transition-all"
+            className="flex items-center justify-center gap-2 w-full py-2 px-3 rounded-lg text-xs font-bold bg-gradient-to-r from-[#023E8A] via-[#0077B6] to-[#0096C7] hover:from-[#03045E] hover:to-[#023E8A] text-white shadow-sm shadow-[#0077B6]/25 transition-all cursor-pointer"
           >
             <Plus className="w-4 h-4" />
             <span>New Chat Session</span>

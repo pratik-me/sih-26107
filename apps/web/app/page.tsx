@@ -203,11 +203,6 @@ export default function LandingPage() {
         <div className="relative max-w-7xl mx-auto">
           {/* Header Box with Badge and Animated Typography */}
           <div className="text-center max-w-3xl mx-auto mb-14">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#0077B6]/30 border border-[#48CAE4]/40 text-[#CAF0F8] text-xs font-semibold tracking-wide uppercase shadow-lg shadow-[#03045E]/40 backdrop-blur-md mb-4 hover:border-[#90E0EF] transition-all">
-              <Sparkles className="w-3.5 h-3.5 text-[#48CAE4] animate-pulse" />
-              <span>Core BIS Intelligence Modules</span>
-            </div>
-
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight">
               Comprehensive{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#CAF0F8] via-[#48CAE4] to-[#00B4D8] drop-shadow-sm">

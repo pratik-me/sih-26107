@@ -20,7 +20,7 @@ export const ComplianceStep: React.FC<ComplianceStepProps> = ({
       case 'COMPLETED':
         return <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />;
       case 'IN_PROGRESS':
-        return <CircleDot className="w-5 h-5 text-indigo-600 dark:text-indigo-400 animate-pulse" />;
+        return <CircleDot className="w-5 h-5 text-[#0077B6] dark:text-[#48CAE4] animate-pulse" />;
       default:
         return <Clock className="w-5 h-5 text-slate-400" />;
     }
@@ -31,7 +31,7 @@ export const ComplianceStep: React.FC<ComplianceStepProps> = ({
       onClick={() => onSelect && onSelect(step)}
       className={`relative p-5 rounded-xl border transition-all ${
         isCurrent
-          ? 'bg-indigo-50/50 dark:bg-indigo-950/30 border-indigo-300 dark:border-indigo-700 shadow-md ring-1 ring-indigo-500/20'
+          ? 'bg-[#CAF0F8] dark:bg-[#0077B6]/25 border-2 border-[#00B4D8] dark:border-[#48CAE4] shadow-lg shadow-[#00B4D8]/20 ring-2 ring-[#48CAE4]/60'
           : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 shadow-sm hover:border-slate-300'
       } ${className}`}
     >
@@ -40,7 +40,7 @@ export const ComplianceStep: React.FC<ComplianceStepProps> = ({
           <div className="mt-0.5">{getStatusIcon()}</div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">
+              <span className="text-xs font-bold text-[#0077B6] dark:text-[#48CAE4] uppercase tracking-wider">
                 Step {step.stepNumber}: {step.phaseName}
               </span>
               <span className="text-[10px] px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
@@ -64,14 +64,18 @@ export const ComplianceStep: React.FC<ComplianceStepProps> = ({
 
       {/* Action items */}
       {step.actionItems && step.actionItems.length > 0 && (
-        <div className="mt-3 p-3 rounded-lg bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800 text-xs">
+        <div className={`mt-3 p-3 rounded-lg border text-xs ${
+          isCurrent
+            ? 'bg-white/80 dark:bg-slate-900/60 border-[#ADE8F4] dark:border-[#0077B6]/40'
+            : 'bg-slate-50 dark:bg-slate-800/40 border-slate-100 dark:border-slate-800'
+        }`}>
           <h4 className="font-semibold text-slate-800 dark:text-slate-200 mb-1.5 flex items-center gap-1.5">
-            <FileCheck className="w-3.5 h-3.5 text-indigo-600" /> Key Action Items:
+            <FileCheck className="w-3.5 h-3.5 text-[#0077B6] dark:text-[#48CAE4]" /> Key Action Items:
           </h4>
           <ul className="space-y-1 text-slate-600 dark:text-slate-400">
             {step.actionItems.map((action, i) => (
               <li key={i} className="flex items-start gap-1.5">
-                <span className="text-indigo-500 font-bold">•</span>
+                <span className="text-[#0096C7] dark:text-[#48CAE4] font-bold">•</span>
                 <span>{action}</span>
               </li>
             ))}

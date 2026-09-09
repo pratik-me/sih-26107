@@ -120,7 +120,7 @@ export function Header() {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-1 xl:gap-2 flex-nowrap">
+          <nav className="hidden lg:flex items-center gap-1 xl:gap-1.5 flex-nowrap">
             {/* Standards Dropdown Heading */}
             <div
               className="relative"
@@ -146,16 +146,16 @@ export function Header() {
                 onKeyDown={(e) => {
                   if (e.key === "Escape") setStandardsDropdownOpen(false);
                 }}
-                className={`inline-flex items-center gap-1 px-2 xl:px-2.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all duration-200 cursor-pointer ${
+                className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all duration-200 cursor-pointer ${
                   isStandardsActive
-                    ? "bg-[#CAF0F8]/80 text-[#023E8A] dark:bg-[#03045E]/60 dark:text-[#90E0EF] font-bold shadow-2xs"
-                    : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-[#CAF0F8]/30 dark:hover:bg-slate-800"
+                    ? "bg-gradient-to-r from-[#CAF0F8] to-[#ADE8F4]/70 dark:from-[#03045E]/80 dark:to-[#023E8A]/60 text-[#023E8A] dark:text-[#90E0EF] font-bold border border-[#ADE8F4] dark:border-[#0077B6]/40 shadow-xs"
+                    : "text-slate-700 dark:text-slate-300 hover:text-[#0077B6] dark:hover:text-white hover:bg-[#CAF0F8]/40 dark:hover:bg-slate-800/80"
                 }`}
               >
                 <Search
-                  className={`w-3.5 h-3.5 shrink-0 ${
+                  className={`w-3.5 h-3.5 shrink-0 transition-colors ${
                     isStandardsActive
-                      ? "text-[#023E8A] dark:text-[#48CAE4]"
+                      ? "text-[#0077B6] dark:text-[#48CAE4]"
                       : "text-slate-500 dark:text-slate-400"
                   }`}
                 />
@@ -163,7 +163,9 @@ export function Header() {
                 <ChevronDown
                   className={`w-3 h-3 transition-transform duration-200 ${
                     standardsDropdownOpen
-                      ? "rotate-180 text-[#0077B6]"
+                      ? "rotate-180 text-[#0077B6] dark:text-[#48CAE4]"
+                      : isStandardsActive
+                      ? "text-[#0077B6] dark:text-[#48CAE4]"
                       : "text-slate-400"
                   }`}
                 />
@@ -171,20 +173,34 @@ export function Header() {
 
               {/* Dropdown Menu */}
               {standardsDropdownOpen && (
-                <div className="absolute top-full left-0 mt-0.5 w-64 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl py-1.5 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
+                <div className="absolute top-full left-0 mt-1 w-72 rounded-2xl border border-[#ADE8F4] dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl shadow-xl shadow-[#03045E]/10 p-1.5 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
                   <Link
                     href="/standards/recommend"
                     onClick={() => setStandardsDropdownOpen(false)}
-                    className={`flex items-start gap-3 px-3 py-2.5 hover:bg-[#CAF0F8]/30 dark:hover:bg-slate-800/70 transition-colors ${
+                    className={`group flex items-start gap-3 p-2.5 rounded-xl transition-all duration-200 ${
                       pathname === "/standards/recommend"
-                        ? "bg-[#CAF0F8]/70 dark:bg-[#03045E]/50 text-[#023E8A] dark:text-[#90E0EF] font-semibold"
-                        : "text-slate-700 dark:text-slate-200"
+                        ? "bg-gradient-to-r from-[#CAF0F8] to-[#ADE8F4]/60 dark:from-[#03045E]/70 dark:to-[#023E8A]/50 text-[#023E8A] dark:text-[#90E0EF] font-bold border border-[#ADE8F4] dark:border-[#0077B6]/40 shadow-2xs"
+                        : "text-slate-700 dark:text-slate-300 hover:bg-[#CAF0F8]/40 dark:hover:bg-slate-800/80 hover:text-[#0077B6] dark:hover:text-[#48CAE4]"
                     }`}
                   >
-                    <Compass className="w-4 h-4 text-[#0077B6] mt-0.5 shrink-0" />
-                    <div>
-                      <div className="text-xs font-bold">Find Your Standards</div>
-                      <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-tight mt-0.5">
+                    <span
+                      className={`p-2 rounded-lg shrink-0 transition-all ${
+                        pathname === "/standards/recommend"
+                          ? "bg-white dark:bg-slate-800 text-[#0077B6] dark:text-[#48CAE4] shadow-xs"
+                          : "bg-[#CAF0F8]/50 dark:bg-slate-800 text-[#0077B6] dark:text-[#48CAE4] group-hover:scale-110"
+                      }`}
+                    >
+                      <Compass className="w-4 h-4" />
+                    </span>
+                    <div className="min-w-0">
+                      <div className="text-xs font-bold leading-snug">Find Your Standards</div>
+                      <p
+                        className={`text-[11px] leading-tight mt-0.5 ${
+                          pathname === "/standards/recommend"
+                            ? "text-[#023E8A]/80 dark:text-[#90E0EF]/80 font-normal"
+                            : "text-slate-500 dark:text-slate-400"
+                        }`}
+                      >
                         AI product profiler matching your product to IS
                       </p>
                     </div>
@@ -193,16 +209,30 @@ export function Header() {
                   <Link
                     href="/standards"
                     onClick={() => setStandardsDropdownOpen(false)}
-                    className={`flex items-start gap-3 px-3 py-2.5 hover:bg-[#CAF0F8]/30 dark:hover:bg-slate-800/70 transition-colors ${
+                    className={`group flex items-start gap-3 p-2.5 rounded-xl transition-all duration-200 mt-1 ${
                       pathname === "/standards"
-                        ? "bg-[#CAF0F8]/70 dark:bg-[#03045E]/50 text-[#023E8A] dark:text-[#90E0EF] font-semibold"
-                        : "text-slate-700 dark:text-slate-200"
+                        ? "bg-gradient-to-r from-[#CAF0F8] to-[#ADE8F4]/60 dark:from-[#03045E]/70 dark:to-[#023E8A]/50 text-[#023E8A] dark:text-[#90E0EF] font-bold border border-[#ADE8F4] dark:border-[#0077B6]/40 shadow-2xs"
+                        : "text-slate-700 dark:text-slate-300 hover:bg-[#CAF0F8]/40 dark:hover:bg-slate-800/80 hover:text-[#0077B6] dark:hover:text-[#48CAE4]"
                     }`}
                   >
-                    <Search className="w-4 h-4 text-[#0077B6] mt-0.5 shrink-0" />
-                    <div>
-                      <div className="text-xs font-bold">Standards</div>
-                      <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-tight mt-0.5">
+                    <span
+                      className={`p-2 rounded-lg shrink-0 transition-all ${
+                        pathname === "/standards"
+                          ? "bg-white dark:bg-slate-800 text-[#0077B6] dark:text-[#48CAE4] shadow-xs"
+                          : "bg-[#CAF0F8]/50 dark:bg-slate-800 text-[#0077B6] dark:text-[#48CAE4] group-hover:scale-110"
+                      }`}
+                    >
+                      <Search className="w-4 h-4" />
+                    </span>
+                    <div className="min-w-0">
+                      <div className="text-xs font-bold leading-snug">Standards Catalogue</div>
+                      <p
+                        className={`text-[11px] leading-tight mt-0.5 ${
+                          pathname === "/standards"
+                            ? "text-[#023E8A]/80 dark:text-[#90E0EF]/80 font-normal"
+                            : "text-slate-500 dark:text-slate-400"
+                        }`}
+                      >
                         Search and explore Indian Standards catalogue
                       </p>
                     </div>
@@ -219,16 +249,16 @@ export function Header() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`inline-flex items-center gap-1 px-2 xl:px-2.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all duration-200 ${
+                  className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all duration-200 ${
                     isActive
-                      ? "bg-[#CAF0F8]/80 text-[#023E8A] dark:bg-[#03045E]/60 dark:text-[#90E0EF] font-bold shadow-2xs"
-                      : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-[#CAF0F8]/30 dark:hover:bg-slate-800"
+                      ? "bg-gradient-to-r from-[#CAF0F8] to-[#ADE8F4]/70 dark:from-[#03045E]/80 dark:to-[#023E8A]/60 text-[#023E8A] dark:text-[#90E0EF] font-bold border border-[#ADE8F4] dark:border-[#0077B6]/40 shadow-xs"
+                      : "text-slate-700 dark:text-slate-300 hover:text-[#0077B6] dark:hover:text-white hover:bg-[#CAF0F8]/40 dark:hover:bg-slate-800/80"
                   }`}
                 >
                   <Icon
                     className={`w-3.5 h-3.5 shrink-0 ${
                       isActive
-                        ? "text-[#023E8A] dark:text-[#48CAE4]"
+                        ? "text-[#0077B6] dark:text-[#48CAE4]"
                         : "text-slate-500 dark:text-slate-400"
                     }`}
                   />
@@ -283,12 +313,12 @@ export function Header() {
               onClick={() => setMobileStandardsOpen(!mobileStandardsOpen)}
               className={`flex items-center justify-between w-full px-3 py-2 rounded-lg text-sm font-semibold ${
                 isStandardsActive
-                  ? "bg-blue-50 text-blue-800 dark:bg-blue-950/60 dark:text-blue-300 font-bold"
-                  : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+                  ? "bg-[#CAF0F8]/80 text-[#023E8A] dark:bg-[#03045E]/60 dark:text-[#90E0EF] font-bold border border-[#ADE8F4]"
+                  : "text-slate-700 dark:text-slate-300 hover:bg-[#CAF0F8]/30 dark:hover:bg-slate-800"
               }`}
             >
               <div className="flex items-center gap-2.5">
-                <Search className="w-4 h-4 text-blue-600" />
+                <Search className="w-4 h-4 text-[#0077B6]" />
                 <span>Standards</span>
               </div>
               <ChevronDown
@@ -304,11 +334,11 @@ export function Header() {
                   onClick={() => setMobileMenuOpen(false)}
                   className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-medium ${
                     pathname === "/standards/recommend"
-                      ? "bg-blue-100/70 text-blue-800 dark:bg-blue-900/50 dark:text-blue-200 font-bold"
-                      : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100"
+                      ? "bg-[#CAF0F8] text-[#023E8A] dark:bg-[#03045E]/60 dark:text-[#90E0EF] font-bold"
+                      : "text-slate-600 dark:text-slate-400 hover:text-[#0077B6] dark:hover:text-slate-100"
                   }`}
                 >
-                  <Compass className="w-3.5 h-3.5 text-blue-500" />
+                  <Compass className="w-3.5 h-3.5 text-[#0077B6]" />
                   <span>Find Your Standards</span>
                 </Link>
                 <Link
@@ -316,12 +346,12 @@ export function Header() {
                   onClick={() => setMobileMenuOpen(false)}
                   className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-medium ${
                     pathname === "/standards"
-                      ? "bg-blue-100/70 text-blue-800 dark:bg-blue-900/50 dark:text-blue-200 font-bold"
-                      : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100"
+                      ? "bg-[#CAF0F8] text-[#023E8A] dark:bg-[#03045E]/60 dark:text-[#90E0EF] font-bold"
+                      : "text-slate-600 dark:text-slate-400 hover:text-[#0077B6] dark:hover:text-slate-100"
                   }`}
                 >
-                  <Search className="w-3.5 h-3.5 text-blue-500" />
-                  <span>Standards</span>
+                  <Search className="w-3.5 h-3.5 text-[#0077B6]" />
+                  <span>Standards Catalogue</span>
                 </Link>
               </div>
             )}
@@ -337,11 +367,11 @@ export function Header() {
                 onClick={() => setMobileMenuOpen(false)}
                 className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium ${
                   isActive
-                    ? "bg-blue-50 text-blue-800 dark:bg-blue-950/60 dark:text-blue-300 font-bold"
-                    : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+                    ? "bg-[#CAF0F8]/80 text-[#023E8A] dark:bg-[#03045E]/60 dark:text-[#90E0EF] font-bold border border-[#ADE8F4]"
+                    : "text-slate-700 dark:text-slate-300 hover:bg-[#CAF0F8]/30 dark:hover:bg-slate-800"
                 }`}
               >
-                <Icon className="w-4 h-4 text-blue-600" />
+                <Icon className="w-4 h-4 text-[#0077B6]" />
                 <span>{link.label}</span>
               </Link>
             );

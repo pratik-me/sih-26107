@@ -65,31 +65,37 @@ function ComplianceReportsContent() {
   }
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10 space-y-8">
-      {/* Top Action Bar (hidden in print) */}
-      <div className="flex items-center justify-between print:hidden">
-        <div className="space-y-1">
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-800 dark:bg-blue-950 dark:text-blue-300 text-xs font-semibold">
-            <FileBarChart2 className="w-3.5 h-3.5" />
-            <span>Decision Support Deliverable</span>
+    <div className="relative min-h-screen w-full bg-gradient-to-b from-[#03045E] via-[#023E8A] to-[#03045E] dark:from-slate-950 dark:via-[#03045E]/90 dark:to-slate-950 overflow-hidden text-white print:bg-white print:text-slate-900">
+      {/* Ambient Glowing Blobs (hidden in print) */}
+      <div className="absolute top-12 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-[#00B4D8]/15 rounded-full blur-3xl pointer-events-none animate-pulse print:hidden" />
+      <div className="absolute top-0 right-10 w-80 h-80 bg-[#0077B6]/20 rounded-full blur-3xl pointer-events-none print:hidden" />
+      <div className="absolute bottom-0 left-10 w-80 h-80 bg-[#48CAE4]/15 rounded-full blur-3xl pointer-events-none print:hidden" />
+
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10 space-y-8 relative z-10 print:p-0">
+        {/* Top Action Bar in Dark Scheme (hidden in print) */}
+        <div className="flex items-center justify-between print:hidden">
+          <div className="space-y-1">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 dark:bg-white/10 text-[#CAF0F8] text-xs font-semibold border border-[#48CAE4]/30 backdrop-blur-md shadow-2xs">
+              <FileBarChart2 className="w-3.5 h-3.5 text-[#48CAE4]" />
+              <span>Decision Support Deliverable</span>
+            </div>
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white tracking-tight">
+              BIS Compliance Roadmap Report
+            </h1>
           </div>
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
-            BIS Compliance Roadmap Report
-          </h1>
+
+          <button
+            type="button"
+            onClick={handlePrint}
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold bg-gradient-to-r from-[#0096C7] via-[#00B4D8] to-[#48CAE4] hover:from-[#0077B6] hover:to-[#00B4D8] text-slate-950 hover:text-white shadow-lg shadow-[#03045E]/40 transition-all cursor-pointer"
+          >
+            <Printer className="w-4 h-4" />
+            <span>Print / Save as PDF</span>
+          </button>
         </div>
 
-        <button
-          type="button"
-          onClick={handlePrint}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold bg-blue-700 hover:bg-blue-800 text-white shadow-sm transition-all cursor-pointer"
-        >
-          <Printer className="w-4 h-4" />
-          <span>Print / Save as PDF</span>
-        </button>
-      </div>
-
-      {/* Printable Report Document Card */}
-      <div className="p-8 sm:p-12 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-lg space-y-8 text-slate-900 dark:text-slate-100 print:border-none print:shadow-none print:p-0">
+        {/* Printable Report Document Card */}
+        <div className="p-8 sm:p-12 rounded-2xl bg-white dark:bg-slate-900 border border-white/20 dark:border-slate-800 shadow-2xl space-y-8 text-slate-900 dark:text-slate-100 print:border-none print:shadow-none print:p-0">
         {/* Document Header with Ashoka Emblem Motif */}
         <div className="border-b-2 border-slate-900 dark:border-slate-100 pb-6 flex items-start justify-between">
           <div className="space-y-1">
@@ -257,6 +263,7 @@ function ComplianceReportsContent() {
           </div>
           <p>{report.disclaimer}</p>
         </div>
+      </div>
       </div>
     </div>
   );
