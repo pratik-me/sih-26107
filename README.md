@@ -1,4 +1,5 @@
-# BIS Saarthi
+# BIS Saarthi 
+[Demo Website](https://bis-saarthi.netlify.app/)
 
 ## 1. Project Information
 
@@ -133,19 +134,14 @@ bis-saarthi/
 | Demo video link | `submission/DEMO.md` |
 | Project overview | `README.md` |
 
-## 8. Final Presentation
+## 8. Presentation
 
-Keep your final SIH presentation in the repository whenever the file size allows it.
-
-See [submission/PRESENTATION.md](submission/PRESENTATION.md) for the required format.
-
-If the PPT is too large for GitHub, use Google Drive/OneDrive and put the accessible viewer link in `submission/PRESENTATION.md`.
+The link for SIH presentation is as follows:
+[presentation](https://drive.google.com/file/d/1L7gKgEvSyIDqS0fG5OhOFgO_MFWGXOtl/view?usp=sharing)
 
 ## 9. Demo Video
 
-A demo video is **optional**, but recommended.
-
-Add the YouTube/Google Drive link in [submission/DEMO.md](submission/DEMO.md).
+[demo-video](https://drive.google.com/file/d/1EnS0QGpDIGhGzfqF7aX_yZfmO1pi1Qb4/view?usp=sharing)
 
 ## 10. Deployed Website Link
 [Demo Website](https://bis-saarthi.netlify.app/)
