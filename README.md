@@ -149,23 +149,31 @@ The link for SIH presentation is as follows:
 Homepage: 
 ![Homepage](assets/screenshots/01-home.jpeg)
 
+
 Standards page: 
 ![Standards](assets/screenshots/02-standards.jpeg)
+
 
 Certifications: 
 ![Certifications](assets/screenshots/03-certification.jpeg)
 
+
 Consumer:
 ![consumer](assets/screenshots/05-consumer.jpeg)
+
 
 AI_Chat: 
 ![ai_chat](assets/screenshots/06-ai_chat.jpeg)
 
+
 Lab:
 ![labs](assets/screenshots/07-labs.jpeg)
 
+
 Reports: 
 ![report](assets/screenshots/08-report.jpeg)
+
+
 
 ## 11. Installation
 
