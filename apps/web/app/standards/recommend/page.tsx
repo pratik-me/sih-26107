@@ -81,13 +81,12 @@ export default function FindMyStandardPage() {
 
   return (
     <div className="relative min-h-screen w-full bg-gradient-to-b from-white via-[#CAF0F8]/40 to-[#ADE8F4]/30 dark:from-slate-950 dark:via-[#03045E]/20 dark:to-[#03045E]/40 overflow-hidden">
-      {/* Ambient Light Blue Glows */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[850px] h-[320px] bg-[#90E0EF]/35 dark:bg-[#0077B6]/20 rounded-full blur-3xl pointer-events-none -z-10" />
       <div className="absolute top-1/3 right-10 w-96 h-96 bg-[#ADE8F4]/45 dark:bg-[#00B4D8]/15 rounded-full blur-3xl pointer-events-none -z-10" />
       <div className="absolute bottom-10 left-10 w-96 h-96 bg-[#CAF0F8]/55 dark:bg-[#03045E]/30 rounded-full blur-3xl pointer-events-none -z-10" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 space-y-8 relative z-10">
-        {/* Header Banner in Home Dark Blue Palette */}
+        {/* Header Banner */}
         <div className="relative p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-[#03045E] via-[#023E8A] to-[#0077B6] text-white shadow-xl shadow-[#03045E]/15 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 overflow-hidden border border-[#0077B6]/30">
           <div className="absolute -top-12 -right-12 w-80 h-80 bg-[#00B4D8]/20 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute -bottom-12 -left-12 w-80 h-80 bg-[#48CAE4]/15 rounded-full blur-3xl pointer-events-none" />
@@ -124,7 +123,7 @@ export default function FindMyStandardPage() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          {/* Left Form (5 cols) */}
+          {/* Left Form */}
           <div className="lg:col-span-5 bg-white/95 dark:bg-slate-900/90 backdrop-blur-md p-6 rounded-2xl border border-[#ADE8F4] dark:border-slate-800 shadow-md shadow-[#0077B6]/5 space-y-5">
             <div className="border-b border-slate-100 dark:border-slate-800 pb-3">
               <h2 className="text-base font-bold text-slate-900 dark:text-slate-100">
@@ -254,7 +253,7 @@ export default function FindMyStandardPage() {
           </form>
         </div>
 
-        {/* Right Results (7 cols) */}
+        {/* Right Results */}
         <div className="lg:col-span-7 space-y-4">
           <div className="flex items-center justify-between">
             <h2 className="text-base font-bold text-slate-900 dark:text-slate-100">

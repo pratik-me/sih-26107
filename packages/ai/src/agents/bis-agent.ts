@@ -52,11 +52,32 @@ export class BISSaarthiAgent {
     const provider = (process.env.LLM_PROVIDER || '').toLowerCase();
     if (provider === 'deterministic') return null;
 
+    const openrouterKey = process.env.OPENROUTER_API_KEY;
     const anthropicKey = process.env.ANTHROPIC_API_KEY;
     const openaiKey = process.env.OPENAI_API_KEY;
 
+    const hasValidOpenRouter = openrouterKey && !openrouterKey.includes('your_openrouter_api_key_here') && openrouterKey.trim().length > 10;
     const hasValidAnthropic = anthropicKey && !anthropicKey.includes('your_anthropic_api_key_here') && anthropicKey.trim().length > 10;
     const hasValidOpenAI = openaiKey && !openaiKey.includes('your_openai_api_key_here') && openaiKey.trim().length > 10;
+
+    if (provider === 'openrouter' || (hasValidOpenRouter && provider !== 'anthropic' && provider !== 'openai')) {
+      if (!hasValidOpenRouter) return null;
+      const siteUrl = process.env.OPENROUTER_SITE_URL || 'http://localhost:3000';
+      const siteName = process.env.OPENROUTER_SITE_NAME || 'BIS Saarthi';
+
+      return new ChatOpenAI({
+        modelName: process.env.OPENROUTER_MODEL || 'nvidia/nemotron-3-super-120b-a12b:free',
+        apiKey: openrouterKey,
+        configuration: {
+          baseURL: process.env.OPENROUTER_BASE_URL || 'https://openrouter.ai/api/v1',
+          defaultHeaders: {
+            'HTTP-Referer': siteUrl,
+            'X-Title': siteName
+          }
+        },
+        temperature: 0.5
+      }) as unknown as BaseChatModel;
+    }
 
     if (provider === 'anthropic' || (hasValidAnthropic && provider !== 'openai')) {
       if (!hasValidAnthropic) return null;
@@ -79,9 +100,6 @@ export class BISSaarthiAgent {
     return null;
   }
 
-  /**
-   * Classify user query intent into one of the specialized BIS domains.
-   */
   classifyIntent(query: string): QueryIntent {
     const q = query.toLowerCase();
 
@@ -116,10 +134,6 @@ export class BISSaarthiAgent {
     return QueryIntent.GENERAL_BIS_INFO;
   }
 
-  /**
-   * Multi-step Agent Execution using LangGraph StateGraph (when real model available)
-   * or single-tool intent execution (when deterministic mode active).
-   */
   async execute(query: string, preferredLanguage?: IndianLanguage): Promise<AgentExecutionResponse> {
     const detectedLang = preferredLanguage || (await this.languageEngine.detectLanguage(query));
     const { translatedText, preservedEntities } = await this.languageEngine.translateToEnglish(query, detectedLang);

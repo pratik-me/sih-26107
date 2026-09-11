@@ -66,13 +66,12 @@ function ComplianceReportsContent() {
 
   return (
     <div className="relative min-h-screen w-full bg-gradient-to-b from-[#03045E] via-[#023E8A] to-[#03045E] dark:from-slate-950 dark:via-[#03045E]/90 dark:to-slate-950 overflow-hidden text-white print:bg-white print:text-slate-900">
-      {/* Ambient Glowing Blobs (hidden in print) */}
       <div className="absolute top-12 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-[#00B4D8]/15 rounded-full blur-3xl pointer-events-none animate-pulse print:hidden" />
       <div className="absolute top-0 right-10 w-80 h-80 bg-[#0077B6]/20 rounded-full blur-3xl pointer-events-none print:hidden" />
       <div className="absolute bottom-0 left-10 w-80 h-80 bg-[#48CAE4]/15 rounded-full blur-3xl pointer-events-none print:hidden" />
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10 space-y-8 relative z-10 print:p-0">
-        {/* Top Action Bar in Dark Scheme (hidden in print) */}
+        {/* Top Action Bar */}
         <div className="flex items-center justify-between print:hidden">
           <div className="space-y-1">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 dark:bg-white/10 text-[#CAF0F8] text-xs font-semibold border border-[#48CAE4]/30 backdrop-blur-md shadow-2xs">
@@ -94,13 +93,12 @@ function ComplianceReportsContent() {
           </button>
         </div>
 
-        {/* Printable Report Document Card */}
+        {/* Printable Report Card */}
         <div className="p-8 sm:p-12 rounded-2xl bg-white dark:bg-slate-900 border border-white/20 dark:border-slate-800 shadow-2xl space-y-8 text-slate-900 dark:text-slate-100 print:border-none print:shadow-none print:p-0">
-        {/* Document Header with Ashoka Emblem Motif */}
+        {/* Document Header */}
         <div className="border-b-2 border-slate-900 dark:border-slate-100 pb-6 flex items-start justify-between">
           <div className="space-y-1">
             <div className="flex items-center gap-2 text-blue-800 dark:text-blue-400 font-bold text-xs uppercase tracking-wider">
-              {/* <AshokaMotif size={24} /> */}
               <Image src={"/BIS-LOGO.png"} alt='BIS-LOGO' height={24} width={24} />
               <span>Government Compliance Assessment Document</span>
             </div>
@@ -119,7 +117,7 @@ function ComplianceReportsContent() {
           </div>
         </div>
 
-        {/* 1. Product Profile */}
+        {/* Product Profile */}
         <div className="space-y-2">
           <h3 className="text-sm font-bold uppercase tracking-wider text-blue-800 dark:text-blue-400">
             1. Target Product Profile
@@ -138,7 +136,7 @@ function ComplianceReportsContent() {
           </div>
         </div>
 
-        {/* 2. Applicable Indian Standards */}
+        {/* Applicable Indian Standards */}
         <div className="space-y-2">
           <h3 className="text-sm font-bold uppercase tracking-wider text-blue-800 dark:text-blue-400">
             2. Applicable Indian Standards & QCO Mandates
@@ -160,7 +158,7 @@ function ComplianceReportsContent() {
           </div>
         </div>
 
-        {/* 3. Certification Scheme Overview */}
+        {/* Certification Scheme Overview */}
         <div className="space-y-2">
           <h3 className="text-sm font-bold uppercase tracking-wider text-blue-800 dark:text-blue-400">
             3. Applicable BIS Certification Scheme
@@ -175,7 +173,7 @@ function ComplianceReportsContent() {
           </div>
         </div>
 
-        {/* 4. Mandatory Testing Checklist */}
+        {/* Mandatory Testing Checklist */}
         <div className="space-y-2">
           <h3 className="text-sm font-bold uppercase tracking-wider text-blue-800 dark:text-blue-400">
             4. Mandatory Testing Requirements & Sampling Criteria
@@ -208,7 +206,7 @@ function ComplianceReportsContent() {
           </div>
         </div>
 
-        {/* 5. Accredited Laboratories */}
+        {/* Accredited Laboratories */}
         <div className="space-y-2">
           <h3 className="text-sm font-bold uppercase tracking-wider text-blue-800 dark:text-blue-400">
             5. Recommended Testing Laboratories
@@ -228,7 +226,7 @@ function ComplianceReportsContent() {
           </div>
         </div>
 
-        {/* 6. Documentation Checklist */}
+        {/* Documentation Checklist */}
         <div className="space-y-2">
           <h3 className="text-sm font-bold uppercase tracking-wider text-blue-800 dark:text-blue-400">
             6. Statutory Documentation Checklist
@@ -243,7 +241,7 @@ function ComplianceReportsContent() {
           </div>
         </div>
 
-        {/* 7. Pitfalls & Warnings */}
+        {/* Warnings */}
         <div className="p-4 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 text-xs space-y-2">
           <h4 className="font-bold text-amber-900 dark:text-amber-200 flex items-center gap-1.5">
             <AlertTriangle className="w-4 h-4 text-amber-600" /> Key Statutory Compliance Pitfalls to Avoid:
@@ -255,7 +253,7 @@ function ComplianceReportsContent() {
           </ul>
         </div>
 
-        {/* Disclaimer Footer */}
+        {/* Footer */}
         <div className="pt-6 border-t border-slate-200 dark:border-slate-800 text-[11px] text-slate-500 space-y-1 leading-relaxed">
           <div className="flex items-center gap-1.5 font-bold text-slate-700 dark:text-slate-300">
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />

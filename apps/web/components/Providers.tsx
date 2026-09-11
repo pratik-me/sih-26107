@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { TooltipProvider } from '@radix-ui/react-tooltip';
+import { LanguageProvider } from '../context/LanguageContext';
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(
@@ -10,16 +11,20 @@ export function Providers({ children }: { children: React.ReactNode }) {
       new QueryClient({
         defaultOptions: {
           queries: {
-            staleTime: 1000 * 60 * 5, // 5 minutes cache
+            staleTime: 1000 * 60 * 5, // 5 mins cache
             refetchOnWindowFocus: false
           }
         }
       })
   );
 
-  return <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      {children}
-    </TooltipProvider>
-  </QueryClientProvider>;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <LanguageProvider>
+        <TooltipProvider>
+          {children}
+        </TooltipProvider>
+      </LanguageProvider>
+    </QueryClientProvider>
+  );
 }

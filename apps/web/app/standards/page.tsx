@@ -54,13 +54,11 @@ export default function StandardsCatalogPage() {
 
   return (
     <div className="relative min-h-screen w-full bg-gradient-to-b from-[#03045E] via-[#023E8A] to-[#03045E] dark:from-slate-950 dark:via-[#03045E]/90 dark:to-slate-950 overflow-hidden text-white">
-      {/* Ambient Glowing Blobs */}
       <div className="absolute top-12 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-[#00B4D8]/15 rounded-full blur-3xl pointer-events-none animate-pulse" />
       <div className="absolute top-0 right-10 w-80 h-80 bg-[#0077B6]/20 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 left-10 w-80 h-80 bg-[#48CAE4]/15 rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 space-y-8 relative z-10">
-        {/* Header in Dark Scheme */}
         <div className="space-y-2">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 dark:bg-white/10 text-[#CAF0F8] text-xs font-semibold border border-[#48CAE4]/30 backdrop-blur-md shadow-2xs">
             <BookOpen className="w-3.5 h-3.5 text-[#48CAE4]" />
@@ -95,7 +93,7 @@ export default function StandardsCatalogPage() {
             </button>
           </form>
 
-          {/* Division Pills & Mandatory Filter */}
+          {/* Division & Mandatory Filter */}
           <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-100 dark:border-slate-800 text-xs">
             <div className="flex flex-wrap items-center gap-1.5">
               <span className="font-semibold text-slate-500 dark:text-slate-400 mr-1 flex items-center gap-1">

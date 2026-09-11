@@ -4,7 +4,8 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { UserRole } from "@bis/shared-types";
-import { AshokaMotif, ModeSelector } from "@bis/ui";
+import { ModeSelector } from "@bis/ui";
+import { useLanguage } from "../context/LanguageContext";
 import {
   Search,
   Sparkles,
@@ -14,7 +15,6 @@ import {
   Award,
   FlaskConical,
   Building2,
-  CheckCircle2,
   FileCheck2,
   Scale,
   Compass,
@@ -22,6 +22,7 @@ import {
 
 export default function LandingPage() {
   const router = useRouter();
+  const { language, t, dictionary } = useLanguage();
   const [searchQuery, setSearchQuery] = useState("");
   const [currentMode, setCurrentMode] = useState<UserRole>(UserRole.INDUSTRY);
 
@@ -35,53 +36,32 @@ export default function LandingPage() {
     }
   > = {
     [UserRole.INDUSTRY]: {
-      label: "Industry / MSME",
-      placeholder: "Ask about product standards, Scheme I/CRS certification, lab testing, or clauses...",
-      accentBadge: "text-[#023E8A] dark:text-[#90E0EF] bg-[#CAF0F8]/80 dark:bg-[#03045E]/60 border-[#ADE8F4] dark:border-[#023E8A]",
-      prompts: [
-        "I manufacture stainless steel water bottles. Which standard applies?",
-        "Do I need BIS certification for Lithium-ion power banks?",
-        "What tests are required for TMT steel bars under IS 1786?",
-        "What is the factory audit and sample testing process for Scheme-I?",
-        "FMCS guidelines for foreign manufacturers exporting to India",
-        "Required lab testing equipment for IS 302 electrical appliances",
-      ],
+      label: dictionary.modes.industry.label,
+      placeholder: dictionary.modes.industry.placeholder,
+      accentBadge:
+        "text-[#023E8A] dark:text-[#90E0EF] bg-[#CAF0F8]/80 dark:bg-[#03045E]/60 border-[#ADE8F4] dark:border-[#023E8A]",
+      prompts: dictionary.modes.industry.prompts,
     },
     [UserRole.CONSUMER]: {
-      label: "Consumer",
-      placeholder: "Check gold hallmark HUID, verify ISI mark authenticity, consumer grievance...",
-      accentBadge: "text-[#0077B6] dark:text-[#48CAE4] bg-[#ADE8F4]/60 dark:bg-[#023E8A]/50 border-[#90E0EF] dark:border-[#0077B6]",
-      prompts: [
-        "How do I verify a gold jewellery hallmark with 6-digit HUID?",
-        "How can I check whether an ISI mark on packaged water is genuine?",
-        "How to file a consumer grievance against defective ISI certified goods?",
-        "Differenciate between BIS Hallmark and 916 purity mark.",
-        "Is BIS registration mandatory for smart phones?",
-        "How to verify R-number on electronics under CRS scheme?",
-      ],
+      label: dictionary.modes.consumer.label,
+      placeholder: dictionary.modes.consumer.placeholder,
+      accentBadge:
+        "text-[#0077B6] dark:text-[#48CAE4] bg-[#ADE8F4]/60 dark:bg-[#023E8A]/50 border-[#90E0EF] dark:border-[#0077B6]",
+      prompts: dictionary.modes.consumer.prompts,
     },
     [UserRole.STUDENT_RESEARCHER]: {
-      label: "Student / Researcher",
-      placeholder: "Search standard clauses, comparative analysis, test formulas, or NBC codes...",
-      accentBadge: "text-[#0096C7] dark:text-[#CAF0F8] bg-[#90E0EF]/50 dark:bg-[#0077B6]/40 border-[#48CAE4] dark:border-[#0096C7]",
-      prompts: [
-        "Explain IS 10500 Clause 4.2 drinking water TDS & heavy metal limits",
-        "Comparative analysis between IS 456 standards and Eurocode 2",
-        "What are the latest amendments to NBC 2016?",
-        "Search technical clauses for tensile and elongation requirements in IS 2062",
-        "Evolution of energy efficiency and BEE star rating test protocols in IS 1391",
-        "Standard testing methods for cement compressive strength under IS 4031",
-      ],
+      label: dictionary.modes.student.label,
+      placeholder: dictionary.modes.student.placeholder,
+      accentBadge:
+        "text-[#0096C7] dark:text-[#CAF0F8] bg-[#90E0EF]/50 dark:bg-[#0077B6]/40 border-[#48CAE4] dark:border-[#0096C7]",
+      prompts: dictionary.modes.student.prompts,
     },
     [UserRole.ADMIN]: {
-      label: "Admin & Regulatory",
-      placeholder: "Search standards, schemes, reports, or administrative guidelines...",
-      accentBadge: "text-[#03045E] dark:text-[#ADE8F4] bg-[#CAF0F8]/50 dark:bg-slate-800 border-[#ADE8F4] dark:border-slate-700",
-      prompts: [
-        "What are the active Quality Control Orders (QCOs) in effect?",
-        "Audit compliance checklist for BIS recognized testing laboratories",
-        "Standards revision roadmap and committee review process",
-      ],
+      label: dictionary.modes.admin.label,
+      placeholder: dictionary.modes.admin.placeholder,
+      accentBadge:
+        "text-[#03045E] dark:text-[#ADE8F4] bg-[#CAF0F8]/50 dark:bg-slate-800 border-[#ADE8F4] dark:border-slate-700",
+      prompts: dictionary.modes.admin.prompts,
     },
   };
 
@@ -92,44 +72,38 @@ export default function LandingPage() {
     e.preventDefault();
     if (searchQuery.trim()) {
       router.push(
-        `/chat?q=${encodeURIComponent(searchQuery.trim())}&role=${currentMode}`,
+        `/chat?q=${encodeURIComponent(searchQuery.trim())}&role=${currentMode}&lang=${language}`,
       );
     }
   };
 
   const handlePromptClick = (prompt: string) => {
-    router.push(`/chat?q=${encodeURIComponent(prompt)}&role=${currentMode}`);
+    router.push(`/chat?q=${encodeURIComponent(prompt)}&role=${currentMode}&lang=${language}`);
   };
 
   return (
     <div className="flex flex-col min-h-full">
-      {/* Hero Section with White-to-Blue Gradient */}
       <section className="relative w-full bg-gradient-to-b from-white via-[#CAF0F8]/50 to-[#ADE8F4]/60 dark:from-slate-950 dark:via-[#03045E]/20 dark:to-[#03045E]/40 overflow-hidden">
-        {/* Ambient Light Blue Glows concentrated towards bottom */}
         <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[850px] h-[320px] bg-[#90E0EF]/35 dark:bg-[#0077B6]/20 rounded-full blur-3xl pointer-events-none -z-10" />
         <div className="absolute -bottom-10 right-10 w-96 h-96 bg-[#ADE8F4]/45 dark:bg-[#00B4D8]/15 rounded-full blur-3xl pointer-events-none -z-10" />
         <div className="absolute -bottom-10 left-10 w-96 h-96 bg-[#CAF0F8]/55 dark:bg-[#03045E]/30 rounded-full blur-3xl pointer-events-none -z-10" />
 
         <div className="relative pt-12 pb-20 px-4 sm:px-6 max-w-7xl mx-auto w-full text-center">
-          {/* Main Headline */}
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-900 dark:text-slate-100 tracking-tight leading-tight max-w-4xl mx-auto">
-            Your AI Assistant for{" "}
+            {t("hero.headline", "Your AI Assistant for")}{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#03045E] via-[#0077B6] to-[#00B4D8] dark:from-[#90E0EF] dark:via-[#48CAE4] dark:to-[#00B4D8]">
-              Indian Standards & BIS Services
+              {t("hero.headlineHighlight", "Indian Standards & BIS Services")}
             </span>
           </h1>
 
           <p className="mt-4 text-base sm:text-lg text-slate-700 dark:text-slate-300 max-w-2xl mx-auto leading-relaxed font-medium">
-            Find the right standard. Understand certification schemes. Verify
-            hallmarking and test clauses with evidence-backed, zero-hallucination
-            AI.
+            {t("hero.subheadline", "Find the right standard. Understand certification schemes. Verify hallmarking and test clauses with evidence-backed, zero-hallucination AI.")}
           </p>
 
-          {/* User Mode Selector */}
           <div className="mt-8 max-w-3xl mx-auto text-left">
             <div className="flex items-center justify-between mb-2">
               <span className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
-                Select Your Profile Mode:
+                {t("hero.selectProfileMode", "Select Your Profile Mode:")}
               </span>
             </div>
             <ModeSelector
@@ -138,7 +112,7 @@ export default function LandingPage() {
             />
           </div>
 
-          {/* Central Search Box */}
+          {/* Search Box */}
           <form onSubmit={handleSearchSubmit} className="mt-8 max-w-3xl mx-auto">
             <div className="relative flex items-center bg-white/95 dark:bg-slate-900/90 backdrop-blur-md rounded-2xl border-2 border-[#ADE8F4] dark:border-slate-700 shadow-xl shadow-[#0077B6]/10 hover:border-[#0077B6] focus-within:border-[#023E8A] transition-all p-2">
               <Search className="w-5 h-5 text-slate-400 ml-3 shrink-0" />
@@ -155,17 +129,17 @@ export default function LandingPage() {
                 suppressHydrationWarning
                 className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-gradient-to-r from-[#023E8A] via-[#0077B6] to-[#0096C7] hover:from-[#03045E] hover:to-[#023E8A] text-white shadow-md shadow-[#0077B6]/25 transition-all shrink-0 cursor-pointer"
               >
-                <span>Ask AI</span>
+                <span>{t("hero.askAiButton", "Ask AI")}</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
           </form>
 
-          {/* Suggested Prompts */}
+          {/* Suggested Queries */}
           <div className="mt-6 max-w-3xl mx-auto text-left">
             <div className="flex items-center justify-between mb-2">
               <span className="text-xs font-semibold text-slate-600 dark:text-slate-400 flex items-center gap-1.5">
-                Suggested queries for:
+                {t("hero.suggestedQueriesFor", "Suggested queries for:")}
                 <span
                   className={`inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold border ${currentModeConfig.accentBadge} transition-all duration-300`}
                 >
@@ -174,7 +148,7 @@ export default function LandingPage() {
               </span>
             </div>
             <div
-              key={currentMode}
+              key={`${currentMode}-${language}`}
               className="flex flex-wrap gap-2 transition-all duration-300"
             >
               {currentModeConfig.prompts.map((prompt, idx) => (
@@ -195,25 +169,22 @@ export default function LandingPage() {
 
       {/* Feature Cards Grid */}
       <section className="relative py-20 bg-gradient-to-b from-[#03045E] via-[#023E8A] to-[#03045E] border-y border-[#0077B6]/30 px-4 sm:px-6 overflow-hidden">
-        {/* Ambient Glowing Blobs / Backdrop Effects */}
         <div className="absolute top-12 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-[#00B4D8]/15 rounded-full blur-3xl pointer-events-none animate-pulse" />
         <div className="absolute top-0 right-10 w-80 h-80 bg-[#0077B6]/20 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 left-10 w-80 h-80 bg-[#48CAE4]/15 rounded-full blur-3xl pointer-events-none" />
 
         <div className="relative max-w-7xl mx-auto">
-          {/* Header Box with Badge and Animated Typography */}
           <div className="text-center max-w-3xl mx-auto mb-14">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight">
-              Comprehensive{" "}
+              {t("features.sectionTitlePrefix", "Comprehensive")}{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#CAF0F8] via-[#48CAE4] to-[#00B4D8] drop-shadow-sm">
-                Bureau of Indian Standards
+                {t("features.sectionTitleHighlight", "Bureau of Indian Standards")}
               </span>{" "}
-              Intelligence
+              {t("features.sectionTitleSuffix", "Intelligence")}
             </h2>
 
             <p className="mt-3 text-sm sm:text-base text-[#ADE8F4]/90 max-w-2xl mx-auto leading-relaxed font-normal">
-              Structured modules for manufacturers, compliance officers,
-              consumers, and research scholars.
+              {t("features.sectionSubtitle", "Structured modules for manufacturers, compliance officers, consumers, and research scholars.")}
             </p>
           </div>
 
@@ -221,11 +192,11 @@ export default function LandingPage() {
             {[
               {
                 href: "/standards/recommend",
-                title: "Find My Standard Workflow",
-                badge: "AI Profiler",
-                tag: "Product Matching",
-                desc: "Step-by-step product profiler matching your product's material, intended application, and specifications to applicable Indian Standards with relevance metrics.",
-                action: "Start Profiler →",
+                title: dictionary.features.cards.findStandard.title,
+                badge: dictionary.features.cards.findStandard.badge,
+                tag: dictionary.features.cards.findStandard.tag,
+                desc: dictionary.features.cards.findStandard.desc,
+                action: dictionary.features.cards.findStandard.action,
                 icon: Compass,
                 iconBg: "bg-gradient-to-br from-[#03045E] to-[#023E8A]",
                 ring: "ring-[#0077B6]/30",
@@ -236,11 +207,11 @@ export default function LandingPage() {
               },
               {
                 href: "/certification",
-                title: "Certification Schemes & Roadmap",
-                badge: "ISI & CRS",
-                tag: "Audit & FMCS",
-                desc: "Navigate Scheme I (ISI Mark), Scheme II (CRS), Scheme IV (CoC), and FMCS. Understand timelines, documentation checklists, and factory audit rules.",
-                action: "Explore Schemes →",
+                title: dictionary.features.cards.certification.title,
+                badge: dictionary.features.cards.certification.badge,
+                tag: dictionary.features.cards.certification.tag,
+                desc: dictionary.features.cards.certification.desc,
+                action: dictionary.features.cards.certification.action,
                 icon: Award,
                 iconBg: "bg-gradient-to-br from-[#023E8A] to-[#0077B6]",
                 ring: "ring-[#0096C7]/30",
@@ -251,11 +222,11 @@ export default function LandingPage() {
               },
               {
                 href: "/testing",
-                title: "Testing Requirements & Clauses",
-                badge: "Clauses",
-                tag: "Sampling Schedules",
-                desc: "Detailed acceptance criteria, sampling rules, testing frequencies, and required testing equipment directly cited from Indian Standards.",
-                action: "Inspect Test Schedules →",
+                title: dictionary.features.cards.testing.title,
+                badge: dictionary.features.cards.testing.badge,
+                tag: dictionary.features.cards.testing.tag,
+                desc: dictionary.features.cards.testing.desc,
+                action: dictionary.features.cards.testing.action,
                 icon: FlaskConical,
                 iconBg: "bg-gradient-to-br from-[#0077B6] to-[#0096C7]",
                 ring: "ring-[#00B4D8]/30",
@@ -266,11 +237,11 @@ export default function LandingPage() {
               },
               {
                 href: "/laboratories",
-                title: "BIS Recognized Laboratories Finder",
-                badge: "Lab Network",
-                tag: "NABL & BIS Facilities",
-                desc: "Filter recognized NABL and BIS testing facilities by Indian Standard number, product category, test capability, state, and city.",
-                action: "Locate Accredited Lab →",
+                title: dictionary.features.cards.labs.title,
+                badge: dictionary.features.cards.labs.badge,
+                tag: dictionary.features.cards.labs.tag,
+                desc: dictionary.features.cards.labs.desc,
+                action: dictionary.features.cards.labs.action,
                 icon: Building2,
                 iconBg: "bg-gradient-to-br from-[#0096C7] to-[#00B4D8]",
                 ring: "ring-[#48CAE4]/30",
@@ -281,11 +252,11 @@ export default function LandingPage() {
               },
               {
                 href: "/hallmarking",
-                title: "Gold & Silver Hallmarking Assistant",
-                badge: "HUID Check",
-                tag: "Purity & Assaying",
-                desc: "Understand 22K (916), 18K (750), and 14K (585) purity. Verify 6-digit alphanumeric HUID codes and locate recognized Assaying & Hallmarking Centres.",
-                action: "Hallmarking Guidance →",
+                title: dictionary.features.cards.hallmarking.title,
+                badge: dictionary.features.cards.hallmarking.badge,
+                tag: dictionary.features.cards.hallmarking.tag,
+                desc: dictionary.features.cards.hallmarking.desc,
+                action: dictionary.features.cards.hallmarking.action,
                 icon: Sparkles,
                 iconBg: "bg-gradient-to-br from-[#00B4D8] to-[#48CAE4]",
                 ring: "ring-[#90E0EF]/40",
@@ -296,11 +267,11 @@ export default function LandingPage() {
               },
               {
                 href: "/consumer",
-                title: "Consumer Protection & ISI Check",
-                badge: "Verify & Report",
-                tag: "Grievance Redressal",
-                desc: "Verify genuine ISI Mark CM/L licence numbers, spot counterfeit marks with our visual checklist, and learn grievance redressal steps.",
-                action: "Consumer Hub →",
+                title: dictionary.features.cards.consumer.title,
+                badge: dictionary.features.cards.consumer.badge,
+                tag: dictionary.features.cards.consumer.tag,
+                desc: dictionary.features.cards.consumer.desc,
+                action: dictionary.features.cards.consumer.action,
                 icon: ShieldCheck,
                 iconBg: "bg-gradient-to-br from-[#03045E] to-[#0077B6]",
                 ring: "ring-[#0077B6]/30",
@@ -317,13 +288,12 @@ export default function LandingPage() {
                   href={card.href}
                   className="group relative p-5 sm:p-6 rounded-2xl border border-white/20 dark:border-slate-800/90 bg-white/95 dark:bg-slate-900/90 shadow-md hover:shadow-2xl hover:shadow-[#00B4D8]/20 hover:border-[#48CAE4] dark:hover:border-[#0077B6] hover:bg-gradient-to-br hover:from-white hover:via-[#CAF0F8]/30 hover:to-[#ADE8F4]/20 dark:hover:from-[#03045E]/40 dark:hover:via-[#023E8A]/20 dark:hover:to-slate-900 hover:-translate-y-1.5 transition-all duration-300 ease-out overflow-hidden flex flex-col justify-between cursor-pointer backdrop-blur-sm"
                 >
-                  {/* Top Glowing Accent Line */}
                   <div
                     className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${card.bar} opacity-70 group-hover:opacity-100 group-hover:h-1.5 transition-all duration-300`}
                   />
 
                   <div>
-                    {/* Top Row: Icon + Title + Status Pill Badge */}
+                    {/* Top Row */}
                     <div className="flex items-start justify-between gap-3 mb-3">
                       <div className="flex items-center gap-3">
                         <span
@@ -348,7 +318,7 @@ export default function LandingPage() {
                     </p>
                   </div>
 
-                  {/* Bottom Divider: Category Tag + Action CTA */}
+                  {/* Bottom Divider */}
                   <div className="mt-5 pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between">
                     <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
                       <span
@@ -367,9 +337,8 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* "How it Works" Architecture Pipeline with Light Blue Shade Backdrop */}
+      {/* "How it Works" Pipeline */}
       <section className="relative py-20 bg-gradient-to-b from-[#CAF0F8]/50 via-[#ADE8F4]/25 to-[#CAF0F8]/40 dark:from-[#03045E]/30 dark:via-[#023E8A]/15 dark:to-[#03045E]/30 border-y border-[#ADE8F4] dark:border-slate-800 px-4 sm:px-6 w-full overflow-hidden">
-        {/* Ambient Light Blue Glowing Blobs */}
         <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-96 h-96 bg-[#90E0EF]/30 dark:bg-[#0077B6]/15 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-96 h-96 bg-[#48CAE4]/20 dark:bg-[#00B4D8]/10 rounded-full blur-3xl pointer-events-none" />
 
@@ -377,15 +346,15 @@ export default function LandingPage() {
           <div className="text-center max-w-2xl mx-auto mb-14">
             <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/90 dark:bg-[#03045E]/60 text-[#023E8A] dark:text-[#90E0EF] text-xs font-bold mb-3.5 border border-[#ADE8F4] dark:border-[#0077B6]/30 shadow-xs backdrop-blur-sm">
               <Sparkles className="w-3.5 h-3.5 text-[#0077B6] dark:text-[#48CAE4]" />
-              <span>Architecture & Verification Pipeline</span>
+              <span>{t("pipeline.badge", "Architecture & Verification Pipeline")}</span>
             </div>
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 dark:text-slate-100 tracking-tight">
-              How BIS Saarthi Works
+              {t("pipeline.title", "How BIS Saarthi Works")}
             </h2>
             <p className="mt-2.5 text-sm sm:text-base text-slate-700 dark:text-slate-300 font-medium">
-              Strict adherence to{" "}
+              {t("pipeline.subtitle", "Strict adherence to")}{" "}
               <span className="font-bold text-[#0077B6] dark:text-[#48CAE4]">
-                "Retrieve First → Reason Second → Cite Everything"
+                "{t("pipeline.motto", "Retrieve First → Reason Second → Cite Everything")}"
               </span>
             </p>
           </div>
@@ -394,32 +363,32 @@ export default function LandingPage() {
             {[
               {
                 step: "1",
-                title: "Ask Query",
-                desc: "Query in English, Hindi, or any of 22 Scheduled Indian Languages.",
+                title: dictionary.pipeline.steps.s1.title,
+                desc: dictionary.pipeline.steps.s1.desc,
                 icon: Search,
               },
               {
                 step: "2",
-                title: "Retrieve",
-                desc: "Hybrid BM25 + Vector semantic search across BIS repository.",
+                title: dictionary.pipeline.steps.s2.title,
+                desc: dictionary.pipeline.steps.s2.desc,
                 icon: BookOpen,
               },
               {
                 step: "3",
-                title: "Verify",
-                desc: "Cross-encoder reranking & source freshness verification.",
+                title: dictionary.pipeline.steps.s3.title,
+                desc: dictionary.pipeline.steps.s3.desc,
                 icon: ShieldCheck,
               },
               {
                 step: "4",
-                title: "Explain",
-                desc: "Clear plain-language guidance distinguished from statutory clauses.",
+                title: dictionary.pipeline.steps.s4.title,
+                desc: dictionary.pipeline.steps.s4.desc,
                 icon: FileCheck2,
               },
               {
                 step: "5",
-                title: "Cite",
-                desc: "Every claim traceable to standard number, clause, page, and link.",
+                title: dictionary.pipeline.steps.s5.title,
+                desc: dictionary.pipeline.steps.s5.desc,
                 icon: Scale,
               },
             ].map((item) => {
@@ -452,26 +421,24 @@ export default function LandingPage() {
           <div className="space-y-2">
             <div className="flex items-center gap-2 text-[#48CAE4] font-bold text-sm">
               <ShieldCheck className="w-5 h-5 text-[#90E0EF]" />
-              <span className="tracking-wide">Zero Hallucination Operational Standard</span>
+              <span className="tracking-wide">{t("trustBanner.tag", "Zero Hallucination Operational Standard")}</span>
             </div>
             <h3 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
-              Trusted by MSMEs, Compliance Teams & Citizens
+              {t("trustBanner.title", "Trusted by MSMEs, Compliance Teams & Citizens")}
             </h3>
             <p className="text-xs sm:text-sm text-[#CAF0F8]/90 max-w-xl leading-relaxed">
-              BIS Saarthi never invents Indian Standard numbers, test
-              clauses, or lab recognition statuses. If official evidence is not
-              available in the database, the system will explicitly state that
-              the requirement cannot be verified.
+              {t("trustBanner.desc", "BIS Saarthi never invents Indian Standard numbers, test clauses, or lab recognition statuses. If official evidence is not available in the database, the system will explicitly state that the requirement cannot be verified.")}
             </p>
           </div>
           <Link
             href="/chat"
             className="px-6 py-3.5 rounded-xl text-sm font-bold bg-gradient-to-r from-[#0096C7] via-[#00B4D8] to-[#48CAE4] hover:from-[#0077B6] hover:to-[#00B4D8] text-slate-950 hover:text-white shadow-lg shadow-[#03045E]/40 transition-all shrink-0 hover:scale-105 active:scale-95"
           >
-            Launch AI Workspace →
+            {t("trustBanner.cta", "Launch AI Workspace →")}
           </Link>
         </div>
       </section>
     </div>
   );
 }
+

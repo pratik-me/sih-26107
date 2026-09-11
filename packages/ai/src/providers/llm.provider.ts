@@ -1,11 +1,16 @@
-import { Citation, ConfidenceLevel, Evidence, GroundingValidationResult } from '@bis/shared-types';
-import { ChatAnthropic } from '@langchain/anthropic';
-import { ChatOpenAI } from '@langchain/openai';
-import { BaseChatModel } from '@langchain/core/language_models/chat_models';
-import { SystemMessage, HumanMessage } from '@langchain/core/messages';
-import { BIS_SYSTEM_PROMPT } from '../prompts/bis-prompts';
-import { GroundingValidator } from '../grounding/grounding-validator';
-import { CitationBuilder } from '../citations/citation-builder';
+import {
+  Citation,
+  ConfidenceLevel,
+  Evidence,
+  GroundingValidationResult,
+} from "@bis/shared-types";
+import { ChatAnthropic } from "@langchain/anthropic";
+import { ChatOpenAI } from "@langchain/openai";
+import { BaseChatModel } from "@langchain/core/language_models/chat_models";
+import { SystemMessage, HumanMessage } from "@langchain/core/messages";
+import { BIS_SYSTEM_PROMPT } from "../prompts/bis-prompts";
+import { GroundingValidator } from "../grounding/grounding-validator";
+import { CitationBuilder } from "../citations/citation-builder";
 
 export interface LLMGenerateOptions {
   temperature?: number;
@@ -24,12 +29,16 @@ export interface LLMGenerateResult {
 
 export interface ILLMProvider {
   name: string;
-  generateText(prompt: string, contextEvidence: Evidence[], options?: LLMGenerateOptions): Promise<LLMGenerateResult>;
+  generateText(
+    prompt: string,
+    contextEvidence: Evidence[],
+    options?: LLMGenerateOptions,
+  ): Promise<LLMGenerateResult>;
   streamText(
     prompt: string,
     contextEvidence: Evidence[],
     onChunk: (chunk: string) => void,
-    options?: LLMGenerateOptions
+    options?: LLMGenerateOptions,
   ): Promise<LLMGenerateResult>;
 }
 
@@ -39,21 +48,30 @@ export interface ILLMProvider {
  * Operates offline or as a fallback, generating accurate, structured, grounded responses.
  */
 export class DeterministicBISLLMProvider implements ILLMProvider {
-  name = 'deterministic-bis-grounded';
+  name = "deterministic-bis-grounded";
 
-  async generateText(prompt: string, contextEvidence: Evidence[], _options?: LLMGenerateOptions): Promise<LLMGenerateResult> {
-    const trimmed = (prompt || '').trim().toLowerCase();
-    const isGreeting = /^(hi|hello|hey|namaste|namaskar|greetings|good\s*(morning|afternoon|evening)|help|who\s*are\s*you|what\s*can\s*you\s*do|start)[\s!?.]*$/i.test(trimmed) || (trimmed.length <= 5 && !/\d/.test(trimmed));
+  async generateText(
+    prompt: string,
+    contextEvidence: Evidence[],
+    _options?: LLMGenerateOptions,
+  ): Promise<LLMGenerateResult> {
+    const trimmed = (prompt || "").trim().toLowerCase();
+    const isGreeting =
+      /^(hi|hello|hey|namaste|namaskar|greetings|good\s*(morning|afternoon|evening)|help|who\s*are\s*you|what\s*can\s*you\s*do|start)[\s!?.]*$/i.test(
+        trimmed,
+      ) ||
+      (trimmed.length <= 5 && !/\d/.test(trimmed));
 
     if (!contextEvidence || contextEvidence.length === 0) {
       if (isGreeting) {
-        const greetingText = `Hello! 👋 I am **BIS Saarthi**, your official AI-powered Intelligent Assistant for Indian Standards and Bureau of Indian Standards (BIS) services.\n\n` +
+        const greetingText =
+          `Hello! 👋 I am **BIS Saarthi**, your official AI-powered Intelligent Assistant for Indian Standards and Bureau of Indian Standards (BIS) services.\n\n` +
           `Here are the core areas I can help you with:\n\n` +
-          `1. 📌 **Find My Standard**: Discover which Indian Standard (IS) applies to your product, material grade, or industrial category.\n` +
-          `2. 📜 **Certification Schemes & Roadmap**: Navigate ISI Mark (Scheme I), Compulsory Registration Scheme (CRS / Scheme II), and FMCS step-by-step.\n` +
-          `3. 🔬 **Testing & Laboratories**: View routine and type test requirements, sampling guidelines, and locate recognized NABL/BIS testing laboratories.\n` +
-          `4. 🏅 **Gold & Silver Hallmarking**: Understand 24K, 22K (916), and 18K purity marks, verify 6-digit HUID codes, and check statutory consumer guarantees.\n` +
-          `5. 🛡️ **Consumer Protection**: Verify authentic 7/8-digit CM/L licence numbers and check for counterfeit ISI marks.\n\n` +
+          `1. **Find My Standard**: Discover which Indian Standard (IS) applies to your product, material grade, or industrial category.\n` +
+          `2. **Certification Schemes & Roadmap**: Navigate ISI Mark (Scheme I), Compulsory Registration Scheme (CRS / Scheme II), and FMCS step-by-step.\n` +
+          `3. **Testing & Laboratories**: View routine and type test requirements, sampling guidelines, and locate recognized NABL/BIS testing laboratories.\n` +
+          `4. **Gold & Silver Hallmarking**: Understand 24K, 22K (916), and 18K purity marks, verify 6-digit HUID codes, and check statutory consumer guarantees.\n` +
+          `5. **Consumer Protection**: Verify authentic 7/8-digit CM/L licence numbers and check for counterfeit ISI marks.\n\n` +
           `What product, standard, or service would you like to explore today?`;
 
         return {
@@ -66,8 +84,10 @@ export class DeterministicBISLLMProvider implements ILLMProvider {
             unsupportedClaimsCount: 0,
             confidenceScore: 1.0,
             confidenceLevel: ConfidenceLevel.HIGH,
-            groundingDetails: [{ claim: 'General BIS Saarthi introduction', isSupported: true }]
-          }
+            groundingDetails: [
+              { claim: "General BIS Saarthi introduction", isSupported: true },
+            ],
+          },
         };
       }
 
@@ -81,13 +101,17 @@ export class DeterministicBISLLMProvider implements ILLMProvider {
           unsupportedClaimsCount: 0,
           confidenceScore: 0.2,
           confidenceLevel: ConfidenceLevel.LOW,
-          groundingDetails: []
-        }
+          groundingDetails: [],
+        },
       };
     }
 
     const citations: Citation[] = [];
-    const supportedClaims: Array<{ claim: string; isSupported: boolean; supportingEvidenceId?: string }> = [];
+    const supportedClaims: Array<{
+      claim: string;
+      isSupported: boolean;
+      supportingEvidenceId?: string;
+    }> = [];
 
     contextEvidence.forEach((ev, idx) => {
       citations.push({
@@ -97,13 +121,13 @@ export class DeterministicBISLLMProvider implements ILLMProvider {
         section: ev.section,
         page: ev.page,
         sourceUrl: ev.sourceUrl,
-        snippet: ev.excerpt.slice(0, 140) + '...',
-        evidenceId: ev.id
+        snippet: ev.excerpt.slice(0, 140) + "...",
+        evidenceId: ev.id,
       });
     });
 
     const primaryEvidence = contextEvidence[0];
-    const isOutdated = contextEvidence.some(e => e.isOutdated);
+    const isOutdated = contextEvidence.some((e) => e.isOutdated);
 
     let answer = `Relevant Indian Standard Assessment\n\n`;
     answer += `Based on the official Bureau of Indian Standards documentation, the applicable standard is **${primaryEvidence.standardNumber}** (*${primaryEvidence.documentTitle}*) [1].\n\n`;
@@ -115,7 +139,7 @@ export class DeterministicBISLLMProvider implements ILLMProvider {
       supportedClaims.push({
         claim: `Clause ${ev.clause} requirement from ${ev.standardNumber}`,
         isSupported: true,
-        supportingEvidenceId: ev.id
+        supportingEvidenceId: ev.id,
       });
     });
 
@@ -138,8 +162,8 @@ export class DeterministicBISLLMProvider implements ILLMProvider {
         unsupportedClaimsCount: 0,
         confidenceScore: 0.95,
         confidenceLevel: ConfidenceLevel.HIGH,
-        groundingDetails: supportedClaims
-      }
+        groundingDetails: supportedClaims,
+      },
     };
   }
 
@@ -147,54 +171,93 @@ export class DeterministicBISLLMProvider implements ILLMProvider {
     prompt: string,
     contextEvidence: Evidence[],
     onChunk: (chunk: string) => void,
-    options?: LLMGenerateOptions
+    options?: LLMGenerateOptions,
   ): Promise<LLMGenerateResult> {
     const result = await this.generateText(prompt, contextEvidence, options);
-    const chunks = result.text.split(' ');
+    const chunks = result.text.split(" ");
     for (const word of chunks) {
-      onChunk(word + ' ');
-      await new Promise(r => setTimeout(r, 12));
+      onChunk(word + " ");
+      await new Promise((r) => setTimeout(r, 12));
     }
     return result;
   }
 }
 
-/**
- * LangChain-backed Real BIS LLM Provider with Fallback to Deterministic Provider
- */
 export class LangChainBISLLMProvider implements ILLMProvider {
-  name = 'langchain-bis-llm';
+  name = "langchain-bis-llm";
   private fallbackProvider = new DeterministicBISLLMProvider();
   private groundingValidator = new GroundingValidator();
   private citationBuilder = new CitationBuilder();
 
   private getModel(options?: LLMGenerateOptions): BaseChatModel | null {
-    const provider = (process.env.LLM_PROVIDER || '').toLowerCase();
-    if (provider === 'deterministic') {
+    const provider = (process.env.LLM_PROVIDER || "").toLowerCase();
+    if (provider === "deterministic") {
+      console.log("Deterministic provider");
       return null;
     }
 
+    const openrouterKey = process.env.OPENROUTER_API_KEY;
     const anthropicKey = process.env.ANTHROPIC_API_KEY;
     const openaiKey = process.env.OPENAI_API_KEY;
 
-    const hasValidAnthropic = anthropicKey && !anthropicKey.includes('your_anthropic_api_key_here') && anthropicKey.trim().length > 10;
-    const hasValidOpenAI = openaiKey && !openaiKey.includes('your_openai_api_key_here') && openaiKey.trim().length > 10;
+    const hasValidOpenRouter =
+      openrouterKey &&
+      !openrouterKey.includes("your_openrouter_api_key_here") &&
+      openrouterKey.trim().length > 10;
+    const hasValidAnthropic =
+      anthropicKey &&
+      !anthropicKey.includes("your_anthropic_api_key_here") &&
+      anthropicKey.trim().length > 10;
+    const hasValidOpenAI =
+      openaiKey &&
+      !openaiKey.includes("your_openai_api_key_here") &&
+      openaiKey.trim().length > 10;
 
-    if (provider === 'anthropic' || (hasValidAnthropic && provider !== 'openai')) {
-      if (!hasValidAnthropic) return null;
-      return new ChatAnthropic({
-        modelName: process.env.ANTHROPIC_MODEL || 'claude-3-5-sonnet-20241022',
-        apiKey: anthropicKey,
-        temperature: options?.temperature ?? 0.2
+    if (
+      provider === "openrouter" ||
+      (hasValidOpenRouter && provider !== "anthropic" && provider !== "openai")
+    ) {
+      if (!hasValidOpenRouter) return null;
+      const siteUrl =
+        process.env.OPENROUTER_SITE_URL || "http://localhost:3000";
+      const siteName = process.env.OPENROUTER_SITE_NAME || "BIS Saarthi";
+
+      return new ChatOpenAI({
+        modelName:
+          process.env.OPENROUTER_MODEL ||
+          "nvidia/nemotron-3-super-120b-a12b:free",
+        apiKey: openrouterKey,
+        configuration: {
+          baseURL:
+            process.env.OPENROUTER_BASE_URL || "https://openrouter.ai/api/v1",
+          defaultHeaders: {
+            "HTTP-Referer": siteUrl,
+            "X-Title": siteName,
+          },
+        },
+        temperature: options?.temperature ?? 0.2,
+        maxTokens: options?.maxTokens,
       }) as unknown as BaseChatModel;
     }
 
-    if (provider === 'openai' || hasValidOpenAI) {
+    if (
+      provider === "anthropic" ||
+      (hasValidAnthropic && provider !== "openai")
+    ) {
+      if (!hasValidAnthropic) return null;
+      return new ChatAnthropic({
+        modelName: process.env.ANTHROPIC_MODEL || "claude-3-5-sonnet-20241022",
+        apiKey: anthropicKey,
+        temperature: options?.temperature ?? 0.2,
+      }) as unknown as BaseChatModel;
+    }
+
+    if (provider === "openai" || hasValidOpenAI) {
       if (!hasValidOpenAI) return null;
       return new ChatOpenAI({
-        modelName: process.env.OPENAI_MODEL || 'gpt-4o-mini',
+        modelName: process.env.OPENAI_MODEL || "gpt-4o-mini",
         openAIApiKey: openaiKey,
-        temperature: options?.temperature ?? 0.2
+        temperature: options?.temperature ?? 0.2,
       }) as unknown as BaseChatModel;
     }
 
@@ -203,7 +266,7 @@ export class LangChainBISLLMProvider implements ILLMProvider {
 
   private formatEvidenceContext(contextEvidence: Evidence[]): string {
     if (!contextEvidence || contextEvidence.length === 0) {
-      return 'AUTHORITATIVE EVIDENCE: None provided. If evidence is missing, state clearly that you cannot verify the requirement without speculating.';
+      return "AUTHORITATIVE EVIDENCE: None provided. If evidence is missing, state clearly that you cannot verify the requirement without speculating.";
     }
 
     return contextEvidence
@@ -213,43 +276,68 @@ export class LangChainBISLLMProvider implements ILLMProvider {
 - Evidence ID: ${ev.id}
 - Standard Number: ${ev.standardNumber}
 - Document Title: ${ev.documentTitle}
-- Clause: ${ev.clause} (Section: ${ev.section || 'N/A'}, Page: ${ev.page})
+- Clause: ${ev.clause} (Section: ${ev.section || "N/A"}, Page: ${ev.page})
 - Publication Date: ${ev.publicationDate}
 - Status: ${ev.status}
 - Source URL: ${ev.sourceUrl}
 - Excerpt: "${ev.excerpt}"
-`
+`,
       )
-      .join('\n');
+      .join("\n");
   }
 
-  async generateText(prompt: string, contextEvidence: Evidence[], options?: LLMGenerateOptions): Promise<LLMGenerateResult> {
+  async generateText(
+    prompt: string,
+    contextEvidence: Evidence[],
+    options?: LLMGenerateOptions,
+  ): Promise<LLMGenerateResult> {
     const model = this.getModel(options);
     if (!model) {
-      return this.fallbackProvider.generateText(prompt, contextEvidence, options);
+      return this.fallbackProvider.generateText(
+        prompt,
+        contextEvidence,
+        options,
+      );
     }
 
+    console.log("There's a model");
+
     const systemPromptText = `${options?.systemPrompt || BIS_SYSTEM_PROMPT}\n\n${this.formatEvidenceContext(contextEvidence)}`;
+    console.log(systemPromptText.length);
+    console.log(prompt.length);
 
     try {
       const response = await model.invoke([
         new SystemMessage(systemPromptText),
-        new HumanMessage(prompt)
+        new HumanMessage(prompt),
       ]);
 
-      const text = typeof response.content === 'string' ? response.content : JSON.stringify(response.content);
-      const groundingStatus = this.groundingValidator.validate(text, contextEvidence);
+      const text =
+        typeof response.content === "string"
+          ? response.content
+          : JSON.stringify(response.content);
+      const groundingStatus = this.groundingValidator.validate(
+        text,
+        contextEvidence,
+      );
       const citations = this.citationBuilder.buildCitations(contextEvidence);
 
       return {
         text,
         citations,
         confidence: groundingStatus.confidenceLevel,
-        groundingStatus
+        groundingStatus,
       };
     } catch (error) {
-      console.warn('[LangChainBISLLMProvider] Real LLM call failed or key unconfigured, falling back to DeterministicBISLLMProvider:', error);
-      return this.fallbackProvider.generateText(prompt, contextEvidence, options);
+      console.warn(
+        "[LangChainBISLLMProvider] Real LLM call failed or key unconfigured, falling back to DeterministicBISLLMProvider:",
+        error,
+      );
+      return this.fallbackProvider.generateText(
+        prompt,
+        contextEvidence,
+        options,
+      );
     }
   }
 
@@ -257,11 +345,16 @@ export class LangChainBISLLMProvider implements ILLMProvider {
     prompt: string,
     contextEvidence: Evidence[],
     onChunk: (chunk: string) => void,
-    options?: LLMGenerateOptions
+    options?: LLMGenerateOptions,
   ): Promise<LLMGenerateResult> {
     const model = this.getModel(options);
     if (!model) {
-      return this.fallbackProvider.streamText(prompt, contextEvidence, onChunk, options);
+      return this.fallbackProvider.streamText(
+        prompt,
+        contextEvidence,
+        onChunk,
+        options,
+      );
     }
 
     const systemPromptText = `${options?.systemPrompt || BIS_SYSTEM_PROMPT}\n\n${this.formatEvidenceContext(contextEvidence)}`;
@@ -269,41 +362,68 @@ export class LangChainBISLLMProvider implements ILLMProvider {
     try {
       const stream = await model.stream([
         new SystemMessage(systemPromptText),
-        new HumanMessage(prompt)
+        new HumanMessage(prompt),
       ]);
 
-      let fullText = '';
+      let fullText = "";
       for await (const chunk of stream) {
-        const content = typeof chunk.content === 'string' ? chunk.content : (chunk.content ? JSON.stringify(chunk.content) : '');
+        const content =
+          typeof chunk.content === "string"
+            ? chunk.content
+            : chunk.content
+              ? JSON.stringify(chunk.content)
+              : "";
         if (content) {
           fullText += content;
           onChunk(content);
         }
       }
 
-      const groundingStatus = this.groundingValidator.validate(fullText, contextEvidence);
+      const groundingStatus = this.groundingValidator.validate(
+        fullText,
+        contextEvidence,
+      );
       const citations = this.citationBuilder.buildCitations(contextEvidence);
 
       return {
         text: fullText,
         citations,
         confidence: groundingStatus.confidenceLevel,
-        groundingStatus
+        groundingStatus,
       };
     } catch (error) {
-      console.warn('[LangChainBISLLMProvider] Streaming LLM call failed, falling back to DeterministicBISLLMProvider:', error);
-      return this.fallbackProvider.streamText(prompt, contextEvidence, onChunk, options);
+      console.warn(
+        "[LangChainBISLLMProvider] Streaming LLM call failed, falling back to DeterministicBISLLMProvider:",
+        error,
+      );
+      return this.fallbackProvider.streamText(
+        prompt,
+        contextEvidence,
+        onChunk,
+        options,
+      );
     }
   }
+}
+
+/**
+ * OpenRouter-backed Grounded BIS LLM Provider
+ * Connects directly to OpenRouter models (such as nvidia/nemotron-3-super-120b-a12b:free, meta-llama, claude, etc.)
+ */
+export class OpenRouterBISLLMProvider extends LangChainBISLLMProvider {
+  override name = "openrouter-bis-llm";
 }
 
 /**
  * Factory helper returning the active LLM provider instance based on environment config
  */
 export function getLLMProvider(): ILLMProvider {
-  const provider = (process.env.LLM_PROVIDER || '').toLowerCase();
-  if (provider === 'deterministic') {
+  const provider = (process.env.LLM_PROVIDER || "").toLowerCase();
+  if (provider === "deterministic") {
     return new DeterministicBISLLMProvider();
+  }
+  if (provider === "openrouter") {
+    return new OpenRouterBISLLMProvider();
   }
   return new LangChainBISLLMProvider();
 }

@@ -49,23 +49,52 @@ export class IndicLanguageEngine implements ITranslationProvider {
   };
 
   private getModel() {
+    const provider = (process.env.LLM_PROVIDER || '').toLowerCase();
+    const openrouterKey = process.env.OPENROUTER_API_KEY;
     const anthropicKey = process.env.ANTHROPIC_API_KEY;
     const openaiKey = process.env.OPENAI_API_KEY;
 
-    if (anthropicKey) {
+    const hasValidOpenRouter = openrouterKey && !openrouterKey.includes('your_openrouter_api_key_here') && openrouterKey.trim().length > 10;
+    const hasValidAnthropic = anthropicKey && !anthropicKey.includes('your_anthropic_api_key_here') && anthropicKey.trim().length > 10;
+    const hasValidOpenAI = openaiKey && !openaiKey.includes('your_openai_api_key_here') && openaiKey.trim().length > 10;
+
+    if (provider === 'openrouter' || (hasValidOpenRouter && provider !== 'anthropic' && provider !== 'openai')) {
+      if (!hasValidOpenRouter) return null;
+      const siteUrl = process.env.OPENROUTER_SITE_URL || 'http://localhost:3000';
+      const siteName = process.env.OPENROUTER_SITE_NAME || 'BIS Saarthi';
+
+      return new ChatOpenAI({
+        modelName: process.env.OPENROUTER_TRANSLATION_MODEL || process.env.OPENROUTER_MODEL || 'nvidia/nemotron-3-super-120b-a12b:free',
+        apiKey: openrouterKey,
+        configuration: {
+          baseURL: process.env.OPENROUTER_BASE_URL || 'https://openrouter.ai/api/v1',
+          defaultHeaders: {
+            'HTTP-Referer': siteUrl,
+            'X-Title': siteName
+          }
+        },
+        temperature: 0.1
+      });
+    }
+
+    if (provider === 'anthropic' || (hasValidAnthropic && provider !== 'openai')) {
+      if (!hasValidAnthropic) return null;
       return new ChatAnthropic({
         modelName: process.env.ANTHROPIC_MODEL || 'claude-3-haiku-20240307',
         apiKey: anthropicKey,
         temperature: 0.1
       });
     }
-    if (openaiKey) {
+
+    if (provider === 'openai' || hasValidOpenAI) {
+      if (!hasValidOpenAI) return null;
       return new ChatOpenAI({
         modelName: process.env.OPENAI_MODEL || 'gpt-4o-mini',
         openAIApiKey: openaiKey,
         temperature: 0.1
       });
     }
+
     return null;
   }
 

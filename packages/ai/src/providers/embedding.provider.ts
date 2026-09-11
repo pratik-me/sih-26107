@@ -120,10 +120,70 @@ export class OpenAIEmbeddingProvider implements IEmbeddingProvider {
   }
 }
 
+/**
+ * OpenRouter Multilingual / Hosted Embedding Provider with automatic fallback
+ */
+export class OpenRouterEmbeddingProvider implements IEmbeddingProvider {
+  name = 'openrouter-embeddings';
+  dimension = 1536;
+  private fallback = new MultilingualLocalEmbeddingProvider();
+
+  private getEmbedder(): OpenAIEmbeddings | null {
+    const apiKey = process.env.OPENROUTER_API_KEY || process.env.EMBEDDING_API_KEY;
+    if (!apiKey || apiKey.includes('your_openrouter_api_key_here')) return null;
+
+    const siteUrl = process.env.OPENROUTER_SITE_URL || 'http://localhost:3000';
+    const siteName = process.env.OPENROUTER_SITE_NAME || 'BIS Saarthi';
+
+    return new OpenAIEmbeddings({
+      apiKey,
+      modelName: process.env.OPENROUTER_EMBEDDING_MODEL || process.env.EMBEDDING_MODEL || 'nvidia/nemotron-3-embed-1b:free',
+      configuration: {
+        baseURL: process.env.OPENROUTER_BASE_URL || 'https://openrouter.ai/api/v1',
+        defaultHeaders: {
+          'HTTP-Referer': siteUrl,
+          'X-Title': siteName
+        }
+      }
+    });
+  }
+
+  async embedText(text: string): Promise<number[]> {
+    const embedder = this.getEmbedder();
+    if (!embedder) return this.fallback.embedText(text);
+
+    try {
+      return await embedder.embedQuery(text);
+    } catch (err) {
+      console.warn('[OpenRouterEmbeddingProvider] Error calling OpenRouter Embeddings API, falling back to local embedder:', err);
+      return this.fallback.embedText(text);
+    }
+  }
+
+  async embedBatch(texts: string[]): Promise<number[][]> {
+    const embedder = this.getEmbedder();
+    if (!embedder) return this.fallback.embedBatch(texts);
+
+    try {
+      return await embedder.embedDocuments(texts);
+    } catch (err) {
+      console.warn('[OpenRouterEmbeddingProvider] Error batch calling OpenRouter Embeddings API, falling back to local embedder:', err);
+      return this.fallback.embedBatch(texts);
+    }
+  }
+
+  computeSimilarity(vecA: number[], vecB: number[]): number {
+    return this.fallback.computeSimilarity(vecA, vecB);
+  }
+}
+
 export function getEmbeddingProvider(): IEmbeddingProvider {
   const provider = (process.env.EMBEDDING_PROVIDER || '').toLowerCase();
   if (provider === 'local-multilingual') {
     return new MultilingualLocalEmbeddingProvider();
+  }
+  if (provider === 'openrouter') {
+    return new OpenRouterEmbeddingProvider();
   }
   return new OpenAIEmbeddingProvider();
 }

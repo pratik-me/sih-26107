@@ -53,13 +53,12 @@ function CertificationContent() {
 
   return (
     <div className="relative min-h-screen w-full bg-gradient-to-b from-[#03045E] via-[#023E8A] to-[#03045E] dark:from-slate-950 dark:via-[#03045E]/90 dark:to-slate-950 overflow-hidden text-white">
-      {/* Ambient Glowing Blobs */}
       <div className="absolute top-12 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-[#00B4D8]/15 rounded-full blur-3xl pointer-events-none animate-pulse" />
       <div className="absolute top-0 right-10 w-80 h-80 bg-[#0077B6]/20 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 left-10 w-80 h-80 bg-[#48CAE4]/15 rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 space-y-8 relative z-10">
-        {/* Header in Dark Scheme */}
+        {/* Header */}
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div className="space-y-2">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 dark:bg-white/10 text-[#CAF0F8] text-xs font-semibold border border-[#48CAE4]/30 backdrop-blur-md shadow-2xs">
@@ -84,7 +83,7 @@ function CertificationContent() {
           </button>
         </div>
 
-        {/* Target Product Notice with Glass Card */}
+        {/* Target Product Notice */}
         <div className="p-4 sm:p-5 rounded-2xl bg-white/10 dark:bg-white/10 backdrop-blur-md border border-white/20 dark:border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs shadow-md">
           <div>
             <span className="font-bold text-[#CAF0F8]">Active Product Roadmap: </span>
@@ -129,7 +128,7 @@ function CertificationContent() {
           })}
         </div>
 
-        {/* Main Roadmap Workflow */}
+        {/* Roadmap Workflow */}
         {isLoading ? (
           <LoadingState
             message="Loading Certification Scheme Requirements..."
@@ -155,7 +154,7 @@ function CertificationContent() {
             </div>
           </div>
 
-          {/* Right Scheme Details Drawer (4 cols) */}
+          {/* Right Scheme Details Drawer */}
           {activeScheme && (
             <div className="lg:col-span-4 space-y-4">
               <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-4 sticky top-24">

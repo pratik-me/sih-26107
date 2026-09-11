@@ -53,13 +53,12 @@ function LaboratoriesFinderContent() {
 
   return (
     <div className="relative min-h-screen w-full bg-gradient-to-b from-[#03045E] via-[#023E8A] to-[#03045E] dark:from-slate-950 dark:via-[#03045E]/90 dark:to-slate-950 overflow-hidden text-white">
-      {/* Ambient Glowing Blobs */}
       <div className="absolute top-12 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-[#00B4D8]/15 rounded-full blur-3xl pointer-events-none animate-pulse" />
       <div className="absolute top-0 right-10 w-80 h-80 bg-[#0077B6]/20 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 left-10 w-80 h-80 bg-[#48CAE4]/15 rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 space-y-8 relative z-10">
-        {/* Header in Dark Scheme */}
+        {/* Header */}
         <div className="space-y-2">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 dark:bg-white/10 text-[#CAF0F8] text-xs font-semibold border border-[#48CAE4]/30 backdrop-blur-md shadow-2xs">
             <Building2 className="w-3.5 h-3.5 text-[#48CAE4]" />
@@ -73,7 +72,7 @@ function LaboratoriesFinderContent() {
           </p>
         </div>
 
-        {/* Search & State Filter */}
+        {/* Search & State */}
         <div className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md p-5 rounded-2xl border border-white/20 dark:border-slate-800 shadow-xl shadow-[#03045E]/30 space-y-4">
           <form onSubmit={handleSearchSubmit} className="flex gap-2">
             <div className="relative flex-1">
@@ -94,7 +93,7 @@ function LaboratoriesFinderContent() {
             </button>
           </form>
 
-          {/* State Selection Pills */}
+          {/* State Selection */}
           <div className="flex flex-wrap items-center gap-1.5 pt-3 border-t border-slate-100 dark:border-slate-800 text-xs">
             <span className="font-semibold text-slate-500 dark:text-slate-400 mr-1 flex items-center gap-1">
               <MapPin className="w-3 h-3 text-[#0077B6] dark:text-[#48CAE4]" /> State:
@@ -119,7 +118,7 @@ function LaboratoriesFinderContent() {
           </div>
         </div>
 
-        {/* Laboratories Grid */}
+        {/* Laboratories */}
         {isLoading ? (
           <LoadingState
             message="Locating Recognized Testing Laboratories..."

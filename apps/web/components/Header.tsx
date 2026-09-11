@@ -3,8 +3,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { IndianLanguage, UserRole } from "@bis/shared-types";
-import { AshokaMotif, LanguageSelector } from "@bis/ui";
+import { LanguageSelector } from "@bis/ui";
+import { useLanguage } from "../context/LanguageContext";
 import {
   MessageSquare,
   Search,
@@ -18,19 +18,15 @@ import {
   X,
   Compass,
   ChevronDown,
-  BarChart3,
 } from "lucide-react";
 import Image from "next/image";
 
 export function Header() {
   const pathname = usePathname();
+  const { language, setLanguage, t } = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [standardsDropdownOpen, setStandardsDropdownOpen] = useState(false);
   const [mobileStandardsOpen, setMobileStandardsOpen] = useState(true);
-  const [selectedLanguage, setSelectedLanguage] = useState<IndianLanguage>(
-    IndianLanguage.EN,
-  );
-  const [userRole, setUserRole] = useState<UserRole>(UserRole.INDUSTRY);
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -42,9 +38,6 @@ export function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Keep the dropdown open while the cursor travels from the trigger
-  // to the menu. A small close delay + a padding bridge (no margin gap)
-  // prevents the flicker/accidental-close on mouseleave.
   const closeTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const openStandardsMenu = () => {
@@ -72,12 +65,12 @@ export function Header() {
     pathname === "/standards" || pathname === "/standards/recommend";
 
   const otherNavLinks = [
-    { href: "/certification", label: "Certification", icon: Award },
-    { href: "/testing", label: "Testing", icon: FlaskConical },
-    { href: "/laboratories", label: "Labs", icon: Building2 },
-    { href: "/hallmarking", label: "Hallmark", icon: Sparkles },
-    { href: "/consumer", label: "Consumer", icon: ShieldCheck },
-    { href: "/reports", label: "Reports", icon: FileBarChart2 },
+    { href: "/certification", label: t("nav.certification", "Certification"), icon: Award },
+    { href: "/testing", label: t("nav.testing", "Testing"), icon: FlaskConical },
+    { href: "/laboratories", label: t("nav.labFinder", "Labs"), icon: Building2 },
+    { href: "/hallmarking", label: t("nav.hallmarking", "Hallmark"), icon: Sparkles },
+    { href: "/consumer", label: t("nav.consumerHub", "Consumer"), icon: ShieldCheck },
+    { href: "/reports", label: t("nav.dashboard", "Reports"), icon: FileBarChart2 },
   ];
 
   return (
@@ -91,7 +84,7 @@ export function Header() {
       {/* Main Nav Bar */}
       <div className="max-w-[1520px] mx-auto px-3 sm:px-5 lg:px-6">
         <div className="flex items-center justify-between h-16 gap-2">
-          {/* Logo & Title */}
+          {/* Logo */}
           <Link
             href="/"
             className="flex items-center gap-2.5 shrink-0 group mr-1"
@@ -107,21 +100,20 @@ export function Header() {
                   />
                 </div>
                 <span className="text-sm font-black tracking-tight text-slate-900 dark:text-slate-100 whitespace-nowrap">
-                  BIS{" "}
+                  {t("nav.title", "BIS")}{" "}
                   <span className="text-[#0077B6] dark:text-[#48CAE4] font-extrabold">
-                    Saarthi
+                    {t("nav.subtitle")?.includes("सारथी") ? "सारथी" : "Saarthi"}
                   </span>
                 </span>
               </div>
               <p className="text-[10px] text-slate-500 font-medium leading-none whitespace-nowrap">
-                Indian Standards Intelligence
+                {t("nav.subtitle", "Indian Standards Intelligence")}
               </p>
             </div>
           </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-1 xl:gap-1.5 flex-nowrap">
-            {/* Standards Dropdown Heading */}
             <div
               className="relative"
               onMouseEnter={openStandardsMenu}
@@ -159,7 +151,7 @@ export function Header() {
                       : "text-slate-500 dark:text-slate-400"
                   }`}
                 />
-                <span>Standards</span>
+                <span>{t("nav.standardsDirect", "Standards")}</span>
                 <ChevronDown
                   className={`w-3 h-3 transition-transform duration-200 ${
                     standardsDropdownOpen
@@ -193,7 +185,7 @@ export function Header() {
                       <Compass className="w-4 h-4" />
                     </span>
                     <div className="min-w-0">
-                      <div className="text-xs font-bold leading-snug">Find Your Standards</div>
+                      <div className="text-xs font-bold leading-snug">{t("nav.findMyStandard", "Find My Standard")}</div>
                       <p
                         className={`text-[11px] leading-tight mt-0.5 ${
                           pathname === "/standards/recommend"
@@ -201,7 +193,7 @@ export function Header() {
                             : "text-slate-500 dark:text-slate-400"
                         }`}
                       >
-                        AI product profiler matching your product to IS
+                        {t("nav.findMyStandardDesc", "AI product profiler matching your product to IS")}
                       </p>
                     </div>
                   </Link>
@@ -225,7 +217,7 @@ export function Header() {
                       <Search className="w-4 h-4" />
                     </span>
                     <div className="min-w-0">
-                      <div className="text-xs font-bold leading-snug">Standards Catalogue</div>
+                      <div className="text-xs font-bold leading-snug">{t("nav.standardsMenu", "Standards Catalogue")}</div>
                       <p
                         className={`text-[11px] leading-tight mt-0.5 ${
                           pathname === "/standards"
@@ -233,7 +225,7 @@ export function Header() {
                             : "text-slate-500 dark:text-slate-400"
                         }`}
                       >
-                        Search and explore Indian Standards catalogue
+                        {t("nav.standardsMenuDesc", "Search and explore Indian Standards catalogue")}
                       </p>
                     </div>
                   </Link>
@@ -241,7 +233,7 @@ export function Header() {
               )}
             </div>
 
-            {/* Remaining Nav Links */}
+            {/* Remaining Links */}
             {otherNavLinks.map((link) => {
               const isActive = pathname === link.href;
               const Icon = link.icon;
@@ -271,8 +263,8 @@ export function Header() {
           <div className="flex items-center gap-1.5 sm:gap-2 shrink-0 ml-1">
             <LanguageSelector
               onDashboard={true}
-              selectedLanguage={selectedLanguage}
-              onLanguageChange={setSelectedLanguage}
+              selectedLanguage={language}
+              onLanguageChange={setLanguage}
             />
 
             {/* Action Button & Mobile Toggle */}
@@ -282,8 +274,8 @@ export function Header() {
                 className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold bg-gradient-to-r from-[#023E8A] to-[#0077B6] hover:from-[#03045E] hover:to-[#023E8A] text-white shadow-sm shadow-[#0077B6]/25 transition-all whitespace-nowrap"
               >
                 <MessageSquare className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Ask BIS AI</span>
-                <span className="sm:hidden">Ask AI</span>
+                <span className="hidden sm:inline">{t("nav.askAi", "Ask BIS AI")}</span>
+                <span className="sm:hidden">{t("nav.askAiShort", "Ask AI")}</span>
               </Link>
 
               <button
@@ -303,10 +295,9 @@ export function Header() {
         </div>
       </div>
 
-      {/* Mobile Menu Dropdown */}
+      {/* Mobile Dropdown Menu */}
       {mobileMenuOpen && (
         <div className="lg:hidden border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 pt-2 pb-4 space-y-1 shadow-lg">
-          {/* Mobile Standards Dropdown Accordion */}
           <div className="py-1">
             <button
               type="button"
@@ -319,7 +310,7 @@ export function Header() {
             >
               <div className="flex items-center gap-2.5">
                 <Search className="w-4 h-4 text-[#0077B6]" />
-                <span>Standards</span>
+                <span>{t("nav.standardsDirect", "Standards")}</span>
               </div>
               <ChevronDown
                 className={`w-4 h-4 transition-transform duration-200 ${
@@ -339,7 +330,7 @@ export function Header() {
                   }`}
                 >
                   <Compass className="w-3.5 h-3.5 text-[#0077B6]" />
-                  <span>Find Your Standards</span>
+                  <span>{t("nav.findMyStandard", "Find My Standard")}</span>
                 </Link>
                 <Link
                   href="/standards"
@@ -351,7 +342,7 @@ export function Header() {
                   }`}
                 >
                   <Search className="w-3.5 h-3.5 text-[#0077B6]" />
-                  <span>Standards Catalogue</span>
+                  <span>{t("nav.standardsMenu", "Standards Catalogue")}</span>
                 </Link>
               </div>
             )}
@@ -381,3 +372,4 @@ export function Header() {
     </header>
   );
 }
+
