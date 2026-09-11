@@ -146,6 +146,8 @@ The link for SIH presentation is as follows:
 ## 10. Screenshots / Prototype Photos
 [screenshots](assets/screenshots)
 
+![Alt text](assets/screenshots/01-home.jpeg)
+
 ## 11. Installation
 
 ### Prerequisites
