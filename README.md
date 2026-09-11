@@ -133,24 +133,7 @@ bis-saarthi/
 | Demo video link | `submission/DEMO.md` |
 | Project overview | `README.md` |
 
-## 8. Final Presentation
-
-Keep your final SIH presentation in the repository whenever the file size allows it.
-
-See [submission/PRESENTATION.md](submission/PRESENTATION.md) for the required format.
-
-If the PPT is too large for GitHub, use Google Drive/OneDrive and put the accessible viewer link in `submission/PRESENTATION.md`.
-
-## 9. Demo Video
-
-A demo video is **optional**, but recommended.
-
-Add the YouTube/Google Drive link in [submission/DEMO.md](submission/DEMO.md).
-
-## 10. Deployed Website Link
-[Demo Website](https://bis-saarthi.netlify.app/)
-
-## 11. Installation
+## 8. Installation
 
 ### Prerequisites
 - **Node.js**: v18.0.0 or higher (v20+ recommended)
@@ -174,7 +157,7 @@ docker compose up postgres -d
 
 Default local settings operate with high-accuracy grounded deterministic fallbacks, allowing immediate testing even before connecting external cloud keys.
 
-## 12. Run
+## 9. Run
 
 ```bash
 # Concurrently start Next.js web (port 3000) and NestJS API (port 4000)
@@ -210,7 +193,7 @@ pnpm --filter @bis/web run test:e2e
 - Citation Correctness Rate: 98%
 - Average Total Latency: ~35 ms
 
-## 13. Future Scope
+## 10. Future Scope
 
 - Expand the recognized laboratories directory with live NABL API integration.
 - Add offline/PWA support for low-connectivity rural areas.
