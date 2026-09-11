@@ -143,8 +143,8 @@ The link for SIH presentation is as follows:
 
 [demo-video](https://drive.google.com/file/d/1EnS0QGpDIGhGzfqF7aX_yZfmO1pi1Qb4/view?usp=sharing)
 
-## 10. Deployed Website Link
-[Demo Website](https://bis-saarthi.netlify.app/)
+## 10. Screenshots / Prototype Photos
+[screenshots](assets/screenshots)
 
 ## 11. Installation
 
