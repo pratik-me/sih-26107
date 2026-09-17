@@ -13,7 +13,7 @@ import {
   IndicLanguageEngine,
   getEmbeddingProvider
 } from '@bis/ai';
-import { SEED_STANDARDS } from '../common/seed-data';
+import { SEED_STANDARDS } from '@bis/seed-data';
 
 @Injectable()
 export class RAGService {
@@ -175,7 +175,7 @@ export class RAGService {
       }
     }
 
-    let candidates = Array.from(candidateMap.values());
+    const candidates = Array.from(candidateMap.values());
 
     // Step 4.4: Fallback to SEED_STANDARDS only if DocumentChunk table is empty
     if (candidates.length === 0) {

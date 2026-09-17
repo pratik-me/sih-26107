@@ -82,8 +82,21 @@ export class OpenAIEmbeddingProvider implements IEmbeddingProvider {
     const provider = (process.env.EMBEDDING_PROVIDER || '').toLowerCase();
     if (provider === 'local-multilingual') return null;
 
+    if (provider === 'openrouter' || process.env.OPENROUTER_API_KEY) {
+      const openrouterKey = process.env.OPENROUTER_API_KEY;
+      if (openrouterKey && !openrouterKey.includes('your_openrouter_key') && openrouterKey.trim().length > 10) {
+        return new OpenAIEmbeddings({
+          openAIApiKey: openrouterKey,
+          modelName: process.env.OPENROUTER_EMBEDDING_MODEL || 'nvidia/nemotron-3-embed-1b:free',
+          configuration: {
+            baseURL: process.env.OPENROUTER_BASE_URL || 'https://openrouter.ai/api/v1'
+          }
+        });
+      }
+    }
+
     const apiKey = process.env.EMBEDDING_API_KEY || process.env.OPENAI_API_KEY;
-    if (!apiKey) return null;
+    if (!apiKey || apiKey.includes('your_openai_api_key_here')) return null;
 
     return new OpenAIEmbeddings({
       openAIApiKey: apiKey,

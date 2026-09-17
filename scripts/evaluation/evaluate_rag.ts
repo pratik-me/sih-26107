@@ -9,7 +9,7 @@ import {
 import { BISSaarthiAgent } from '../../packages/ai/src/agents/bis-agent';
 import { getLLMProvider } from '../../packages/ai/src/providers/llm.provider';
 import { HybridBISCrossReranker } from '../../packages/ai/src/providers/reranker.provider';
-import { SEED_STANDARDS } from '../seed/seed-data';
+import { SEED_STANDARDS } from '../../packages/seed-data/src/index';
 import { randomUUID } from 'crypto';
 
 const prisma = new PrismaClient();

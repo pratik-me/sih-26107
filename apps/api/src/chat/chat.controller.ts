@@ -18,17 +18,17 @@ import { IndianLanguage, type UserProfile } from '@bis/shared-types';
 
 import { Observable } from 'rxjs';
 
-import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
+import { JwtAuthGuard, OptionalJwtAuthGuard } from '../common/guards/jwt-auth.guard';
 
 import { CurrentUser } from '../common/decorators/current-user.decorator';
 
 @ApiTags('Chat & AI Assistant')
 @ApiBearerAuth()
-@UseGuards(JwtAuthGuard)
 @Controller('chat')
 export class ChatController {
   constructor(private chatService: ChatService) {}
 
+  @UseGuards(OptionalJwtAuthGuard)
   @Post('message')
   @ApiOperation({
     summary:
@@ -43,14 +43,15 @@ export class ChatController {
       language?: IndianLanguage;
       userId?: string;
     },
-    @CurrentUser() user: UserProfile
+    @CurrentUser() user?: UserProfile
   ) {
     return this.chatService.sendMessage({
       ...body,
-      userId: user.id
+      userId: user?.id || body.userId
     });
   }
 
+  @UseGuards(OptionalJwtAuthGuard)
   @Sse('stream')
   @ApiOperation({
     summary:
@@ -66,12 +67,14 @@ export class ChatController {
     });
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('sessions')
   @ApiOperation({ summary: 'Get all active chat sessions' })
   async getSessions(@CurrentUser() user: UserProfile) {
     return this.chatService.getSessions(user.id);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('sessions/:id')
   @ApiOperation({ summary: 'Get a specific chat session by ID' })
   async getSessionById(
@@ -81,6 +84,7 @@ export class ChatController {
     return this.chatService.getSessionById(id, user.id);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete('sessions/:id')
   @ApiOperation({ summary: 'Delete a chat session' })
   async deleteSession(

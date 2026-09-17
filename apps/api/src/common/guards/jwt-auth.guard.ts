@@ -14,3 +14,15 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     return user;
   }
 }
+
+@Injectable()
+export class OptionalJwtAuthGuard extends AuthGuard('jwt') {
+  canActivate(context: ExecutionContext) {
+    return super.canActivate(context);
+  }
+
+  handleRequest(err: any, user: any) {
+    return user || null;
+  }
+}
+

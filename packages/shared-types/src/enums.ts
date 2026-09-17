@@ -16,10 +16,21 @@ export enum StandardStatus {
 export enum CertificationSchemeType {
   SCHEME_I_ISI = 'SCHEME_I_ISI', // Product Certification (ISI Mark)
   SCHEME_II_CRS = 'SCHEME_II_CRS', // Compulsory Registration Scheme (Electronics/IT)
+  SCHEME_III_COPC = 'SCHEME_III_COPC', // Certificate of Conformity for Batch/Lot Inspection
+  SCHEME_IV_COPC_PROCESS = 'SCHEME_IV_COPC_PROCESS', // Certificate of Conformity for Continuous Processes
   SCHEME_IV_COC = 'SCHEME_IV_COC', // Certificate of Conformity
-  SCHEME_FMCS = 'SCHEME_FMCS', // Foreign Manufacturers Certification Scheme
+  SCHEME_V_MANAGEMENT_PROCESS = 'SCHEME_V_MANAGEMENT_PROCESS', // Quality Assurance and Process Certification
+  SCHEME_VI_SUPPLIER_DECLARATION = 'SCHEME_VI_SUPPLIER_DECLARATION', // Supplier's Declaration of Conformity (SDoC)
+  SCHEME_VII_PILOT_PRODUCTION = 'SCHEME_VII_PILOT_PRODUCTION', // Verification of Pilot Production & Pre-Market Testing
+  SCHEME_VIII_CUSTOM_IMPORT = 'SCHEME_VIII_CUSTOM_IMPORT', // Project Import & Custom-Engineered Equipment Clearance
+  SCHEME_IX_ECO_MARK = 'SCHEME_IX_ECO_MARK', // Eco-Mark (Environmentally Friendly Products)
   SCHEME_ECO_MARK = 'SCHEME_ECO_MARK', // Eco-Mark for environmentally friendly goods
-  SCHEME_HALLMARK = 'SCHEME_HALLMARK' // Assaying and Hallmarking
+  SCHEME_X_FOREIGN_MANUFACTURERS = 'SCHEME_X_FOREIGN_MANUFACTURERS', // Foreign Manufacturers Certification Scheme (FMCS)
+  SCHEME_FMCS = 'SCHEME_FMCS', // Foreign Manufacturers Certification Scheme
+  SCHEME_HALLMARK = 'SCHEME_HALLMARK', // Assaying and Hallmarking
+  HALLMARKING = 'HALLMARKING', // Hallmarking
+  MANAGEMENT_SYSTEMS_MSCS = 'MANAGEMENT_SYSTEMS_MSCS', // Management Systems Certification Scheme (MSCS)
+  LABORATORY_RECOGNITION_LRS = 'LABORATORY_RECOGNITION_LRS' // Laboratory Recognition Scheme (LRS)
 }
 
 export enum ConfidenceLevel {
