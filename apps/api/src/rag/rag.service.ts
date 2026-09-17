@@ -13,7 +13,7 @@ import {
   IndicLanguageEngine,
   getEmbeddingProvider
 } from '@bis/ai';
-import { SEED_STANDARDS } from '../common/seed-data';
+import { SEED_STANDARDS } from '@bis/seed-data';
 
 @Injectable()
 export class RAGService {

@@ -1,6 +1,6 @@
 /**
  * BIS Saarthi Seed Data Module
- * Re-exports domain-specific seed files from ./data for modularity and easy extension.
+ * Re-exports from @bis/seed-data workspace package.
  */
 
-export * from './data';
+export * from '../../packages/seed-data/src/index';

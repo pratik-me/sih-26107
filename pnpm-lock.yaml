@@ -36,6 +36,9 @@ importers:
       '@bis/ai':
         specifier: workspace:*
         version: link:../../packages/ai
+      '@bis/seed-data':
+        specifier: workspace:*
+        version: link:../../packages/seed-data
       '@bis/shared-types':
         specifier: workspace:*
         version: link:../../packages/shared-types
@@ -325,6 +328,19 @@ importers:
       eslint-config-prettier:
         specifier: ^9.1.0
         version: 9.1.2(eslint@8.57.1(supports-color@8.1.1))
+
+  packages/seed-data:
+    dependencies:
+      '@bis/shared-types':
+        specifier: workspace:*
+        version: link:../shared-types
+    devDependencies:
+      '@bis/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@bis/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
 
   packages/shared-types:
     devDependencies:

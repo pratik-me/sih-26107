@@ -8,7 +8,7 @@ import {
   StandardRecommendationMatch,
   StandardStatus
 } from '@bis/shared-types';
-import { SEED_STANDARDS } from '../common/seed-data';
+import { SEED_STANDARDS } from '@bis/seed-data';
 
 @Injectable()
 export class StandardsService {

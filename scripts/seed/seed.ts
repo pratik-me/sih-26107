@@ -5,7 +5,7 @@ import {
   SEED_SCHEMES,
   SEED_LABORATORIES,
   SEED_HALLMARKING_CENTRES
-} from './seed-data';
+} from '../../packages/seed-data/src/index';
 
 const prisma = new PrismaClient();
 
