@@ -175,7 +175,7 @@ export class RAGService {
       }
     }
 
-    let candidates = Array.from(candidateMap.values());
+    const candidates = Array.from(candidateMap.values());
 
     // Step 4.4: Fallback to SEED_STANDARDS only if DocumentChunk table is empty
     if (candidates.length === 0) {

@@ -26,7 +26,7 @@ export class CitationBuilder {
   formatResponseWithCitations(text: string, citations: Citation[]): string {
     if (citations.length === 0) return text;
 
-    let formatted = text;
+    const formatted = text;
     // Ensure citations references are clean
     return formatted;
   }
