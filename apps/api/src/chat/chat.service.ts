@@ -28,7 +28,7 @@ export class ChatService {
     message: string;
     roleMode?: string;
     language?: IndianLanguage;
-    userId?: string;
+    userId: string;
   }): Promise<{ session: ChatSession; reply: ChatMessage }> {
     let dbSession;
 
@@ -37,11 +37,20 @@ export class ChatService {
         where: { id: params.sessionId },
         include: { messages: { orderBy: { createdAt: 'asc' } } }
       });
+
+      // Existing session must belong to the authenticated user.
+      if (dbSession && dbSession.userId !== params.userId) {
+        throw new NotFoundException(
+          `Chat session '${params.sessionId}' not found`
+        );
+      }
     }
 
     if (!dbSession) {
       const sessionId = params.sessionId || randomUUID();
-      const title = params.message.slice(0, 45) + (params.message.length > 45 ? '...' : '');
+      const title =
+        params.message.slice(0, 45) +
+        (params.message.length > 45 ? '...' : '');
 
       dbSession = await this.prisma.chatSession.create({
         data: {
@@ -67,7 +76,10 @@ export class ChatService {
     });
 
     // 2. Execute AI Agent Loop
-    const agentResult = await this.aiAgentService.runAgent(params.message, params.language);
+    const agentResult = await this.aiAgentService.runAgent(
+      params.message,
+      params.language
+    );
 
     // 3. Persist Assistant Message
     const assistantMsgRecord = await this.prisma.message.create({
@@ -78,11 +90,16 @@ export class ChatService {
         content: agentResult.structuredAnswer,
         originalLanguage: params.language || IndianLanguage.EN,
         intent: agentResult.intent,
-        confidence: agentResult.evidence.length > 0 ? ConfidenceLevel.HIGH : ConfidenceLevel.LOW,
+        confidence:
+          agentResult.evidence.length > 0
+            ? ConfidenceLevel.HIGH
+            : ConfidenceLevel.LOW,
         citations: agentResult.citations as any,
         evidence: agentResult.evidence as any,
         suggestedFollowUps: agentResult.suggestedFollowUps as any,
-        sourceFreshnessWarning: agentResult.evidence.some(e => e.isOutdated)
+        sourceFreshnessWarning: agentResult.evidence.some(
+          e => e.isOutdated
+        )
           ? 'One or more referenced Indian Standards have status OUTDATED or UNDER_REVIEW.'
           : null
       }
@@ -94,8 +111,12 @@ export class ChatService {
       data: { updatedAt: new Date() }
     });
 
-    // Retrieve updated session
-    const fullSession = await this.getSessionById(dbSession.id);
+    // Retrieve updated session.
+    // The session has already been verified as belonging to this user.
+    const fullSession = await this.getSessionById(
+      dbSession.id,
+      params.userId
+    );
 
     const reply: ChatMessage = {
       id: assistantMsgRecord.id,
@@ -107,8 +128,10 @@ export class ChatService {
       confidence: assistantMsgRecord.confidence as any,
       citations: (assistantMsgRecord.citations as any) || [],
       evidence: (assistantMsgRecord.evidence as any) || [],
-      suggestedFollowUps: (assistantMsgRecord.suggestedFollowUps as any) || [],
-      sourceFreshnessWarning: assistantMsgRecord.sourceFreshnessWarning || undefined,
+      suggestedFollowUps:
+        (assistantMsgRecord.suggestedFollowUps as any) || [],
+      sourceFreshnessWarning:
+        assistantMsgRecord.sourceFreshnessWarning || undefined,
       createdAt: assistantMsgRecord.createdAt.toISOString()
     };
 
@@ -120,39 +143,51 @@ export class ChatService {
     language?: IndianLanguage;
   }): Observable<{ data: string }> {
     return new Observable(observer => {
-      this.ragService.searchEvidence({ query: params.message, language: params.language }).then(ragRes => {
-        const evidence = ragRes.results;
-        this.llmProvider
-          .streamText(
-            params.message,
-            evidence,
-            chunk => {
-              observer.next({ data: JSON.stringify({ chunk }) });
-            }
-          )
-          .then(result => {
-            observer.next({
-              data: JSON.stringify({
-                done: true,
-                citations: result.citations,
-                confidence: result.confidence,
-                groundingStatus: result.groundingStatus
-              })
+      this.ragService
+        .searchEvidence({
+          query: params.message,
+          language: params.language
+        })
+        .then(ragRes => {
+          const evidence = ragRes.results;
+
+          this.llmProvider
+            .streamText(
+              params.message,
+              evidence,
+              chunk => {
+                observer.next({
+                  data: JSON.stringify({ chunk })
+                });
+              }
+            )
+            .then(result => {
+              observer.next({
+                data: JSON.stringify({
+                  done: true,
+                  citations: result.citations,
+                  confidence: result.confidence,
+                  groundingStatus: result.groundingStatus
+                })
+              });
+
+              observer.complete();
+            })
+            .catch(err => {
+              observer.error(err);
             });
-            observer.complete();
-          })
-          .catch(err => {
-            observer.error(err);
-          });
-      }).catch(err => {
-        observer.error(err);
-      });
+        })
+        .catch(err => {
+          observer.error(err);
+        });
     });
   }
 
-  async getSessions(userId?: string): Promise<ChatSession[]> {
+  async getSessions(userId: string): Promise<ChatSession[]> {
     const records = await this.prisma.chatSession.findMany({
-      where: userId ? { userId } : {},
+      where: {
+        userId
+      },
       include: {
         messages: {
           orderBy: { createdAt: 'asc' }
@@ -164,7 +199,10 @@ export class ChatService {
     return records.map(s => this.mapDbSessionToDomain(s));
   }
 
-  async getSessionById(id: string): Promise<ChatSession> {
+  async getSessionById(
+    id: string,
+    userId: string
+  ): Promise<ChatSession> {
     const record = await this.prisma.chatSession.findUnique({
       where: { id },
       include: {
@@ -174,14 +212,26 @@ export class ChatService {
       }
     });
 
-    if (!record) {
+    if (!record || record.userId !== userId) {
       throw new NotFoundException(`Chat session '${id}' not found`);
     }
 
     return this.mapDbSessionToDomain(record);
   }
 
-  async deleteSession(id: string): Promise<void> {
+  async deleteSession(
+    id: string,
+    userId: string
+  ): Promise<void> {
+    const record = await this.prisma.chatSession.findUnique({
+      where: { id },
+      select: { userId: true }
+    });
+
+    if (!record || record.userId !== userId) {
+      throw new NotFoundException(`Chat session '${id}' not found`);
+    }
+
     await this.prisma.chatSession.delete({
       where: { id }
     });
@@ -205,7 +255,8 @@ export class ChatService {
         citations: m.citations,
         evidence: m.evidence,
         suggestedFollowUps: m.suggestedFollowUps,
-        sourceFreshnessWarning: m.sourceFreshnessWarning || undefined,
+        sourceFreshnessWarning:
+          m.sourceFreshnessWarning || undefined,
         createdAt: m.createdAt.toISOString()
       })),
       createdAt: s.createdAt.toISOString(),

@@ -1,16 +1,39 @@
-import { Controller, Post, Body, Get, Param, Delete, Sse, Query } from '@nestjs/common';
-import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  Param,
+  Delete,
+  Sse,
+  Query,
+  UseGuards
+} from '@nestjs/common';
+
+import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
+
 import { ChatService } from './chat.service';
-import { IndianLanguage } from '@bis/shared-types';
+
+import { IndianLanguage, type UserProfile } from '@bis/shared-types';
+
 import { Observable } from 'rxjs';
 
+import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
+
+import { CurrentUser } from '../common/decorators/current-user.decorator';
+
 @ApiTags('Chat & AI Assistant')
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 @Controller('chat')
 export class ChatController {
   constructor(private chatService: ChatService) {}
 
   @Post('message')
-  @ApiOperation({ summary: 'Send a message to the BIS Saarthi AI Assistant and receive grounded responses with evidence' })
+  @ApiOperation({
+    summary:
+      'Send a message to the BIS Saarthi AI Assistant and receive grounded responses with evidence'
+  })
   async sendMessage(
     @Body()
     body: {
@@ -19,35 +42,51 @@ export class ChatController {
       roleMode?: string;
       language?: IndianLanguage;
       userId?: string;
-    }
+    },
+    @CurrentUser() user: UserProfile
   ) {
-    return this.chatService.sendMessage(body);
+    return this.chatService.sendMessage({
+      ...body,
+      userId: user.id
+    });
   }
 
   @Sse('stream')
-  @ApiOperation({ summary: 'Server-Sent Events streaming chat endpoint for real-time token delivery' })
+  @ApiOperation({
+    summary:
+      'Server-Sent Events streaming chat endpoint for real-time token delivery'
+  })
   streamMessage(
     @Query('message') message: string,
     @Query('language') language?: IndianLanguage
   ): Observable<{ data: string }> {
-    return this.chatService.streamMessage({ message: message || '', language });
+    return this.chatService.streamMessage({
+      message: message || '',
+      language
+    });
   }
 
   @Get('sessions')
   @ApiOperation({ summary: 'Get all active chat sessions' })
-  async getSessions() {
-    return this.chatService.getSessions();
+  async getSessions(@CurrentUser() user: UserProfile) {
+    return this.chatService.getSessions(user.id);
   }
 
   @Get('sessions/:id')
   @ApiOperation({ summary: 'Get a specific chat session by ID' })
-  async getSessionById(@Param('id') id: string) {
-    return this.chatService.getSessionById(id);
+  async getSessionById(
+    @Param('id') id: string,
+    @CurrentUser() user: UserProfile
+  ) {
+    return this.chatService.getSessionById(id, user.id);
   }
 
   @Delete('sessions/:id')
   @ApiOperation({ summary: 'Delete a chat session' })
-  async deleteSession(@Param('id') id: string) {
-    return this.chatService.deleteSession(id);
+  async deleteSession(
+    @Param('id') id: string,
+    @CurrentUser() user: UserProfile
+  ) {
+    return this.chatService.deleteSession(id, user.id);
   }
 }

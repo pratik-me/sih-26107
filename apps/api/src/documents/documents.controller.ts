@@ -5,13 +5,21 @@ import {
   Body,
   UseInterceptors,
   UploadedFile,
-  BadRequestException
+  BadRequestException,
+  UseGuards
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { DocumentsService, IngestDocumentDto } from './documents.service';
-import { ApiTags, ApiOperation, ApiConsumes } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiConsumes, ApiBearerAuth } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
+import { RolesGuard } from '../common/guards/roles.guard';
+import { Roles } from '../common/decorators/roles.decorator';
+import { UserRole } from '@bis/shared-types';
 
 @ApiTags('documents')
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles(UserRole.ADMIN)
 @Controller('documents')
 export class DocumentsController {
   constructor(private readonly documentsService: DocumentsService) {}
@@ -48,7 +56,11 @@ export class DocumentsController {
     let fileType: 'pdf' | 'html' | 'text' = 'text';
     if (file.mimetype.includes('pdf') || file.originalname.endsWith('.pdf')) {
       fileType = 'pdf';
-    } else if (file.mimetype.includes('html') || file.originalname.endsWith('.html') || file.originalname.endsWith('.htm')) {
+    } else if (
+      file.mimetype.includes('html') ||
+      file.originalname.endsWith('.html') ||
+      file.originalname.endsWith('.htm')
+    ) {
       fileType = 'html';
     }
 
