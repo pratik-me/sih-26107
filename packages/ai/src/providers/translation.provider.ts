@@ -49,17 +49,33 @@ export class IndicLanguageEngine implements ITranslationProvider {
   };
 
   private getModel() {
+    const openrouterKey = process.env.OPENROUTER_API_KEY;
     const anthropicKey = process.env.ANTHROPIC_API_KEY;
     const openaiKey = process.env.OPENAI_API_KEY;
 
-    if (anthropicKey) {
+    if (openrouterKey && !openrouterKey.includes('your_openrouter_key') && openrouterKey.trim().length > 10) {
+      return new ChatOpenAI({
+        modelName: process.env.OPENROUTER_TRANSLATION_MODEL || process.env.OPENROUTER_MODEL || 'nvidia/nemotron-3-super-120b-a12b:free',
+        openAIApiKey: openrouterKey,
+        temperature: 0.1,
+        configuration: {
+          baseURL: process.env.OPENROUTER_BASE_URL || 'https://openrouter.ai/api/v1',
+          defaultHeaders: {
+            'HTTP-Referer': process.env.OPENROUTER_SITE_URL || 'http://localhost:3000',
+            'X-Title': process.env.OPENROUTER_SITE_NAME || 'BIS Saarthi'
+          }
+        }
+      });
+    }
+
+    if (anthropicKey && !anthropicKey.includes('your_anthropic_api_key_here') && anthropicKey.trim().length > 10) {
       return new ChatAnthropic({
         modelName: process.env.ANTHROPIC_MODEL || 'claude-3-haiku-20240307',
         apiKey: anthropicKey,
         temperature: 0.1
       });
     }
-    if (openaiKey) {
+    if (openaiKey && !openaiKey.includes('your_openai_api_key_here') && openaiKey.trim().length > 10) {
       return new ChatOpenAI({
         modelName: process.env.OPENAI_MODEL || 'gpt-4o-mini',
         openAIApiKey: openaiKey,

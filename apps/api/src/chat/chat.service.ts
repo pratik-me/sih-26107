@@ -28,7 +28,7 @@ export class ChatService {
     message: string;
     roleMode?: string;
     language?: IndianLanguage;
-    userId: string;
+    userId?: string;
   }): Promise<{ session: ChatSession; reply: ChatMessage }> {
     let dbSession;
 
@@ -38,8 +38,8 @@ export class ChatService {
         include: { messages: { orderBy: { createdAt: 'asc' } } }
       });
 
-      // Existing session must belong to the authenticated user.
-      if (dbSession && dbSession.userId !== params.userId) {
+      // Existing session check: if session has an owner and a different user accesses it, restrict access.
+      if (dbSession && dbSession.userId && params.userId && dbSession.userId !== params.userId) {
         throw new NotFoundException(
           `Chat session '${params.sessionId}' not found`
         );
@@ -201,7 +201,7 @@ export class ChatService {
 
   async getSessionById(
     id: string,
-    userId: string
+    userId?: string
   ): Promise<ChatSession> {
     const record = await this.prisma.chatSession.findUnique({
       where: { id },
@@ -212,7 +212,7 @@ export class ChatService {
       }
     });
 
-    if (!record || record.userId !== userId) {
+    if (!record || (record.userId && userId && record.userId !== userId)) {
       throw new NotFoundException(`Chat session '${id}' not found`);
     }
 
