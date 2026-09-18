@@ -3,8 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { IndianLanguage, UserRole } from "@bis/shared-types";
-import { AshokaMotif, LanguageSelector } from "@bis/ui";
+import { LanguageSelector } from "@bis/ui";
 import { useTranslation } from "@/lib/i18n";
 import {
   MessageSquare,
@@ -19,7 +18,6 @@ import {
   X,
   Compass,
   ChevronDown,
-  BarChart3,
 } from "lucide-react";
 import Image from "next/image";
 
@@ -29,7 +27,6 @@ export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [standardsDropdownOpen, setStandardsDropdownOpen] = useState(false);
   const [mobileStandardsOpen, setMobileStandardsOpen] = useState(true);
-  const [userRole, setUserRole] = useState<UserRole>(UserRole.INDUSTRY);
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -103,6 +100,7 @@ export function Header() {
                     alt="BIS-LOGO"
                     height={34}
                     width={34}
+                    priority
                   />
                 </div>
                 <span className="text-sm font-black tracking-tight text-slate-900 dark:text-slate-100 whitespace-nowrap">

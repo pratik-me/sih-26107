@@ -1,17 +1,11 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Providers } from "../components/Providers";
-import { Geist } from "next/font/google";
+import { GeistSans } from "geist/font/sans";
 import { cn } from "@/lib/utils";
 
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
-
-const geist = Geist({
-  subsets: ["latin"],
-  variable: "--font-sans",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   title: "BIS Saarthi — AI Assistant for Indian Standards & Services",
@@ -33,7 +27,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={cn("font-sans", geist.variable)}
+      className={cn("font-sans", GeistSans.variable)}
     >
       <body className="min-h-screen flex flex-col font-sans bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 antialiased">
         <Providers>
