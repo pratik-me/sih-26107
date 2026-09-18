@@ -42,6 +42,11 @@ export class DeterministicBISLLMProvider implements ILLMProvider {
   name = 'deterministic-bis-grounded';
 
   async generateText(prompt: string, contextEvidence: Evidence[], _options?: LLMGenerateOptions): Promise<LLMGenerateResult> {
+    console.log(
+      '\x1b[33m%s\x1b[0m',
+      `[AI Engine: DETERMINISTIC MODE] Generating grounded offline response for query: "${prompt}". (No active cloud LLM provider configured or LLM_PROVIDER=deterministic)`
+    );
+
     const rawTrimmed = (prompt || '').trim();
     const trimmed = rawTrimmed.toLowerCase();
 
@@ -349,6 +354,12 @@ export class DeterministicBISLLMProvider implements ILLMProvider {
         ? 'Stainless steel'
         : stdNum.includes('1786')
         ? 'High strength TMT carbon steel'
+        : stdNum.includes('800')
+        ? 'Structural steel sections, plates, bolts, and welds'
+        : stdNum.includes('875')
+        ? 'Building structural components & materials'
+        : stdNum.includes('456')
+        ? 'Plain and reinforced concrete'
         : stdNum.includes('269')
         ? 'Ordinary Portland Cement Clinker & Gypsum'
         : stdNum.includes('10500') || stdNum.includes('14543')
@@ -363,6 +374,12 @@ export class DeterministicBISLLMProvider implements ILLMProvider {
         ? 'Cookware / tableware / bottle'
         : stdNum.includes('1786')
         ? 'High strength deformed reinforcement steel bars'
+        : stdNum.includes('800')
+        ? 'General construction in steel / structural steel framework'
+        : stdNum.includes('875')
+        ? 'Design loads for buildings and structures'
+        : stdNum.includes('456')
+        ? 'Plain and reinforced concrete construction'
         : stdNum.includes('269')
         ? 'Portland Cement (33 / 43 / 53 Grade)'
         : stdNum.includes('10500')
@@ -406,7 +423,7 @@ export class DeterministicBISLLMProvider implements ILLMProvider {
       });
 
       answer += `### Recommended Next Steps\n`;
-      answer += `1. Confirm the exact bottle type and intended use.\n`;
+      answer += `1. Confirm the exact product/material specifications and intended use.\n`;
       answer += `2. Verify the applicable Indian Standard and latest revision.\n`;
       answer += `3. Check whether a QCO makes compliance mandatory.\n`;
       answer += `4. Identify the prescribed testing requirements.\n`;
@@ -481,10 +498,19 @@ export class GeminiBISLLMProvider implements ILLMProvider {
   async generateText(prompt: string, contextEvidence: Evidence[], options?: LLMGenerateOptions): Promise<LLMGenerateResult> {
     const apiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
     if (!apiKey || apiKey.includes('your_') || apiKey.trim().length < 10) {
+      console.log(
+        '\x1b[33m%s\x1b[0m',
+        `[AI Engine: DETERMINISTIC FALLBACK] Gemini API key missing or unconfigured; falling back to offline deterministic grounding.`
+      );
       return this.fallbackProvider.generateText(prompt, contextEvidence, options);
     }
 
     const modelName = process.env.LLM_MODEL || 'gemini-1.5-flash';
+    console.log(
+      '\x1b[32m%s\x1b[0m',
+      `[AI Engine: LLM CONNECTED (Google Gemini)] Generating dynamic response via model '${modelName}' for query: "${prompt}"`
+    );
+
     const systemPromptText = `${options?.systemPrompt || BIS_SYSTEM_PROMPT}\n\n${this.formatEvidenceContext(contextEvidence)}`;
 
     try {
@@ -585,10 +611,19 @@ export class MistralBISLLMProvider implements ILLMProvider {
   async generateText(prompt: string, contextEvidence: Evidence[], options?: LLMGenerateOptions): Promise<LLMGenerateResult> {
     const apiKey = process.env.MISTRAL_API_KEY;
     if (!apiKey || apiKey.includes('your_') || apiKey.trim().length < 10) {
+      console.log(
+        '\x1b[33m%s\x1b[0m',
+        `[AI Engine: DETERMINISTIC FALLBACK] Mistral API key missing or unconfigured; falling back to offline deterministic grounding.`
+      );
       return this.fallbackProvider.generateText(prompt, contextEvidence, options);
     }
 
     const modelName = process.env.MISTRAL_MODEL || process.env.LLM_MODEL || 'mistral-large-latest';
+    console.log(
+      '\x1b[32m%s\x1b[0m',
+      `[AI Engine: LLM CONNECTED (Mistral AI)] Generating dynamic response via model '${modelName}' for query: "${prompt}"`
+    );
+
     const systemPromptText = `${options?.systemPrompt || BIS_SYSTEM_PROMPT}\n\n${this.formatEvidenceContext(contextEvidence)}`;
 
     try {
@@ -742,8 +777,17 @@ export class LangChainBISLLMProvider implements ILLMProvider {
   async generateText(prompt: string, contextEvidence: Evidence[], options?: LLMGenerateOptions): Promise<LLMGenerateResult> {
     const model = this.getModel(options);
     if (!model) {
+      console.log(
+        '\x1b[33m%s\x1b[0m',
+        `[AI Engine: DETERMINISTIC FALLBACK] LangChain model not configured (missing OpenAI/Anthropic/OpenRouter key); falling back to offline deterministic grounding.`
+      );
       return this.fallbackProvider.generateText(prompt, contextEvidence, options);
     }
+
+    console.log(
+      '\x1b[32m%s\x1b[0m',
+      `[AI Engine: LLM CONNECTED (LangChain)] Generating dynamic response via model for query: "${prompt}"`
+    );
 
     const systemPromptText = `${options?.systemPrompt || BIS_SYSTEM_PROMPT}\n\n${this.formatEvidenceContext(contextEvidence)}`;
 
@@ -817,27 +861,52 @@ export class LangChainBISLLMProvider implements ILLMProvider {
  * Factory helper returning the active LLM provider instance based on environment config
  */
 export function getLLMProvider(): ILLMProvider {
-  const provider = (process.env.LLM_PROVIDER || 'deterministic').toLowerCase();
+  const provider = (process.env.LLM_PROVIDER || '').toLowerCase();
   
-  // 100% Free Local Offline Grounding Engine (No API keys or internet needed)
+  // Explicitly forced offline mode
   if (provider === 'deterministic' || provider === 'free' || provider === 'local') {
     return new DeterministicBISLLMProvider();
   }
-  
-  // Mistral AI
-  if (provider === 'mistral' && process.env.MISTRAL_API_KEY && !process.env.MISTRAL_API_KEY.includes('your_')) {
-    return new MistralBISLLMProvider();
-  }
-  
-  // Google Gemini (Free tier available via Google AI Studio)
+
+  const openrouterKey = process.env.OPENROUTER_API_KEY;
+  const anthropicKey = process.env.ANTHROPIC_API_KEY;
+  const openaiKey = process.env.OPENAI_API_KEY;
   const geminiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
-  if (provider === 'gemini' && geminiKey && !geminiKey.includes('your_') && geminiKey.trim().length > 10) {
-    return new GeminiBISLLMProvider();
+  const mistralKey = process.env.MISTRAL_API_KEY;
+
+  const hasValidOpenRouter = !!(openrouterKey && !openrouterKey.includes('your_openrouter_key') && openrouterKey.trim().length > 10);
+  const hasValidAnthropic = !!(anthropicKey && !anthropicKey.includes('your_anthropic_api_key_here') && anthropicKey.trim().length > 10);
+  const hasValidOpenAI = !!(openaiKey && !openaiKey.includes('your_openai_api_key_here') && openaiKey.trim().length > 10);
+  const hasValidGemini = !!(geminiKey && !geminiKey.includes('your_') && geminiKey.trim().length > 10);
+  const hasValidMistral = !!(mistralKey && !mistralKey.includes('your_') && mistralKey.trim().length > 10);
+
+  // 1. OpenRouter, OpenAI, Anthropic via LangChain Provider
+  if (
+    provider === 'openrouter' ||
+    provider === 'openai' ||
+    provider === 'anthropic' ||
+    provider === 'langchain' ||
+    hasValidOpenRouter ||
+    hasValidOpenAI ||
+    hasValidAnthropic
+  ) {
+    if (hasValidOpenRouter || hasValidOpenAI || hasValidAnthropic) {
+      return new LangChainBISLLMProvider();
+    }
   }
-  
-  // LangChain (OpenAI / Anthropic)
-  if ((provider === 'openai' || provider === 'anthropic') && (process.env.OPENAI_API_KEY || process.env.ANTHROPIC_API_KEY)) {
-    return new LangChainBISLLMProvider();
+
+  // 2. Google Gemini
+  if (provider === 'gemini' || hasValidGemini) {
+    if (hasValidGemini) {
+      return new GeminiBISLLMProvider();
+    }
+  }
+
+  // 3. Mistral AI
+  if (provider === 'mistral' || hasValidMistral) {
+    if (hasValidMistral) {
+      return new MistralBISLLMProvider();
+    }
   }
   
   // Default to 100% Free Deterministic Engine

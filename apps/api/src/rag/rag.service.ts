@@ -185,7 +185,13 @@ export class RAGService {
           '[RAGService] WARNING: DocumentChunk database table is empty. Falling back to in-memory SEED_STANDARDS dataset for dev environment.'
         );
 
-        const qTokens = translatedText.toLowerCase().split(/\s+/).filter(t => t.length > 2);
+        const STOP_WORDS = new Set([
+          'what', 'does', 'the', 'is', 'a', 'an', 'standard', 'for', 'used',
+          'how', 'which', 'with', 'and', 'or', 'of', 'to', 'in', 'on', 'by',
+          'this', 'that', 'are', 'was', 'were', 'tell', 'give', 'about', 'explain'
+        ]);
+
+        const qTokens = translatedText.toLowerCase().split(/[^a-zA-Z0-9:]+/).filter(t => t.length > 2 && !STOP_WORDS.has(t));
 
         for (const std of (SEED_STANDARDS as any[])) {
           const fullContent = `${std.standardNumber} ${std.title} ${std.scope} ${std.abstract} ${std.keywords.join(' ')}`.toLowerCase();
@@ -194,10 +200,10 @@ export class RAGService {
             if (fullContent.includes(token)) matchCount++;
           }
 
-          const isExactStd = preservedEntities.some(e => std.standardNumber.toLowerCase().includes(e.toLowerCase()));
+          const isExactStd = preservedEntities.some(e => std.standardNumber.toLowerCase().includes(e.toLowerCase()) || e.toLowerCase().includes(std.standardNumber.toLowerCase()));
 
-          if (matchCount > 0 || isExactStd) {
-            const baseSim = isExactStd ? 0.95 : Math.min(0.5 + matchCount * 0.1, 0.92);
+          if (matchCount > 0 || isExactStd || qTokens.length === 0) {
+            const baseSim = isExactStd ? 0.98 : Math.min(0.5 + matchCount * 0.12, 0.92);
             candidates.push({
               id: `ev-${std.standardNumber}-main`,
               documentTitle: std.title,

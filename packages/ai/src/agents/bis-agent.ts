@@ -209,6 +209,10 @@ export class BISSaarthiAgent {
 
     // If real LLM model & tools handler available, execute LangGraph agent graph loop
     if (model && this.toolsHandler) {
+      console.log(
+        '\x1b[32m%s\x1b[0m',
+        `[BIS Saarthi Agent: MULTI-STEP LLM] Executing LangGraph agent loop with cloud model for query: "${query}"`
+      );
       try {
         return await this.executeGraphAgent(
           query,
@@ -223,6 +227,11 @@ export class BISSaarthiAgent {
           err,
         );
       }
+    } else {
+      console.log(
+        '\x1b[33m%s\x1b[0m',
+        `[BIS Saarthi Agent: DETERMINISTIC HANDLER] Executing single-tool fallback mode (no cloud LLM) for query: "${query}"`
+      );
     }
 
     // Single-tool fallback path for deterministic mode
