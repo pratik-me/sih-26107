@@ -1,12 +1,23 @@
 import type { Metadata } from 'next';
+import dynamic from 'next/dynamic';
 import './globals.css';
 import { Providers } from '../components/Providers';
-import { Header } from '../components/Header';
-import { Footer } from '../components/Footer';
 import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
 
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
+// Split client components out of the root layout chunk so layout.tsx stays tiny.
+const Header = dynamic(() => import('../components/Header').then((m) => m.Header), {
+  ssr: true,
+});
+const Footer = dynamic(() => import('../components/Footer').then((m) => m.Footer), {
+  ssr: true,
+});
+
+const geist = Geist({
+  subsets: ['latin'],
+  variable: '--font-sans',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   title: 'BIS Saarthi — AI Assistant for Indian Standards & Services',
