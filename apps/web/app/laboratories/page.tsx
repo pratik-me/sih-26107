@@ -6,8 +6,10 @@ import { Laboratory } from '@bis/shared-types';
 import { apiClient } from '@bis/api-client';
 import { LaboratoryCard, LoadingState, EmptyState } from '@bis/ui';
 import { Building2, Search, MapPin, Filter, CheckCircle2 } from 'lucide-react';
+import { useTranslation } from "@/lib/i18n";
 
 function LaboratoriesFinderContent() {
+  const { t } = useTranslation();
   const searchParams = useSearchParams();
   const stdParam = searchParams.get('std') || '';
 
@@ -63,13 +65,13 @@ function LaboratoriesFinderContent() {
         <div className="space-y-2">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 dark:bg-white/10 text-[#CAF0F8] text-xs font-semibold border border-[#48CAE4]/30 backdrop-blur-md shadow-2xs">
             <Building2 className="w-3.5 h-3.5 text-[#48CAE4]" />
-            <span>Accredited Testing Infrastructure</span>
+            <span>{t("labs.badge", "Accredited Testing Infrastructure")}</span>
           </div>
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight">
-            Find a BIS Recognized Laboratory
+            {t("labs.title", "Find a BIS Recognized Laboratory")}
           </h1>
           <p className="text-sm sm:text-base text-[#ADE8F4]/90 max-w-2xl leading-relaxed">
-            Search NABL (ISO/IEC 17025) accredited and BIS Recognized Testing Laboratories across Indian states and cities with valid testing scopes.
+            {t("labs.subtitle", "Search NABL (ISO/IEC 17025) accredited and BIS Recognized Testing Laboratories across Indian states and cities with valid testing scopes.")}
           </p>
         </div>
 
@@ -82,7 +84,7 @@ function LaboratoriesFinderContent() {
                 type="text"
                 value={filterStd}
                 onChange={e => setFilterStd(e.target.value)}
-                placeholder="Search by Indian Standard (e.g. IS 17526, IS 14543, IS 16046, IS 1786)..."
+                placeholder={t("labs.search_placeholder", "Search by Indian Standard (e.g. IS 17526, IS 14543, IS 16046, IS 1786)...")}
                 className="w-full pl-10 pr-3.5 py-2.5 text-xs sm:text-sm rounded-xl border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#0077B6] focus:border-[#023E8A]"
               />
             </div>
@@ -90,14 +92,14 @@ function LaboratoriesFinderContent() {
               type="submit"
               className="px-6 py-2.5 text-xs sm:text-sm font-bold bg-gradient-to-r from-[#023E8A] via-[#0077B6] to-[#0096C7] hover:from-[#03045E] hover:to-[#023E8A] text-white rounded-xl shadow-md shadow-[#0077B6]/20 transition-all cursor-pointer"
             >
-              Filter Labs
+              {t("labs.btn_filter", "Filter Labs")}
             </button>
           </form>
 
           {/* State Selection Pills */}
           <div className="flex flex-wrap items-center gap-1.5 pt-3 border-t border-slate-100 dark:border-slate-800 text-xs">
             <span className="font-semibold text-slate-500 dark:text-slate-400 mr-1 flex items-center gap-1">
-              <MapPin className="w-3 h-3 text-[#0077B6] dark:text-[#48CAE4]" /> State:
+              <MapPin className="w-3 h-3 text-[#0077B6] dark:text-[#48CAE4]" /> {t("labs.filter_state", "State")}:
             </span>
             {states.map(st => {
               const isSel = (filterState === '' && st === 'All States') || filterState === st;
@@ -112,7 +114,23 @@ function LaboratoriesFinderContent() {
                       : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-[#CAF0F8]/80 hover:text-[#023E8A]'
                   }`}
                 >
-                  {st}
+                  {st === 'All States'
+                    ? t("labs.filter_allstates", "All States")
+                    : st === 'Maharashtra'
+                    ? t("labs.state_maharashtra", "Maharashtra")
+                    : st === 'Delhi'
+                    ? t("labs.state_delhi", "Delhi")
+                    : st === 'Uttar Pradesh'
+                    ? t("labs.state_uttar_pradesh", "Uttar Pradesh")
+                    : st === 'Karnataka'
+                    ? t("labs.state_karnataka", "Karnataka")
+                    : st === 'Haryana'
+                    ? t("labs.state_haryana", "Haryana")
+                    : st === 'Tamil Nadu'
+                    ? t("labs.state_tamil_nadu", "Tamil Nadu")
+                    : st === 'Gujarat'
+                    ? t("labs.state_gujarat", "Gujarat")
+                    : st}
                 </button>
               );
             })}

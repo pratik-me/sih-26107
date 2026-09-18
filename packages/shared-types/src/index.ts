@@ -9,3 +9,5 @@ export * from './consumer';
 export * from './agent';
 export * from './auth';
 export * from './evaluation';
+export * from './languages';
+

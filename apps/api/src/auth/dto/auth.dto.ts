@@ -1,11 +1,4 @@
-import {
-  IsEmail,
-  IsIn,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-  MinLength
-} from 'class-validator';
+import { IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString, MinLength } from 'class-validator';
 import { UserRole } from '@bis/shared-types';
 
 export class RegisterDto {
@@ -20,11 +13,7 @@ export class RegisterDto {
   @IsNotEmpty()
   fullName!: string;
 
-  @IsIn([
-    UserRole.CONSUMER,
-    UserRole.INDUSTRY,
-    UserRole.STUDENT_RESEARCHER
-  ])
+  @IsEnum(UserRole)
   @IsOptional()
   role?: UserRole = UserRole.INDUSTRY;
 

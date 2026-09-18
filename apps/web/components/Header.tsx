@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { IndianLanguage, UserRole } from "@bis/shared-types";
 import { AshokaMotif, LanguageSelector } from "@bis/ui";
+import { useTranslation } from "@/lib/i18n";
 import {
   MessageSquare,
   Search,
@@ -24,12 +25,10 @@ import Image from "next/image";
 
 export function Header() {
   const pathname = usePathname();
+  const { t, language: selectedLanguage, setLanguage: setSelectedLanguage } = useTranslation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [standardsDropdownOpen, setStandardsDropdownOpen] = useState(false);
   const [mobileStandardsOpen, setMobileStandardsOpen] = useState(true);
-  const [selectedLanguage, setSelectedLanguage] = useState<IndianLanguage>(
-    IndianLanguage.EN,
-  );
   const [userRole, setUserRole] = useState<UserRole>(UserRole.INDUSTRY);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -72,12 +71,12 @@ export function Header() {
     pathname === "/standards" || pathname === "/standards/recommend";
 
   const otherNavLinks = [
-    { href: "/certification", label: "Certification", icon: Award },
-    { href: "/testing", label: "Testing", icon: FlaskConical },
-    { href: "/laboratories", label: "Labs", icon: Building2 },
-    { href: "/hallmarking", label: "Hallmark", icon: Sparkles },
-    { href: "/consumer", label: "Consumer", icon: ShieldCheck },
-    { href: "/reports", label: "Reports", icon: FileBarChart2 },
+    { href: "/certification", label: t("nav.certification", "Certification"), icon: Award },
+    { href: "/testing", label: t("nav.testing", "Testing"), icon: FlaskConical },
+    { href: "/laboratories", label: t("nav.labs", "Labs"), icon: Building2 },
+    { href: "/hallmarking", label: t("nav.hallmark", "Hallmark"), icon: Sparkles },
+    { href: "/consumer", label: t("nav.consumer", "Consumer"), icon: ShieldCheck },
+    { href: "/reports", label: t("nav.reports", "Reports"), icon: FileBarChart2 },
   ];
 
   return (
@@ -114,13 +113,13 @@ export function Header() {
                 </span>
               </div>
               <p className="text-[10px] text-slate-500 font-medium leading-none whitespace-nowrap">
-                Indian Standards Intelligence
+                {t("header.subtitle", "Indian Standards Intelligence")}
               </p>
             </div>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-1 xl:gap-1.5 flex-nowrap">
+          <nav className="hidden lg:flex items-center gap-0.5 xl:gap-1.5 flex-nowrap">
             {/* Standards Dropdown Heading */}
             <div
               className="relative"
@@ -146,7 +145,7 @@ export function Header() {
                 onKeyDown={(e) => {
                   if (e.key === "Escape") setStandardsDropdownOpen(false);
                 }}
-                className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all duration-200 cursor-pointer ${
+                className={`inline-flex items-center gap-1 xl:gap-1.5 px-2 xl:px-2.5 py-1.5 rounded-xl text-[11px] xl:text-xs font-semibold whitespace-nowrap transition-all duration-200 cursor-pointer ${
                   isStandardsActive
                     ? "bg-gradient-to-r from-[#CAF0F8] to-[#ADE8F4]/70 dark:from-[#03045E]/80 dark:to-[#023E8A]/60 text-[#023E8A] dark:text-[#90E0EF] font-bold border border-[#ADE8F4] dark:border-[#0077B6]/40 shadow-xs"
                     : "text-slate-700 dark:text-slate-300 hover:text-[#0077B6] dark:hover:text-white hover:bg-[#CAF0F8]/40 dark:hover:bg-slate-800/80"
@@ -159,7 +158,7 @@ export function Header() {
                       : "text-slate-500 dark:text-slate-400"
                   }`}
                 />
-                <span>Standards</span>
+                <span>{t("nav.standards", "Standards")}</span>
                 <ChevronDown
                   className={`w-3 h-3 transition-transform duration-200 ${
                     standardsDropdownOpen
@@ -193,7 +192,7 @@ export function Header() {
                       <Compass className="w-4 h-4" />
                     </span>
                     <div className="min-w-0">
-                      <div className="text-xs font-bold leading-snug">Find Your Standards</div>
+                      <div className="text-xs font-bold leading-snug">{t("nav.find_standard", "Find Your Standards")}</div>
                       <p
                         className={`text-[11px] leading-tight mt-0.5 ${
                           pathname === "/standards/recommend"
@@ -201,7 +200,7 @@ export function Header() {
                             : "text-slate-500 dark:text-slate-400"
                         }`}
                       >
-                        AI product profiler matching your product to IS
+                        {t("header.find_standard_desc", "AI product profiler matching your product to IS")}
                       </p>
                     </div>
                   </Link>
@@ -225,7 +224,7 @@ export function Header() {
                       <Search className="w-4 h-4" />
                     </span>
                     <div className="min-w-0">
-                      <div className="text-xs font-bold leading-snug">Standards Catalogue</div>
+                      <div className="text-xs font-bold leading-snug">{t("nav.catalogue", "Standards Catalogue")}</div>
                       <p
                         className={`text-[11px] leading-tight mt-0.5 ${
                           pathname === "/standards"
@@ -233,7 +232,7 @@ export function Header() {
                             : "text-slate-500 dark:text-slate-400"
                         }`}
                       >
-                        Search and explore Indian Standards catalogue
+                        {t("header.catalogue_desc", "Search and explore Indian Standards catalogue")}
                       </p>
                     </div>
                   </Link>
@@ -249,7 +248,7 @@ export function Header() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all duration-200 ${
+                  className={`inline-flex items-center gap-1 xl:gap-1.5 px-2 xl:px-2.5 py-1.5 rounded-xl text-[11px] xl:text-xs font-semibold whitespace-nowrap transition-all duration-200 ${
                     isActive
                       ? "bg-gradient-to-r from-[#CAF0F8] to-[#ADE8F4]/70 dark:from-[#03045E]/80 dark:to-[#023E8A]/60 text-[#023E8A] dark:text-[#90E0EF] font-bold border border-[#ADE8F4] dark:border-[#0077B6]/40 shadow-xs"
                       : "text-slate-700 dark:text-slate-300 hover:text-[#0077B6] dark:hover:text-white hover:bg-[#CAF0F8]/40 dark:hover:bg-slate-800/80"
@@ -282,8 +281,8 @@ export function Header() {
                 className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold bg-gradient-to-r from-[#023E8A] to-[#0077B6] hover:from-[#03045E] hover:to-[#023E8A] text-white shadow-sm shadow-[#0077B6]/25 transition-all whitespace-nowrap"
               >
                 <MessageSquare className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Ask BIS AI</span>
-                <span className="sm:hidden">Ask AI</span>
+                <span className="hidden sm:inline">{t("nav.ask_bis_ai", "Ask BIS AI")}</span>
+                <span className="sm:hidden">{t("nav.ask_ai", "Ask AI")}</span>
               </Link>
 
               <button
@@ -319,7 +318,7 @@ export function Header() {
             >
               <div className="flex items-center gap-2.5">
                 <Search className="w-4 h-4 text-[#0077B6]" />
-                <span>Standards</span>
+                <span>{t("nav.standards", "Standards")}</span>
               </div>
               <ChevronDown
                 className={`w-4 h-4 transition-transform duration-200 ${
@@ -339,7 +338,7 @@ export function Header() {
                   }`}
                 >
                   <Compass className="w-3.5 h-3.5 text-[#0077B6]" />
-                  <span>Find Your Standards</span>
+                  <span>{t("nav.find_standard", "Find Your Standards")}</span>
                 </Link>
                 <Link
                   href="/standards"
@@ -351,7 +350,7 @@ export function Header() {
                   }`}
                 >
                   <Search className="w-3.5 h-3.5 text-[#0077B6]" />
-                  <span>Standards Catalogue</span>
+                  <span>{t("nav.catalogue", "Standards Catalogue")}</span>
                 </Link>
               </div>
             )}
@@ -376,6 +375,30 @@ export function Header() {
               </Link>
             );
           })}
+
+          <div className="pt-3 pb-1 flex items-center justify-between border-t border-slate-200 dark:border-slate-800">
+            <span className="text-xs font-semibold text-slate-500">
+              {t("chat.language_label", "Language:")}
+            </span>
+            <LanguageSelector
+              selectedLanguage={selectedLanguage}
+              onLanguageChange={(lang) => {
+                setSelectedLanguage(lang);
+                setMobileMenuOpen(false);
+              }}
+            />
+          </div>
+
+          <div className="pt-2">
+            <Link
+              href="/chat"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center justify-center gap-2 w-full px-3 py-2.5 rounded-lg text-sm font-bold bg-gradient-to-r from-[#023E8A] to-[#0077B6] hover:from-[#03045E] hover:to-[#023E8A] text-white shadow-sm shadow-[#0077B6]/25"
+            >
+              <MessageSquare className="w-4 h-4" />
+              <span>{t("nav.ask_bis_ai", "Ask BIS AI")}</span>
+            </Link>
+          </div>
         </div>
       )}
     </header>

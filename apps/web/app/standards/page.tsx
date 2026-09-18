@@ -6,9 +6,11 @@ import { Standard } from '@bis/shared-types';
 import { apiClient } from '@bis/api-client';
 import { StandardCard, LoadingState, EmptyState } from '@bis/ui';
 import { Search, Filter, BookOpen, Award, CheckCircle } from 'lucide-react';
+import { useTranslation } from "@/lib/i18n";
 
 export default function StandardsCatalogPage() {
   const router = useRouter();
+  const { t } = useTranslation();
   const [query, setQuery] = useState('');
   const [selectedDivision, setSelectedDivision] = useState<string>('');
   const [mandatoryOnly, setMandatoryOnly] = useState<boolean>(false);
@@ -16,19 +18,19 @@ export default function StandardsCatalogPage() {
   const [isLoading, setIsLoading] = useState(false);
 
   const divisions = [
-    'All Divisions',
-    'Mechanical Engineering',
-    'Civil Engineering',
-    'Electrotechnical',
-    'Metallurgical Engineering',
-    'Food and Agriculture'
+    t('standards.filter_all', 'All Divisions'),
+    t('standards.div_mech', 'Mechanical Engineering'),
+    t('standards.div_civil', 'Civil Engineering'),
+    t('standards.div_electro', 'Electrotechnical'),
+    t('standards.div_met', 'Metallurgical Engineering'),
+    t('standards.div_food', 'Food and Agriculture')
   ];
 
   const fetchStandards = async () => {
     setIsLoading(true);
     try {
       const res = await apiClient.searchStandards(query, {
-        division: selectedDivision === 'All Divisions' ? undefined : selectedDivision,
+        division: selectedDivision === t('standards.filter_all', 'All Divisions') ? undefined : selectedDivision,
         isMandatory: mandatoryOnly ? true : undefined
       });
       setStandards(res.standards);
@@ -64,13 +66,13 @@ export default function StandardsCatalogPage() {
         <div className="space-y-2">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 dark:bg-white/10 text-[#CAF0F8] text-xs font-semibold border border-[#48CAE4]/30 backdrop-blur-md shadow-2xs">
             <BookOpen className="w-3.5 h-3.5 text-[#48CAE4]" />
-            <span>Bureau of Indian Standards Repository</span>
+            <span>{t('standards.badge', 'Bureau of Indian Standards Repository')}</span>
           </div>
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight">
-            Indian Standards Directory & Search
+            {t('standards.title', 'Indian Standards Directory & Search')}
           </h1>
           <p className="text-sm sm:text-base text-[#ADE8F4]/90 max-w-2xl leading-relaxed">
-            Search authoritative Indian Standards (IS), explore technical scopes, mandatory Quality Control Orders (QCO), and testing clause schedules.
+            {t('standards.subtitle', 'Search authoritative Indian Standards (IS), explore technical scopes, mandatory Quality Control Orders (QCO), and testing clause schedules.')}
           </p>
         </div>
 
@@ -83,7 +85,7 @@ export default function StandardsCatalogPage() {
                 type="text"
                 value={query}
                 onChange={e => setQuery(e.target.value)}
-                placeholder="Search by IS number (e.g. IS 10500, IS 17526) or keyword (cement, cable, steel, bottle)..."
+                placeholder={t('standards.search_placeholder', 'Search by IS number (e.g. IS 10500, IS 17526) or keyword (cement, cable, steel, bottle)...')}
                 className="w-full pl-10 pr-3.5 py-2.5 text-xs sm:text-sm rounded-xl border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#0077B6] focus:border-[#023E8A]"
               />
             </div>
@@ -91,7 +93,7 @@ export default function StandardsCatalogPage() {
               type="submit"
               className="px-6 py-2.5 text-xs sm:text-sm font-bold bg-gradient-to-r from-[#023E8A] via-[#0077B6] to-[#0096C7] hover:from-[#03045E] hover:to-[#023E8A] text-white rounded-xl shadow-md shadow-[#0077B6]/20 transition-all cursor-pointer"
             >
-              Search
+              {t('standards.search_btn', 'Search')}
             </button>
           </form>
 
@@ -99,15 +101,15 @@ export default function StandardsCatalogPage() {
           <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-100 dark:border-slate-800 text-xs">
             <div className="flex flex-wrap items-center gap-1.5">
               <span className="font-semibold text-slate-500 dark:text-slate-400 mr-1 flex items-center gap-1">
-                <Filter className="w-3 h-3 text-[#0077B6] dark:text-[#48CAE4]" /> Division:
+                <Filter className="w-3 h-3 text-[#0077B6] dark:text-[#48CAE4]" /> {t('standards.filter_division', 'Division:')}
               </span>
               {divisions.map(div => {
-                const isSel = (selectedDivision === '' && div === 'All Divisions') || selectedDivision === div;
+                const isSel = (selectedDivision === '' && div === t('standards.filter_all', 'All Divisions')) || selectedDivision === div;
                 return (
                   <button
                     key={div}
                     type="button"
-                    onClick={() => setSelectedDivision(div === 'All Divisions' ? '' : div)}
+                    onClick={() => setSelectedDivision(div === t('standards.filter_all', 'All Divisions') ? '' : div)}
                     className={`px-3 py-1 rounded-full text-[11px] transition-all cursor-pointer ${
                       isSel
                         ? 'bg-gradient-to-r from-[#023E8A] to-[#0077B6] text-white font-bold shadow-xs'
@@ -127,7 +129,7 @@ export default function StandardsCatalogPage() {
                 onChange={e => setMandatoryOnly(e.target.checked)}
                 className="w-4 h-4 rounded text-[#0077B6] focus:ring-[#0077B6] accent-[#0077B6]"
               />
-              <span>Mandatory QCO Only</span>
+              <span>{t('standards.filter_mandatory', 'Mandatory QCO Only')}</span>
             </label>
           </div>
         </div>
@@ -135,8 +137,8 @@ export default function StandardsCatalogPage() {
         {/* Standards Grid */}
         {isLoading ? (
           <LoadingState
-            message="Retrieving Standards from BIS Repository..."
-            submessage="Applying division filters and QCO regulatory scopes..."
+            message={t('standards.loading_msg', 'Retrieving Standards from BIS Repository...')}
+            submessage={t('standards.loading_sub', 'Applying division filters and QCO regulatory scopes...')}
           />
         ) : standards.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -150,10 +152,10 @@ export default function StandardsCatalogPage() {
           </div>
         ) : (
           <EmptyState
-            title="No Indian Standards Found"
-            description="Try broadening your search query or reset the division and mandatory QCO filters."
+            title={t('standards.empty_title', 'No Indian Standards Found')}
+            description={t('standards.empty_desc', 'Try broadening your search query or reset the division and mandatory QCO filters.')}
             icon={BookOpen}
-            actionLabel="Reset Filters"
+            actionLabel={t('standards.empty_action', 'Reset Filters')}
             onAction={() => {
               setQuery('');
               setSelectedDivision('');
