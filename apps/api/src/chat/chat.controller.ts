@@ -1,7 +1,7 @@
-import { Controller, Post, Body, Get, Param, Delete, Sse, Query } from '@nestjs/common';
-import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import { Controller, Post, Body, Get, Param, Delete, Sse, Query, UseGuards } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { ChatService } from './chat.service';
-import { IndianLanguage } from '@bis/shared-types';
+import { IndianLanguage, type UserProfile } from '@bis/shared-types';
 import { Observable } from 'rxjs';
 
 import { JwtAuthGuard, OptionalJwtAuthGuard } from '../common/guards/jwt-auth.guard';

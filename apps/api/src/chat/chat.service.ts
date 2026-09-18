@@ -31,9 +31,7 @@ export class ChatService {
     language?: IndianLanguage;
     userId?: string;
   }): Promise<{ session: ChatSession; reply: ChatMessage }> {
-    const sessionId = params.sessionId || randomUUID();
-    let dbSession: any = null;
-    let usingPrisma = false;
+    let dbSession;
 
     if (params.sessionId) {
       dbSession = await this.prisma.chatSession.findUnique({
@@ -47,148 +45,98 @@ export class ChatService {
           `Chat session '${params.sessionId}' not found`
         );
       }
+    }
 
-      if (!dbSession) {
-        const title = params.message.slice(0, 45) + (params.message.length > 45 ? '...' : '');
-        dbSession = await this.prisma.chatSession.create({
-          data: {
-            id: sessionId,
-            title,
-            userId: params.userId || null,
-            language: params.language || IndianLanguage.EN,
-            roleMode: params.roleMode || 'INDUSTRY'
-          },
-          include: { messages: true }
-        });
-      }
-      usingPrisma = true;
-    } catch (err: any) {
-      // Prisma offline/error fallback
-      let memSession = this.inMemorySessions.get(sessionId);
-      if (!memSession) {
-        memSession = {
+    if (!dbSession) {
+      const sessionId = params.sessionId || randomUUID();
+      const title =
+        params.message.slice(0, 45) +
+        (params.message.length > 45 ? '...' : '');
+
+      dbSession = await this.prisma.chatSession.create({
+        data: {
           id: sessionId,
-          title: params.message.slice(0, 45) + (params.message.length > 45 ? '...' : ''),
-          userId: params.userId,
+          title,
+          userId: params.userId || null,
           language: params.language || IndianLanguage.EN,
-          roleMode: params.roleMode || 'INDUSTRY',
-          messages: [],
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString()
-        };
-        this.inMemorySessions.set(sessionId, memSession);
-      }
-      dbSession = memSession;
+          roleMode: params.roleMode || 'INDUSTRY'
+        },
+        include: { messages: true }
+      });
     }
 
-    const userMessage: ChatMessage = {
-      id: `user-${Date.now()}`,
-      sessionId: sessionId,
-      role: 'user',
-      content: params.message,
-      originalLanguage: params.language || IndianLanguage.EN,
-      createdAt: new Date().toISOString()
-    };
-
-    if (usingPrisma) {
-      try {
-        await this.prisma.message.create({
-          data: {
-            id: randomUUID(),
-            sessionId: dbSession.id,
-            role: 'user',
-            content: params.message,
-            originalLanguage: params.language || IndianLanguage.EN
-          }
-        });
-      } catch {
-        // Fallback in memory
+    // 1. Persist User Message
+    await this.prisma.message.create({
+      data: {
+        id: randomUUID(),
+        sessionId: dbSession.id,
+        role: 'user',
+        content: params.message,
+        originalLanguage: params.language || IndianLanguage.EN
       }
-    } else {
-      const memSession = this.inMemorySessions.get(sessionId);
-      if (memSession) {
-        memSession.messages.push(userMessage);
-      }
-    }
+    });
 
     // 2. Execute AI Agent Loop
-    const agentResult = await this.aiAgentService.runAgent(params.message, params.language);
+    const agentResult = await this.aiAgentService.runAgent(
+      params.message,
+      params.language
+    );
 
-    const confidence =
-      agentResult.evidence.length >= 2
-        ? ConfidenceLevel.HIGH
-        : agentResult.evidence.length === 1
-        ? ConfidenceLevel.MEDIUM
-        : agentResult.intent === QueryIntent.GENERAL_BIS_INFO
-        ? ConfidenceLevel.HIGH
-        : ConfidenceLevel.LOW;
+    // 3. Persist Assistant Message
+    const assistantMsgRecord = await this.prisma.message.create({
+      data: {
+        id: randomUUID(),
+        sessionId: dbSession.id,
+        role: 'assistant',
+        content: agentResult.structuredAnswer,
+        originalLanguage: params.language || IndianLanguage.EN,
+        intent: agentResult.intent,
+        confidence:
+          agentResult.evidence.length > 0
+            ? ConfidenceLevel.HIGH
+            : ConfidenceLevel.LOW,
+        citations: agentResult.citations as any,
+        evidence: agentResult.evidence as any,
+        suggestedFollowUps: agentResult.suggestedFollowUps as any,
+        sourceFreshnessWarning: agentResult.evidence.some(
+          e => e.isOutdated
+        )
+          ? 'One or more referenced Indian Standards have status OUTDATED or UNDER_REVIEW.'
+          : null
+      }
+    });
 
-    const assistantMsgRecord: ChatMessage = {
-      id: `asst-${Date.now()}-${randomUUID().slice(0, 8)}`,
-      sessionId: sessionId,
+    // Touch session updatedAt
+    await this.prisma.chatSession.update({
+      where: { id: dbSession.id },
+      data: { updatedAt: new Date() }
+    });
+
+    // Retrieve updated session.
+    // The session has already been verified as belonging to this user.
+    const fullSession = await this.getSessionById(
+      dbSession.id,
+      params.userId
+    );
+
+    const reply: ChatMessage = {
+      id: assistantMsgRecord.id,
+      sessionId: assistantMsgRecord.sessionId,
       role: 'assistant',
-      content: agentResult.structuredAnswer,
-      originalLanguage: params.language || IndianLanguage.EN,
-      intent: agentResult.intent,
-      confidence,
-      citations: agentResult.citations || [],
-      evidence: agentResult.evidence || [],
-      suggestedFollowUps: agentResult.suggestedFollowUps || [],
-      sourceFreshnessWarning: agentResult.evidence.some(e => e.isOutdated)
-        ? 'One or more referenced Indian Standards have status OUTDATED or UNDER_REVIEW.'
-        : undefined,
-      createdAt: new Date().toISOString()
+      content: assistantMsgRecord.content,
+      originalLanguage: assistantMsgRecord.originalLanguage as any,
+      intent: assistantMsgRecord.intent as any,
+      confidence: assistantMsgRecord.confidence as any,
+      citations: (assistantMsgRecord.citations as any) || [],
+      evidence: (assistantMsgRecord.evidence as any) || [],
+      suggestedFollowUps:
+        (assistantMsgRecord.suggestedFollowUps as any) || [],
+      sourceFreshnessWarning:
+        assistantMsgRecord.sourceFreshnessWarning || undefined,
+      createdAt: assistantMsgRecord.createdAt.toISOString()
     };
 
-    if (usingPrisma) {
-      try {
-        await this.prisma.message.create({
-          data: {
-            id: randomUUID(),
-            sessionId: dbSession.id,
-            role: 'assistant',
-            content: agentResult.structuredAnswer,
-            originalLanguage: params.language || IndianLanguage.EN,
-            intent: agentResult.intent,
-            confidence: assistantMsgRecord.confidence,
-            citations: agentResult.citations as any,
-            evidence: agentResult.evidence as any,
-            suggestedFollowUps: agentResult.suggestedFollowUps as any,
-            sourceFreshnessWarning: assistantMsgRecord.sourceFreshnessWarning || null
-          }
-        });
-
-        await this.prisma.chatSession.update({
-          where: { id: dbSession.id },
-          data: { updatedAt: new Date() }
-        });
-      } catch {
-        // Continue with return
-      }
-    } else {
-      const memSession = this.inMemorySessions.get(sessionId);
-      if (memSession) {
-        memSession.messages.push(assistantMsgRecord);
-        memSession.updatedAt = new Date().toISOString();
-      }
-    }
-
-    let fullSession: ChatSession;
-    try {
-      fullSession = await this.getSessionById(sessionId);
-    } catch {
-      fullSession = this.inMemorySessions.get(sessionId) || {
-        id: sessionId,
-        title: dbSession.title || 'Chat Session',
-        language: params.language || IndianLanguage.EN,
-        roleMode: params.roleMode || 'INDUSTRY',
-        messages: [userMessage, assistantMsgRecord],
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
-      };
-    }
-
-    return { session: fullSession, reply: assistantMsgRecord };
+    return { session: fullSession, reply };
   }
 
   streamMessage(params: {
