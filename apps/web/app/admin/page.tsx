@@ -121,7 +121,7 @@ export default function AdminConsolePage() {
             </p>
           </div>
           {metrics && (
-            <span className="text-xs font-mono text-slate-400">
+            <span suppressHydrationWarning className="text-xs font-mono text-slate-400">
               Evaluated: {new Date(metrics.timestamp).toLocaleTimeString()}
             </span>
           )}
