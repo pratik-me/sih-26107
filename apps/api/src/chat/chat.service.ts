@@ -1,17 +1,17 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaService } from '../common/prisma.service';
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { PrismaService } from "../common/prisma.service";
 import {
   ChatMessage,
   ChatSession,
   ConfidenceLevel,
   IndianLanguage,
-  QueryIntent
-} from '@bis/shared-types';
-import { AiAgentService } from '../ai-agent/ai-agent.service';
-import { RAGService } from '../rag/rag.service';
-import { getLLMProvider } from '@bis/ai';
-import { randomUUID } from 'crypto';
-import { Observable } from 'rxjs';
+  QueryIntent,
+} from "@bis/shared-types";
+import { AiAgentService } from "../ai-agent/ai-agent.service";
+import { RAGService } from "../rag/rag.service";
+import { getLLMProvider } from "@bis/ai";
+import { randomUUID } from "crypto";
+import { Observable } from "rxjs";
 
 @Injectable()
 export class ChatService {
@@ -21,7 +21,7 @@ export class ChatService {
   constructor(
     private prisma: PrismaService,
     private aiAgentService: AiAgentService,
-    private ragService: RAGService
+    private ragService: RAGService,
   ) {}
 
   async sendMessage(params: {
@@ -38,12 +38,19 @@ export class ChatService {
       if (params.sessionId) {
         dbSession = await this.prisma.chatSession.findUnique({
           where: { id: params.sessionId },
-          include: { messages: { orderBy: { createdAt: 'asc' } } }
+          include: { messages: { orderBy: { createdAt: "asc" } } },
         });
 
-        if (dbSession && dbSession.userId && params.userId && dbSession.userId !== params.userId) {
+        // Existing session check: if the session has an owner and a different
+        // user accesses it, restrict access.
+        if (
+          dbSession &&
+          dbSession.userId &&
+          params.userId &&
+          dbSession.userId !== params.userId
+        ) {
           throw new NotFoundException(
-            `Chat session '${params.sessionId}' not found`
+            `Chat session '${params.sessionId}' not found`,
           );
         }
       }
@@ -52,7 +59,7 @@ export class ChatService {
         const sessionId = params.sessionId || randomUUID();
         const title =
           params.message.slice(0, 45) +
-          (params.message.length > 45 ? '...' : '');
+          (params.message.length > 45 ? "..." : "");
 
         dbSession = await this.prisma.chatSession.create({
           data: {
@@ -60,9 +67,9 @@ export class ChatService {
             title,
             userId: params.userId || null,
             language: params.language || IndianLanguage.EN,
-            roleMode: params.roleMode || 'INDUSTRY'
+            roleMode: params.roleMode || "INDUSTRY",
           },
-          include: { messages: true }
+          include: { messages: true },
         });
       }
 
@@ -71,36 +78,40 @@ export class ChatService {
         data: {
           id: randomUUID(),
           sessionId: dbSession.id,
-          role: 'user',
+          role: "user",
           content: params.message,
-          originalLanguage: params.language || IndianLanguage.EN
-        }
+          originalLanguage: params.language || IndianLanguage.EN,
+        },
       });
     } catch (dbErr: any) {
       if (dbErr instanceof NotFoundException) throw dbErr;
       useInMemory = true;
       const sessionId = params.sessionId || randomUUID();
       let memSession = this.inMemorySessions.get(sessionId);
+
       if (!memSession) {
         memSession = {
           id: sessionId,
-          title: params.message.slice(0, 45) + (params.message.length > 45 ? '...' : ''),
+          title:
+            params.message.slice(0, 45) +
+            (params.message.length > 45 ? "..." : ""),
           userId: params.userId,
           language: params.language || IndianLanguage.EN,
-          roleMode: params.roleMode || 'INDUSTRY',
+          roleMode: params.roleMode || "INDUSTRY",
           messages: [],
           createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString()
+          updatedAt: new Date().toISOString(),
         };
+
         this.inMemorySessions.set(sessionId, memSession);
       }
       memSession.messages.push({
         id: randomUUID(),
         sessionId: sessionId,
-        role: 'user',
+        role: "user",
         content: params.message,
         originalLanguage: params.language || IndianLanguage.EN,
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
       });
       dbSession = { id: sessionId };
     }
@@ -108,26 +119,29 @@ export class ChatService {
     // 2. Execute AI Agent Loop
     const agentResult = await this.aiAgentService.runAgent(
       params.message,
-      params.language
+      params.language,
     );
 
-    const freshnessWarning = agentResult.evidence.some(e => e.isOutdated)
-      ? 'One or more referenced Indian Standards have status OUTDATED or UNDER_REVIEW.'
+    const freshnessWarning = agentResult.evidence.some((e) => e.isOutdated)
+      ? "One or more referenced Indian Standards have status OUTDATED or UNDER_REVIEW."
       : undefined;
 
     const reply: ChatMessage = {
       id: randomUUID(),
       sessionId: dbSession.id,
-      role: 'assistant',
+      role: "assistant",
       content: agentResult.structuredAnswer,
       originalLanguage: (params.language || IndianLanguage.EN) as any,
       intent: agentResult.intent as any,
-      confidence: agentResult.evidence.length > 0 ? ConfidenceLevel.HIGH : ConfidenceLevel.LOW,
+      confidence:
+        agentResult.evidence.length > 0
+          ? ConfidenceLevel.HIGH
+          : ConfidenceLevel.LOW,
       citations: (agentResult.citations as any) || [],
       evidence: (agentResult.evidence as any) || [],
       suggestedFollowUps: (agentResult.suggestedFollowUps as any) || [],
       sourceFreshnessWarning: freshnessWarning,
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
     };
 
     if (!useInMemory) {
@@ -137,7 +151,7 @@ export class ChatService {
           data: {
             id: reply.id,
             sessionId: dbSession.id,
-            role: 'assistant',
+            role: "assistant",
             content: agentResult.structuredAnswer,
             originalLanguage: params.language || IndianLanguage.EN,
             intent: agentResult.intent,
@@ -145,19 +159,19 @@ export class ChatService {
             citations: agentResult.citations as any,
             evidence: agentResult.evidence as any,
             suggestedFollowUps: agentResult.suggestedFollowUps as any,
-            sourceFreshnessWarning: freshnessWarning || null
-          }
+            sourceFreshnessWarning: freshnessWarning || null,
+          },
         });
 
         // Touch session updatedAt
         await this.prisma.chatSession.update({
           where: { id: dbSession.id },
-          data: { updatedAt: new Date() }
+          data: { updatedAt: new Date() },
         });
 
         const fullSession = await this.getSessionById(
           dbSession.id,
-          params.userId
+          params.userId,
         );
 
         return { session: fullSession, reply };
@@ -171,13 +185,15 @@ export class ChatService {
     if (!memSession) {
       memSession = {
         id: dbSession.id,
-        title: params.message.slice(0, 45) + (params.message.length > 45 ? '...' : ''),
+        title:
+          params.message.slice(0, 45) +
+          (params.message.length > 45 ? "..." : ""),
         userId: params.userId,
         language: params.language || IndianLanguage.EN,
-        roleMode: params.roleMode || 'INDUSTRY',
+        roleMode: params.roleMode || "INDUSTRY",
         messages: [],
         createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
+        updatedAt: new Date().toISOString(),
       };
       this.inMemorySessions.set(dbSession.id, memSession);
     }
@@ -191,95 +207,88 @@ export class ChatService {
     message: string;
     language?: IndianLanguage;
   }): Observable<{ data: string }> {
-    return new Observable(observer => {
-      this.ragService.searchEvidence({ query: params.message, language: params.language }).then(ragRes => {
-        const evidence = ragRes.results;
-        this.llmProvider
-          .streamText(
-            params.message,
-            evidence,
-            chunk => {
-              observer.next({ data: JSON.stringify({ chunk }) });
-            }
-          )
-          .then(result => {
-            observer.next({
-              data: JSON.stringify({
-                done: true,
-                citations: result.citations,
-                confidence: result.confidence,
-                groundingStatus: result.groundingStatus
-              })
+    return new Observable((observer) => {
+      this.ragService
+        .searchEvidence({
+          query: params.message,
+          language: params.language,
+        })
+        .then((ragRes) => {
+          const evidence = ragRes.results;
+
+          this.llmProvider
+            .streamText(params.message, evidence, (chunk) => {
+              observer.next({
+                data: JSON.stringify({ chunk }),
+              });
+            })
+            .then((result) => {
+              observer.next({
+                data: JSON.stringify({
+                  done: true,
+                  citations: result.citations,
+                  confidence: result.confidence,
+                  groundingStatus: result.groundingStatus,
+                }),
+              });
+
+              observer.complete();
+            })
+            .catch((err) => {
+              observer.error(err);
             });
-            observer.complete();
-          })
-          .catch(err => {
-            observer.error(err);
-          });
-      }).catch(err => {
-        observer.error(err);
-      });
+        })
+        .catch((err) => {
+          observer.error(err);
+        });
     });
   }
 
-  async getSessions(userId?: string): Promise<ChatSession[]> {
+  async getSessions(userId: string): Promise<ChatSession[]> {
     try {
       const records = await this.prisma.chatSession.findMany({
-        where: userId ? { userId } : {},
+        where: { userId },
         include: {
           messages: {
-            orderBy: { createdAt: 'asc' }
-          }
+            orderBy: { createdAt: "asc" },
+          },
         },
-        orderBy: { updatedAt: 'desc' }
+        orderBy: { updatedAt: "desc" },
       });
 
       if (records && records.length > 0) {
-        return records.map(s => this.mapDbSessionToDomain(s));
+        return records.map((s) => this.mapDbSessionToDomain(s));
       }
     } catch {
       // ignore
     }
 
-    return Array.from(this.inMemorySessions.values());
+    return Array.from(this.inMemorySessions.values()).filter(
+      (session) => session.userId === userId,
+    );
   }
 
-  async getSessionById(
-    id: string,
-    userId?: string
-  ): Promise<ChatSession> {
-    try {
-      const record = await this.prisma.chatSession.findUnique({
-        where: { id },
-        include: {
-          messages: {
-            orderBy: { createdAt: 'asc' }
-          }
-        }
-      });
+  async getSessionById(id: string, userId?: string): Promise<ChatSession> {
+    const record = await this.prisma.chatSession.findUnique({
+      where: { id },
+      include: {
+        messages: {
+          orderBy: { createdAt: "asc" },
+        },
+      },
+    });
 
-      if (record) {
-        if (record.userId && userId && record.userId !== userId) {
-          throw new NotFoundException(`Chat session '${id}' not found`);
-        }
-        return this.mapDbSessionToDomain(record);
-      }
-    } catch (err) {
-      if (err instanceof NotFoundException) throw err;
-    }
-
-    const memSession = this.inMemorySessions.get(id);
-    if (!memSession || (memSession.userId && userId && memSession.userId !== userId)) {
+    if (!record || (record.userId && userId && record.userId !== userId)) {
       throw new NotFoundException(`Chat session '${id}' not found`);
     }
 
-    return memSession;
+    return this.mapDbSessionToDomain(record);
   }
 
   async deleteSession(id: string): Promise<void> {
     try {
       await this.prisma.chatSession.delete({
-        where: { id }
+        where: { id },
       });
     } catch {
       // ignore
@@ -306,10 +315,22 @@ export class ChatService {
         evidence: m.evidence,
         suggestedFollowUps: m.suggestedFollowUps,
         sourceFreshnessWarning: m.sourceFreshnessWarning || undefined,
-        createdAt: m.createdAt ? (typeof m.createdAt === 'string' ? m.createdAt : m.createdAt.toISOString()) : new Date().toISOString()
+        createdAt: m.createdAt
+          ? typeof m.createdAt === "string"
+            ? m.createdAt
+            : m.createdAt.toISOString()
+          : new Date().toISOString(),
       })),
-      createdAt: s.createdAt ? (typeof s.createdAt === 'string' ? s.createdAt : s.createdAt.toISOString()) : new Date().toISOString(),
-      updatedAt: s.updatedAt ? (typeof s.updatedAt === 'string' ? s.updatedAt : s.updatedAt.toISOString()) : new Date().toISOString()
+      createdAt: s.createdAt
+        ? typeof s.createdAt === "string"
+          ? s.createdAt
+          : s.createdAt.toISOString()
+        : new Date().toISOString(),
+      updatedAt: s.updatedAt
+        ? typeof s.updatedAt === "string"
+          ? s.updatedAt
+          : s.updatedAt.toISOString()
+        : new Date().toISOString(),
     };
   }
 }

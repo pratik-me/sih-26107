@@ -7,7 +7,7 @@
     "moduleResolution": "nodenext",
     "lib": ["ES2015", "ES2017.Object", "DOM", "DOM.Iterable"],
     "declaration": true,
-    "declarationMap": true,
+    "declarationMap": true
   },
   "include": ["src/**/*"]
 }
