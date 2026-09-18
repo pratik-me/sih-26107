@@ -2,7 +2,6 @@ import * as dotenv from 'dotenv';
 import * as path from 'path';
 import * as fs from 'fs';
 
-// Load single root .env regardless of whether launched from workspace root or apps/api
 const rootEnv = [
   path.resolve(process.cwd(), '.env'),
   path.resolve(__dirname, '../../../.env'),

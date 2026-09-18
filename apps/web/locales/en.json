@@ -16,7 +16,7 @@
   "hero.search_placeholder": "Ask about product standards, Scheme I/CRS certification, lab testing, or clauses...",
   "hero.ask_ai_btn": "Ask AI",
   "hero.suggested_queries": "Suggested queries for:",
-  "chat.new_session": "+ New Chat Session",
+  "chat.new_session": "New Chat Session",
   "chat.specialized_tools": "BIS Specialized Tools",
   "chat.find_standard": "Find My Standard",
   "chat.certification_schemes": "Certification Schemes",
