@@ -517,10 +517,7 @@ export default function LandingPage() {
             <p className="mt-2.5 text-sm sm:text-base text-slate-700 dark:text-slate-300 font-medium">
               {t("home.how_subtitle_prefix", "Strict adherence to")}{" "}
               <span className="font-bold text-[#0077B6] dark:text-[#48CAE4]">
-                {t(
-                  "home.how_subtitle_bold",
-                  '"Retrieve First → Reason Second → Cite Everything"',
-                )}
+                &quot;Retrieve First → Reason Second → Cite Everything&quot;
               </span>
             </p>
           </div>

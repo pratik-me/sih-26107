@@ -4,17 +4,19 @@ const path = require('path');
 const nextConfig = {
   reactStrictMode: true,
   outputFileTracingRoot: path.join(__dirname, '../../'),
-  transpilePackages: ['@bis/ui', '@bis/shared-types', '@bis/api-client', '@bis/ai'],
+  transpilePackages: ['@bis/ui', '@bis/shared-types', '@bis/api-client', '@bis/ai', '@bis/seed-data'],
   async rewrites() {
-    if (process.env.API_URL) {
-      return [
-        {
-          source: '/api/v1/:path*',
-          destination: `${process.env.API_URL}/:path*`
-        }
-      ];
-    }
-    return [];
+    const rawApiUrl = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api/v1';
+    const destination = rawApiUrl.endsWith('/:path*')
+      ? rawApiUrl
+      : `${rawApiUrl.replace(/\/$/, '')}/:path*`;
+
+    return [
+      {
+        source: '/api/v1/:path*',
+        destination
+      }
+    ];
   }
 };
 

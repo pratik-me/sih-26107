@@ -60,22 +60,31 @@ export class BISSaarthiAgent {
     const provider = (process.env.LLM_PROVIDER || "").toLowerCase();
     if (provider === "deterministic") return null;
 
+    const openrouterKey = process.env.OPENROUTER_API_KEY;
     const anthropicKey = process.env.ANTHROPIC_API_KEY;
     const openaiKey = process.env.OPENAI_API_KEY;
 
-    const hasValidAnthropic =
-      anthropicKey &&
-      !anthropicKey.includes("your_anthropic_api_key_here") &&
-      anthropicKey.trim().length > 10;
-    const hasValidOpenAI =
-      openaiKey &&
-      !openaiKey.includes("your_openai_api_key_here") &&
-      openaiKey.trim().length > 10;
+    const hasValidOpenRouter = openrouterKey && !openrouterKey.includes('your_openrouter_key') && openrouterKey.trim().length > 10;
+    const hasValidAnthropic = anthropicKey && !anthropicKey.includes('your_anthropic_api_key_here') && anthropicKey.trim().length > 10;
+    const hasValidOpenAI = openaiKey && !openaiKey.includes('your_openai_api_key_here') && openaiKey.trim().length > 10;
 
-    if (
-      provider === "anthropic" ||
-      (hasValidAnthropic && provider !== "openai")
-    ) {
+    if (provider === 'openrouter' || (hasValidOpenRouter && provider !== 'anthropic' && provider !== 'openai')) {
+      if (!hasValidOpenRouter) return null;
+      return new ChatOpenAI({
+        modelName: process.env.OPENROUTER_MODEL || 'nvidia/nemotron-3-super-120b-a12b:free',
+        openAIApiKey: openrouterKey,
+        temperature: 0.5,
+        configuration: {
+          baseURL: process.env.OPENROUTER_BASE_URL || 'https://openrouter.ai/api/v1',
+          defaultHeaders: {
+            'HTTP-Referer': process.env.OPENROUTER_SITE_URL || 'http://localhost:3000',
+            'X-Title': process.env.OPENROUTER_SITE_NAME || 'BIS Saarthi'
+          }
+        }
+      }) as unknown as BaseChatModel;
+    }
+
+    if (provider === 'anthropic' || (hasValidAnthropic && provider !== 'openai')) {
       if (!hasValidAnthropic) return null;
       return new ChatAnthropic({
         modelName: process.env.ANTHROPIC_MODEL || "claude-3-5-sonnet-20241022",

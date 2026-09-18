@@ -35,12 +35,17 @@ export class ChatService {
     let dbSession: any = null;
     let usingPrisma = false;
 
-    try {
-      if (params.sessionId) {
-        dbSession = await this.prisma.chatSession.findUnique({
-          where: { id: params.sessionId },
-          include: { messages: { orderBy: { createdAt: 'asc' } } }
-        });
+    if (params.sessionId) {
+      dbSession = await this.prisma.chatSession.findUnique({
+        where: { id: params.sessionId },
+        include: { messages: { orderBy: { createdAt: 'asc' } } }
+      });
+
+      // Existing session check: if session has an owner and a different user accesses it, restrict access.
+      if (dbSession && dbSession.userId && params.userId && dbSession.userId !== params.userId) {
+        throw new NotFoundException(
+          `Chat session '${params.sessionId}' not found`
+        );
       }
 
       if (!dbSession) {
@@ -243,30 +248,24 @@ export class ChatService {
     return Array.from(this.inMemorySessions.values());
   }
 
-  async getSessionById(id: string): Promise<ChatSession> {
-    try {
-      const record = await this.prisma.chatSession.findUnique({
-        where: { id },
-        include: {
-          messages: {
-            orderBy: { createdAt: 'asc' }
-          }
+  async getSessionById(
+    id: string,
+    userId?: string
+  ): Promise<ChatSession> {
+    const record = await this.prisma.chatSession.findUnique({
+      where: { id },
+      include: {
+        messages: {
+          orderBy: { createdAt: 'asc' }
         }
-      });
-
-      if (record) {
-        return this.mapDbSessionToDomain(record);
       }
-    } catch {
-      // ignore
+    });
+
+    if (!record || (record.userId && userId && record.userId !== userId)) {
+      throw new NotFoundException(`Chat session '${id}' not found`);
     }
 
-    const mem = this.inMemorySessions.get(id);
-    if (mem) {
-      return mem;
-    }
-
-    throw new NotFoundException(`Chat session '${id}' not found`);
+    return this.mapDbSessionToDomain(record);
   }
 
   async deleteSession(id: string): Promise<void> {

@@ -1,3 +1,6 @@
+-- CreateExtension
+CREATE EXTENSION IF NOT EXISTS "vector";
+
 -- CreateEnum
 CREATE TYPE "UserRole" AS ENUM ('CONSUMER', 'INDUSTRY', 'STUDENT_RESEARCHER', 'ADMIN');
 
@@ -128,7 +131,7 @@ CREATE TABLE "document_chunks" (
     "subclause" TEXT,
     "page" INTEGER NOT NULL,
     "content" TEXT NOT NULL,
-    "vectorEmbedding" JSONB,
+    "vectorEmbedding" vector(1536),
     "metadata" JSONB,
     "status" "StandardStatus" NOT NULL DEFAULT 'ACTIVE',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
