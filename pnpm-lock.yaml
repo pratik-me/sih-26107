@@ -157,6 +157,9 @@ importers:
 
   apps/web:
     dependencies:
+      '@bis/ai':
+        specifier: workspace:*
+        version: link:../../packages/ai
       '@bis/api-client':
         specifier: workspace:*
         version: link:../../packages/api-client
@@ -166,6 +169,9 @@ importers:
       '@bis/ui':
         specifier: workspace:*
         version: link:../../packages/ui
+      '@huggingface/inference':
+        specifier: ^4.13.28
+        version: 4.13.28
       '@radix-ui/react-tooltip':
         specifier: ^1.2.16
         version: 1.2.16(@types/react-dom@19.2.5(@types/react@19.2.18))(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
@@ -251,12 +257,15 @@ importers:
       '@bis/shared-types':
         specifier: workspace:*
         version: link:../shared-types
+      '@huggingface/inference':
+        specifier: ^4.13.28
+        version: 4.13.28
       '@langchain/anthropic':
         specifier: ^0.3.15
         version: 0.3.34(@langchain/core@0.3.80(openai@4.104.0(ws@8.21.3)(zod@3.25.76)))(zod@3.25.76)
       '@langchain/community':
         specifier: ^0.3.32
-        version: 0.3.59(@browserbasehq/sdk@2.19.1)(@browserbasehq/stagehand@1.14.0(@playwright/test@1.62.1)(deepmerge@4.3.1)(dotenv@16.4.5)(openai@4.104.0(ws@8.21.3)(zod@3.25.76))(zod@3.25.76))(@ibm-cloud/watsonx-ai@1.7.16(supports-color@8.1.1))(@langchain/anthropic@0.3.34(@langchain/core@0.3.80(openai@4.104.0(ws@8.21.3)(zod@3.25.76)))(zod@3.25.76))(@langchain/core@0.3.80(openai@4.104.0(ws@8.21.3)(zod@3.25.76)))(axios@1.18.0(debug@4.3.4(supports-color@8.1.1))(supports-color@8.1.1))(cheerio@1.2.0)(fast-xml-parser@4.5.7)(handlebars@4.7.9)(ibm-cloud-sdk-core@5.6.0(supports-color@8.1.1))(ignore@5.3.2)(jsonwebtoken@9.0.3)(lodash@4.18.1)(openai@4.104.0(ws@8.21.3)(zod@3.25.76))(pdf-parse@1.1.4)(playwright@1.62.1)(weaviate-client@3.14.0)(ws@8.21.3)
+        version: 0.3.59(@browserbasehq/sdk@2.19.1)(@browserbasehq/stagehand@1.14.0(@playwright/test@1.62.1)(deepmerge@4.3.1)(dotenv@16.4.5)(openai@4.104.0(ws@8.21.3)(zod@3.25.76))(zod@3.25.76))(@huggingface/inference@4.13.28)(@ibm-cloud/watsonx-ai@1.7.16(supports-color@8.1.1))(@langchain/anthropic@0.3.34(@langchain/core@0.3.80(openai@4.104.0(ws@8.21.3)(zod@3.25.76)))(zod@3.25.76))(@langchain/core@0.3.80(openai@4.104.0(ws@8.21.3)(zod@3.25.76)))(axios@1.18.0(debug@4.3.4(supports-color@8.1.1))(supports-color@8.1.1))(cheerio@1.2.0)(fast-xml-parser@4.5.7)(handlebars@4.7.9)(ibm-cloud-sdk-core@5.6.0(supports-color@8.1.1))(ignore@5.3.2)(jsonwebtoken@9.0.3)(lodash@4.18.1)(openai@4.104.0(ws@8.21.3)(zod@3.25.76))(pdf-parse@1.1.4)(playwright@1.62.1)(weaviate-client@3.14.0)(ws@8.21.3)
       '@langchain/core':
         specifier: ^0.3.40
         version: 0.3.80(openai@4.104.0(ws@8.21.3)(zod@3.25.76))
@@ -887,6 +896,17 @@ packages:
     engines: {node: '>=20'}
     peerDependencies:
       hono: ^4
+
+  '@huggingface/inference@4.13.28':
+    resolution: {integrity: sha512-KTfWx7+H1xo9cbBrHvF8me/GjujV1W6DRjfKilO8z7UPiNXn8aFJgNwRl0A1g4w/FWnYo6JeNZHh8240BpG9mw==}
+    engines: {node: '>=18'}
+
+  '@huggingface/jinja@0.5.10':
+    resolution: {integrity: sha512-SgS1D1bglQ94ceD4ZCL6eayUDy9uV1xuyk61OjgSxU5GJh7upqZCKII0JoTYMc6wWsg3JUgaPRX0ElQzXPk3Cw==}
+    engines: {node: '>=18'}
+
+  '@huggingface/tasks@0.21.45':
+    resolution: {integrity: sha512-TtA6U+ta6StaW4XMm6TwDFvm1T6HFF/YTGz2ZClSxlanxxII18SClWfAUH3EEeKagKfKstTAGTh7eVU6NXnUmw==}
 
   '@humanwhocodes/config-array@0.13.0':
     resolution: {integrity: sha512-DZLEEqFWQFiyK6h5YIeynKx7JlvCYWL0cImfSRXZ9l4Sg2efkFGTuFf6vzXjK1cq6IYkU+Eg/JizXw+TD2vRNw==}
@@ -7170,6 +7190,15 @@ snapshots:
     dependencies:
       hono: 4.13.5
 
+  '@huggingface/inference@4.13.28':
+    dependencies:
+      '@huggingface/jinja': 0.5.10
+      '@huggingface/tasks': 0.21.45
+
+  '@huggingface/jinja@0.5.10': {}
+
+  '@huggingface/tasks@0.21.45': {}
+
   '@humanwhocodes/config-array@0.13.0(supports-color@8.1.1)':
     dependencies:
       '@humanwhocodes/object-schema': 2.0.3
@@ -7516,7 +7545,7 @@ snapshots:
     transitivePeerDependencies:
       - zod
 
-  '@langchain/community@0.3.59(@browserbasehq/sdk@2.19.1)(@browserbasehq/stagehand@1.14.0(@playwright/test@1.62.1)(deepmerge@4.3.1)(dotenv@16.4.5)(openai@4.104.0(ws@8.21.3)(zod@3.25.76))(zod@3.25.76))(@ibm-cloud/watsonx-ai@1.7.16(supports-color@8.1.1))(@langchain/anthropic@0.3.34(@langchain/core@0.3.80(openai@4.104.0(ws@8.21.3)(zod@3.25.76)))(zod@3.25.76))(@langchain/core@0.3.80(openai@4.104.0(ws@8.21.3)(zod@3.25.76)))(axios@1.18.0(debug@4.3.4(supports-color@8.1.1))(supports-color@8.1.1))(cheerio@1.2.0)(fast-xml-parser@4.5.7)(handlebars@4.7.9)(ibm-cloud-sdk-core@5.6.0(supports-color@8.1.1))(ignore@5.3.2)(jsonwebtoken@9.0.3)(lodash@4.18.1)(openai@4.104.0(ws@8.21.3)(zod@3.25.76))(pdf-parse@1.1.4)(playwright@1.62.1)(weaviate-client@3.14.0)(ws@8.21.3)':
+  '@langchain/community@0.3.59(@browserbasehq/sdk@2.19.1)(@browserbasehq/stagehand@1.14.0(@playwright/test@1.62.1)(deepmerge@4.3.1)(dotenv@16.4.5)(openai@4.104.0(ws@8.21.3)(zod@3.25.76))(zod@3.25.76))(@huggingface/inference@4.13.28)(@ibm-cloud/watsonx-ai@1.7.16(supports-color@8.1.1))(@langchain/anthropic@0.3.34(@langchain/core@0.3.80(openai@4.104.0(ws@8.21.3)(zod@3.25.76)))(zod@3.25.76))(@langchain/core@0.3.80(openai@4.104.0(ws@8.21.3)(zod@3.25.76)))(axios@1.18.0(debug@4.3.4(supports-color@8.1.1))(supports-color@8.1.1))(cheerio@1.2.0)(fast-xml-parser@4.5.7)(handlebars@4.7.9)(ibm-cloud-sdk-core@5.6.0(supports-color@8.1.1))(ignore@5.3.2)(jsonwebtoken@9.0.3)(lodash@4.18.1)(openai@4.104.0(ws@8.21.3)(zod@3.25.76))(pdf-parse@1.1.4)(playwright@1.62.1)(weaviate-client@3.14.0)(ws@8.21.3)':
     dependencies:
       '@browserbasehq/stagehand': 1.14.0(@playwright/test@1.62.1)(deepmerge@4.3.1)(dotenv@16.4.5)(openai@4.104.0(ws@8.21.3)(zod@3.25.76))(zod@3.25.76)
       '@ibm-cloud/watsonx-ai': 1.7.16(supports-color@8.1.1)
@@ -7535,6 +7564,7 @@ snapshots:
       zod: 3.25.76
     optionalDependencies:
       '@browserbasehq/sdk': 2.19.1
+      '@huggingface/inference': 4.13.28
       cheerio: 1.2.0
       fast-xml-parser: 4.5.7
       ignore: 5.3.2

@@ -129,7 +129,7 @@ export class BisApiClient {
   }
 
   // --- Chat & RAG APIs ---
-  async sendMessage(params: { sessionId?: string; message: string; roleMode?: string; language?: string }): Promise<{ session: ChatSession; reply: ChatMessage }> {
+  async sendMessage(params: { sessionId?: string; message: string; roleMode?: string; language?: string; autoDetectLanguage?: boolean }): Promise<{ session: ChatSession; reply: ChatMessage }> {
     return this.request('/chat/message', {
       method: 'POST',
       body: JSON.stringify(params)

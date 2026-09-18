@@ -16,8 +16,10 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import { SampleFormData } from "@/lib/sample";
+import { useTranslation } from "@/lib/i18n";
 
 export default function FindMyStandardPage() {
+  const { t } = useTranslation();
   const router = useRouter();
   const [formData, setFormData] = useState<ProductProfileQuery>({
     productName: "",
@@ -95,30 +97,26 @@ export default function FindMyStandardPage() {
           <div className="relative space-y-2 z-10">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#0077B6]/40 border border-[#48CAE4]/40 text-[#CAF0F8] text-xs font-semibold backdrop-blur-sm">
               <Compass className="w-3.5 h-3.5 text-[#48CAE4]" />
-              <span>AI Product Scope Profiler</span>
+              <span>{t("findstd.badge", "AI Product Scope Profiler")}</span>
             </div>
             <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-white">
-              Find Applicable{" "}
+              {t("findstd.title_prefix", "Find Applicable")}{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#CAF0F8] via-[#48CAE4] to-[#00B4D8]">
-                Indian Standard
+                {t("findstd.title_highlight", "Indian Standard")}
               </span>
             </h1>
             <p className="text-xs sm:text-sm text-[#ADE8F4]/90 max-w-xl leading-relaxed">
-              Input your product specifications, raw materials, and intended
-              application. Our semantic engine matches your product against
-              published Indian Standards with exact matching criteria and missing
-              attribute prompts.
+              {t("findstd.subtitle", "Input your product specifications, raw materials, and intended application. Our semantic engine matches your product against published Indian Standards with exact matching criteria and missing attribute prompts.")}
             </p>
           </div>
 
           <div className="relative z-10 p-4 rounded-2xl bg-[#03045E]/70 border border-[#0077B6]/50 text-xs text-[#CAF0F8] max-w-xs space-y-1.5 backdrop-blur-md shadow-inner">
             <div className="font-bold flex items-center justify-center gap-1.5 text-white">
               <ShieldCheck className="w-4 h-4 text-[#48CAE4]" />
-              <span>Anti-Speculation Standard</span>
+              <span>{t("findstd.anti_badge", "Anti-Speculation Standard")}</span>
             </div>
             <p className="text-[11px] text-[#ADE8F4]/90 text-center leading-relaxed">
-              Semantic similarity is presented as <em>potentially applicable</em>.
-              Always verify final grade classification against statutory QCOs.
+              {t("findstd.anti_desc", "Semantic similarity is presented as potentially applicable. Always verify final grade classification against statutory QCOs.")}
             </p>
           </div>
         </div>
@@ -128,17 +126,17 @@ export default function FindMyStandardPage() {
           <div className="lg:col-span-5 bg-white/95 dark:bg-slate-900/90 backdrop-blur-md p-6 rounded-2xl border border-[#ADE8F4] dark:border-slate-800 shadow-md shadow-[#0077B6]/5 space-y-5">
             <div className="border-b border-slate-100 dark:border-slate-800 pb-3">
               <h2 className="text-base font-bold text-slate-900 dark:text-slate-100">
-                Product Specification Form
+                {t("findstd.form_title", "Product Specification Form")}
               </h2>
               <p className="text-xs text-slate-500 dark:text-slate-400">
-                Provide as many details as possible for precise standard matching.
+                {t("findstd.form_subtitle", "Provide as many details as possible for precise standard matching.")}
               </p>
             </div>
 
           <form onSubmit={handleSubmit} className="space-y-4 text-xs">
             <div>
               <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">
-                Product Name / Type <span className="text-red-500">*</span>
+                {t("findstd.field_product", "Product Name / Type")} <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
@@ -147,14 +145,14 @@ export default function FindMyStandardPage() {
                 onChange={(e) =>
                   setFormData({ ...formData, productName: e.target.value })
                 }
-                placeholder="e.g. Stainless steel water bottle, PVC insulated cable, TMT bar"
+                placeholder={t("findstd.placeholder_product", "e.g. Stainless steel water bottle, PVC insulated cable, TMT bar")}
                 className="w-full px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#0077B6] focus:border-[#023E8A]"
               />
             </div>
 
             <div>
               <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">
-                Raw Material Composition
+                {t("findstd.field_material", "Raw Material Composition")}
               </label>
               <input
                 type="text"
@@ -162,14 +160,14 @@ export default function FindMyStandardPage() {
                 onChange={(e) =>
                   setFormData({ ...formData, material: e.target.value })
                 }
-                placeholder="e.g. SS 304, Aluminium alloy, High density polyethylene"
+                placeholder={t("findstd.placeholder_material", "e.g. SS 304, Aluminium alloy, High density polyethylene")}
                 className="w-full px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#0077B6] focus:border-[#023E8A]"
               />
             </div>
 
             <div>
               <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">
-                Intended Application / Usage
+                {t("findstd.field_application", "Intended Application / Usage")}
               </label>
               <input
                 type="text"
@@ -180,14 +178,14 @@ export default function FindMyStandardPage() {
                     intendedApplication: e.target.value,
                   })
                 }
-                placeholder="e.g. Drinking water storage, building construction, underground cabling"
+                placeholder={t("findstd.placeholder_application", "e.g. Drinking water storage, building construction, underground cabling")}
                 className="w-full px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#0077B6] focus:border-[#023E8A]"
               />
             </div>
 
             <div>
               <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">
-                Industry / Domain Sector
+                {t("findstd.field_industry", "Industry / Domain Sector")}
               </label>
               <input
                 type="text"
@@ -195,14 +193,14 @@ export default function FindMyStandardPage() {
                 onChange={(e) =>
                   setFormData({ ...formData, industry: e.target.value })
                 }
-                placeholder="e.g. Metallurgical, Food & Agriculture, Civil, Electrical"
+                placeholder={t("findstd.placeholder_industry", "e.g. Metallurgical, Food & Agriculture, Civil, Electrical")}
                 className="w-full px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#0077B6] focus:border-[#023E8A]"
               />
             </div>
 
             <div>
               <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">
-                Capacity / Size
+                {t("findstd.field_capacity", "Capacity / Size")}
               </label>
               <input
                 type="text"
@@ -210,14 +208,14 @@ export default function FindMyStandardPage() {
                 onChange={(e) =>
                   setFormData({ ...formData, capacity: e.target.value })
                 }
-                placeholder="e.g. 750 ml / 1000 ml double wall, 1.1kV, 12mm"
+                placeholder={t("findstd.placeholder_capacity", "e.g. 750 ml / 1000 ml double wall, 1.1kV, 12mm")}
                 className="w-full px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#0077B6] focus:border-[#023E8A]"
               />
             </div>
 
             <div>
               <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">
-                Technical Specifications
+                {t("findstd.field_techspec", "Technical Specifications")}
               </label>
               <textarea
                 rows={3}
@@ -228,7 +226,7 @@ export default function FindMyStandardPage() {
                     technicalCharacteristics: e.target.value,
                   })
                 }
-                placeholder="e.g. Voltage rating 1.1kV, double wall vacuum insulation, diameter 12mm Fe 500D"
+                placeholder={t("findstd.placeholder_techspec", "e.g. Voltage rating 1.1kV, double wall vacuum insulation, diameter 12mm Fe 500D")}
                 className="w-full px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#0077B6] focus:border-[#023E8A]"
               />
             </div>
@@ -238,7 +236,7 @@ export default function FindMyStandardPage() {
               disabled={isLoading}
               className="w-full py-3 px-4 rounded-xl text-xs font-bold bg-gradient-to-r from-[#023E8A] via-[#0077B6] to-[#0096C7] hover:from-[#03045E] hover:to-[#023E8A] text-white shadow-md shadow-[#0077B6]/25 transition-all flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
             >
-              <span>Evaluate Applicable Standards</span>
+              <span>{t("findstd.btn_evaluate", "Evaluate Applicable Standards")}</span>
             </button>
 
             <div className="flex gap-2">
@@ -248,7 +246,7 @@ export default function FindMyStandardPage() {
                 disabled={isLoading}
                 className="flex-1 py-2 px-3 rounded-xl text-xs font-semibold bg-transparent hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 border border-slate-200 dark:border-slate-700 transition-all cursor-pointer"
               >
-                Clear
+                {t("findstd.btn_clear", "Clear")}
               </button>
             </div>
           </form>
@@ -258,20 +256,20 @@ export default function FindMyStandardPage() {
         <div className="lg:col-span-7 space-y-4">
           <div className="flex items-center justify-between">
             <h2 className="text-base font-bold text-slate-900 dark:text-slate-100">
-              Evaluated Indian Standards{" "}
+              {t("findstd.results_title", "Evaluated Indian Standards")}{" "}
               {result ? `(${result.totalMatches})` : ""}
             </h2>
             {result && (
               <span className="text-xs text-slate-500 font-medium">
-                Grounded Assessment Completed
+                {t("findstd.results_complete", "Grounded Assessment Completed")}
               </span>
             )}
           </div>
 
           {isLoading ? (
             <LoadingState
-              message="Evaluating Product-to-Standard Scope..."
-              submessage="Scanning Gazette notifications, sectional committee divisions, and material grade parameters..."
+              message={t("findstd.loading_msg", "Evaluating Product-to-Standard Scope...")}
+              submessage={t("findstd.loading_sub", "Scanning Gazette notifications, sectional committee divisions, and material grade parameters...")}
             />
           ) : result && result.matches.length > 0 ? (
             <div className="space-y-4">
@@ -291,10 +289,10 @@ export default function FindMyStandardPage() {
             </div>
           ) : (
             <EmptyState
-              title="No Profile Evaluated Yet"
-              description="Fill in the product specification attributes on the left and click 'Evaluate Applicable Standards' to generate matched Indian Standards with clause citations."
+              title={t("findstd.empty_title", "No Profile Evaluated Yet")}
+              description={t("findstd.empty_desc", "Fill in the product specification attributes on the left and click 'Evaluate Applicable Standards' to generate matched Indian Standards with clause citations.")}
               icon={Compass}
-              actionLabel="Run Sample Evaluation (SS Water Bottle)"
+              actionLabel={t("findstd.btn_sample", "Run Sample Evaluation (SS Water Bottle)")}
               onAction={handleLoadSample}
             />
           )}
