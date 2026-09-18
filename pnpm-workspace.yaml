@@ -2,6 +2,8 @@ packages:
   - 'apps/*'
   - 'packages/*'
 
+verifyDepsBeforeRun: false
+
 allowBuilds:
   '@nestjs/core': true
   '@prisma/client': true
@@ -11,3 +13,4 @@ allowBuilds:
   prisma: true
   protobufjs: true
   'unrs-resolver': true
+
