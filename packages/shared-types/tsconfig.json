@@ -5,10 +5,9 @@
     "rootDir": "./src",
     "module": "nodenext",
     "moduleResolution": "nodenext",
-    "lib": ["ES2017", "DOM", "DOM.Iterable"],
+    "lib": ["ES2015", "ES2017.Object", "DOM", "DOM.Iterable"],
     "declaration": true,
     "declarationMap": true
   },
   "include": ["src/**/*"]
 }
-

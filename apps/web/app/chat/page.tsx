@@ -1080,7 +1080,7 @@ function ChatContent() {
                   "Ask about standards, certification, test methods, lab credentials, or clauses...",
                 )}
                 disabled={isLoading}
-                className="w-full px-3 py-2 text-xs sm:text-sm text-slate-900 dark:text-slate-100 bg-transparent focus:outline-none placeholder:text-slate-400"
+                className="w-full px-3 py-2 text-xs sm:text-sm text-slate-900 dark:text-slate-100 bg-transparent border-none outline-none ring-0 shadow-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 placeholder:text-slate-400"
               />
               <button
                 type="submit"

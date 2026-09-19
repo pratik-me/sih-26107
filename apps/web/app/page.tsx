@@ -43,7 +43,7 @@ export default function LandingPage() {
         "Ask about product standards, Scheme I/CRS certification, lab testing, or clauses...",
       ),
       accentBadge:
-        "text-[#023E8A] dark:text-[#90E0EF] bg-[#CAF0F8]/80 dark:bg-[#03045E]/60 border-[#ADE8F4] dark:border-[#023E8A]",
+        "text-white bg-gradient-to-r from-[#023E8A] to-[#0077B6] border border-[#023E8A]/50 shadow-xs shadow-[#023E8A]/20",
       prompts: [
         t(
           "prompts.industry.1",
@@ -78,7 +78,7 @@ export default function LandingPage() {
         "Check gold hallmark HUID, verify ISI mark authenticity, consumer grievance...",
       ),
       accentBadge:
-        "text-[#0077B6] dark:text-[#48CAE4] bg-[#ADE8F4]/60 dark:bg-[#023E8A]/50 border-[#90E0EF] dark:border-[#0077B6]",
+        "text-white bg-gradient-to-r from-[#0077B6] to-[#0096C7] border border-[#0077B6]/50 shadow-xs shadow-[#0077B6]/20",
       prompts: [
         t(
           "prompts.consumer.1",
@@ -113,7 +113,7 @@ export default function LandingPage() {
         "Search standard clauses, comparative analysis, test formulas, or NBC codes...",
       ),
       accentBadge:
-        "text-[#0096C7] dark:text-[#CAF0F8] bg-[#90E0EF]/50 dark:bg-[#0077B6]/40 border-[#48CAE4] dark:border-[#0096C7]",
+        "text-white bg-gradient-to-r from-[#0096C7] to-[#023E8A] border border-[#0096C7]/50 shadow-xs shadow-[#0096C7]/20",
       prompts: [
         t(
           "prompts.student.1",
@@ -145,7 +145,7 @@ export default function LandingPage() {
         "Search standards, schemes, reports, or administrative guidelines...",
       ),
       accentBadge:
-        "text-[#03045E] dark:text-[#ADE8F4] bg-[#CAF0F8]/50 dark:bg-slate-800 border-[#ADE8F4] dark:border-slate-700",
+        "text-white bg-gradient-to-r from-[#03045E] to-[#023E8A] border border-[#03045E]/50 shadow-xs shadow-[#03045E]/20",
       prompts: [
         t(
           "prompts.admin.1",
@@ -224,7 +224,7 @@ export default function LandingPage() {
             onSubmit={handleSearchSubmit}
             className="mt-8 max-w-3xl mx-auto"
           >
-            <div className="relative flex items-center bg-white/95 dark:bg-slate-900/90 backdrop-blur-md rounded-2xl border-2 border-[#ADE8F4] dark:border-slate-700 shadow-xl shadow-[#0077B6]/10 hover:border-[#0077B6] focus-within:border-[#023E8A] transition-all p-2">
+            <div className="relative flex items-center bg-white/95 dark:bg-slate-900/90 backdrop-blur-md rounded-2xl border-2 border-[#ADE8F4] dark:border-slate-700 shadow-xl shadow-[#0077B6]/10 hover:border-[#0077B6] focus-within:border-[#0077B6] focus-within:ring-4 focus-within:ring-[#0077B6]/20 dark:focus-within:border-[#48CAE4] dark:focus-within:ring-[#48CAE4]/20 transition-all p-2">
               <Search className="w-5 h-5 text-slate-400 ml-3 shrink-0" />
               <input
                 type="text"
@@ -232,7 +232,7 @@ export default function LandingPage() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder={currentModeConfig.placeholder}
-                className="w-full px-3 py-2 text-sm sm:text-base text-slate-900 dark:text-slate-100 bg-transparent focus:outline-none placeholder:text-slate-400 transition-all"
+                className="w-full px-3 py-2 text-sm sm:text-base text-slate-900 dark:text-slate-100 bg-transparent border-none outline-none ring-0 shadow-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 placeholder:text-slate-400 transition-all"
               />
               <button
                 type="submit"
@@ -247,11 +247,12 @@ export default function LandingPage() {
 
           {/* Suggested Prompts */}
           <div className="mt-6 max-w-3xl mx-auto text-left">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-semibold text-slate-600 dark:text-slate-400 flex items-center gap-1.5">
-                {t("hero.suggested_queries", "Suggested queries for:")}
+            <div className="flex items-center justify-between mb-2.5">
+              <span className="text-xs font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5 text-[#0077B6] dark:text-[#48CAE4] shrink-0" />
+                <span>{t("hero.suggested_queries", "Suggested queries for:")}</span>
                 <span
-                  className={`inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold border ${currentModeConfig.accentBadge} transition-all duration-300`}
+                  className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold ${currentModeConfig.accentBadge} transition-all duration-300`}
                 >
                   {currentModeConfig.label}
                 </span>
@@ -267,9 +268,10 @@ export default function LandingPage() {
                   type="button"
                   suppressHydrationWarning
                   onClick={() => handlePromptClick(prompt)}
-                  className="text-xs px-3 py-1.5 rounded-lg bg-white/95 dark:bg-slate-800/80 backdrop-blur-xs border border-[#ADE8F4] dark:border-slate-700 hover:border-[#00B4D8] text-slate-700 dark:text-slate-300 hover:text-[#0077B6] dark:hover:text-[#48CAE4] hover:bg-[#CAF0F8]/40 transition-all duration-200 text-left hover:-translate-y-0.5 hover:shadow-xs cursor-pointer"
+                  className="group text-xs px-3.5 py-2 rounded-xl bg-white dark:bg-slate-800/90 border border-slate-300/80 dark:border-slate-700 hover:border-[#0077B6] dark:hover:border-[#48CAE4] text-slate-800 dark:text-slate-200 hover:text-[#023E8A] dark:hover:text-[#90E0EF] dark:hover:bg-slate-800 shadow-xs hover:shadow-md hover:shadow-[#0077B6]/15 hover:ring-2 hover:ring-[#0077B6]/15 transition-all duration-200 text-left hover:-translate-y-0.5 cursor-pointer flex items-center gap-1.5"
                 >
-                  {prompt}
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#0077B6]/40 group-hover:bg-[#0077B6] dark:group-hover:bg-[#48CAE4] transition-colors shrink-0" />
+                  <span>{prompt}</span>
                 </button>
               ))}
             </div>
