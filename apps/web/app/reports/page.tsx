@@ -78,21 +78,21 @@ function ComplianceReportsContent() {
   }
 
   return (
-    <div className="relative min-h-screen w-full bg-gradient-to-b from-[#03045E] via-[#023E8A] to-[#03045E] dark:from-slate-950 dark:via-[#03045E]/90 dark:to-slate-950 overflow-hidden text-white print:bg-white print:text-slate-900">
+    <div className="relative min-h-screen w-full bg-gradient-to-b from-white via-[#CAF0F8]/40 to-[#90E0EF]/55 dark:from-[#07111F] dark:via-[#0A1A2E] dark:to-[#0F2942] overflow-hidden text-slate-900 dark:text-white print:bg-white print:text-slate-900">
       {/* Ambient Glowing Blobs (hidden in print) */}
-      <div className="absolute top-12 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-[#00B4D8]/15 rounded-full blur-3xl pointer-events-none animate-pulse print:hidden" />
-      <div className="absolute top-0 right-10 w-80 h-80 bg-[#0077B6]/20 rounded-full blur-3xl pointer-events-none print:hidden" />
-      <div className="absolute bottom-0 left-10 w-80 h-80 bg-[#48CAE4]/15 rounded-full blur-3xl pointer-events-none print:hidden" />
+      <div className="absolute top-12 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-[#90E0EF]/35 dark:bg-[#00B4D8]/15 rounded-full blur-3xl pointer-events-none animate-pulse print:hidden" />
+      <div className="absolute top-0 right-10 w-80 h-80 bg-[#ADE8F4]/45 dark:bg-[#0077B6]/20 rounded-full blur-3xl pointer-events-none print:hidden" />
+      <div className="absolute bottom-0 left-10 w-80 h-80 bg-[#CAF0F8]/55 dark:bg-[#48CAE4]/15 rounded-full blur-3xl pointer-events-none print:hidden" />
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10 space-y-8 relative z-10 print:p-0">
         {/* Top Action Bar in Dark Scheme (hidden in print) */}
         <div className="flex items-center justify-between print:hidden">
           <div className="space-y-1">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 dark:bg-white/10 text-[#CAF0F8] text-xs font-semibold border border-[#48CAE4]/30 backdrop-blur-md shadow-2xs">
-              <FileBarChart2 className="w-3.5 h-3.5 text-[#48CAE4]" />
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/80 dark:bg-white/10 text-[#0077B6] dark:text-[#CAF0F8] text-xs font-semibold border border-[#ADE8F4] dark:border-[#48CAE4]/30 backdrop-blur-md shadow-2xs">
+              <FileBarChart2 className="w-3.5 h-3.5 text-[#0077B6] dark:text-[#48CAE4]" />
               <span>{t("reports.badge", "Decision Support Deliverable")}</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white tracking-tight">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 dark:text-white tracking-tight">
               {t("reports.title", "BIS Compliance Roadmap Report")}
             </h1>
           </div>
@@ -100,7 +100,7 @@ function ComplianceReportsContent() {
           <button
             type="button"
             onClick={handlePrint}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold bg-gradient-to-r from-[#0096C7] via-[#00B4D8] to-[#48CAE4] hover:from-[#0077B6] hover:to-[#00B4D8] text-slate-950 hover:text-white shadow-lg shadow-[#03045E]/40 transition-all cursor-pointer"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold bg-gradient-to-r from-[#023E8A] via-[#0077B6] to-[#0096C7] hover:from-[#0077B6] hover:to-[#023E8A] dark:from-[#0096C7] dark:via-[#00B4D8] dark:to-[#48CAE4] text-white dark:text-slate-950 dark:hover:text-white shadow-lg shadow-[#0077B6]/20 dark:shadow-[#03045E]/40 transition-all cursor-pointer"
           >
             <Printer className="w-4 h-4" />
             <span>{t("reports.btn_print", "Print / Save as PDF")}</span>
@@ -108,7 +108,7 @@ function ComplianceReportsContent() {
         </div>
 
         {/* Printable Report Document Card */}
-        <div className="p-8 sm:p-12 rounded-2xl bg-white dark:bg-[#10243A] border border-white/20 dark:border-[#263B50] shadow-2xl dark:shadow-[0_10px_25px_-5px_rgba(0,0,0,0.5)] space-y-8 text-slate-900 dark:text-[#F1F5F9] print:border-none print:shadow-none print:p-0">
+        <div className="p-8 sm:p-12 rounded-2xl bg-white dark:bg-[#10243A] border border-[#ADE8F4] dark:border-[#263B50] shadow-xl dark:shadow-[0_10px_25px_-5px_rgba(0,0,0,0.5)] space-y-8 text-slate-900 dark:text-[#F1F5F9] print:border-none print:shadow-none print:p-0">
           {/* Document Header with Ashoka Emblem Motif */}
           <div className="border-b-2 border-slate-900 dark:border-[#263B50] pb-6 flex items-start justify-between">
             <div className="space-y-1">

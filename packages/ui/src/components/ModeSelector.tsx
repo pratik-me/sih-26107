@@ -26,13 +26,13 @@ export const ModeSelector: React.FC<ModeSelectorProps> = ({
         hoverCard:
           'hover:border-[#023E8A]/70 dark:hover:border-[#16A9D8]/70 hover:shadow-xl hover:shadow-[#023E8A]/10 hover:-translate-y-1.5',
         activeIcon:
-          'bg-gradient-to-br from-[#03045E] to-[#023E8A] dark:from-[#1268B3] dark:to-[#1583D1] text-white shadow-md shadow-[#023E8A]/35 ring-2 ring-[#0077B6]/30 dark:ring-[#16A9D8]/30',
+          'bg-gradient-to-br from-[#023E8A] to-[#0077B6] dark:from-[#1268B3] dark:to-[#1583D1] text-white shadow-md shadow-[#023E8A]/35 ring-2 ring-[#0077B6]/30 dark:ring-[#16A9D8]/30',
         inactiveIcon:
-          'bg-[#CAF0F8] dark:bg-[#153653] text-[#023E8A] dark:text-[#16A9D8] group-hover:bg-[#ADE8F4] dark:group-hover:bg-[#102E47] group-hover:text-[#03045E] dark:group-hover:text-[#F1F5F9]',
+          'bg-[#CAF0F8] dark:bg-[#153653] text-[#023E8A] dark:text-[#16A9D8] group-hover:bg-[#ADE8F4] dark:group-hover:bg-[#102E47] group-hover:text-[#023E8A] dark:group-hover:text-[#F1F5F9]',
         activeBadge:
-          'bg-[#023E8A] dark:bg-[#1268B3] text-white border-[#03045E] dark:border-[#1583D1]',
+          'bg-[#023E8A] dark:bg-[#1268B3] text-white border-[#023E8A] dark:border-[#1583D1]',
         titleHover: 'group-hover:text-[#023E8A] dark:group-hover:text-[#16A9D8]',
-        bar: 'from-[#03045E] via-[#023E8A] to-[#0077B6] dark:from-[#1268B3] dark:to-[#16A9D8]'
+        bar: 'from-[#023E8A] via-[#0077B6] to-[#0096C7] dark:from-[#1268B3] dark:to-[#16A9D8]'
       }
     },
     {

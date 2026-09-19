@@ -39,29 +39,29 @@ function TestingRequirementsContent() {
   }, []);
 
   return (
-    <div className="relative min-h-screen w-full bg-gradient-to-b from-[#03045E] via-[#023E8A] to-[#03045E] dark:from-slate-950 dark:via-[#03045E]/90 dark:to-slate-950 overflow-hidden text-white">
+    <div className="relative min-h-screen w-full bg-gradient-to-b from-white via-[#CAF0F8]/40 to-[#90E0EF]/55 dark:from-[#07111F] dark:via-[#0A1A2E] dark:to-[#0F2942] overflow-hidden text-slate-900 dark:text-white">
       {/* Ambient Glowing Blobs */}
-      <div className="absolute top-12 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-[#00B4D8]/15 rounded-full blur-3xl pointer-events-none animate-pulse" />
-      <div className="absolute top-0 right-10 w-80 h-80 bg-[#0077B6]/20 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 left-10 w-80 h-80 bg-[#48CAE4]/15 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-12 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-[#90E0EF]/35 dark:bg-[#00B4D8]/15 rounded-full blur-3xl pointer-events-none animate-pulse" />
+      <div className="absolute top-0 right-10 w-80 h-80 bg-[#ADE8F4]/45 dark:bg-[#0077B6]/20 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 left-10 w-80 h-80 bg-[#CAF0F8]/55 dark:bg-[#48CAE4]/15 rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 space-y-8 relative z-10">
-        {/* Header in Dark Scheme */}
+        {/* Header */}
         <div className="space-y-2">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 dark:bg-white/10 text-[#CAF0F8] text-xs font-semibold border border-[#48CAE4]/30 backdrop-blur-md shadow-2xs">
-            <FlaskConical className="w-3.5 h-3.5 text-[#48CAE4]" />
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/80 dark:bg-white/10 text-[#0077B6] dark:text-[#CAF0F8] text-xs font-semibold border border-[#ADE8F4] dark:border-[#48CAE4]/30 backdrop-blur-md shadow-2xs">
+            <FlaskConical className="w-3.5 h-3.5 text-[#0077B6] dark:text-[#48CAE4]" />
             <span>{t("testing.badge", "Statutory Testing Schedules")}</span>
           </div>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
             {t("testing.title", "Indian Standards Testing Requirements")}
           </h1>
-          <p className="text-sm sm:text-base text-[#ADE8F4]/90 max-w-2xl leading-relaxed">
+          <p className="text-sm sm:text-base text-slate-600 dark:text-[#ADE8F4]/90 max-w-2xl leading-relaxed">
             {t("testing.subtitle", "Inspect mandatory routine batch tests, acceptance criteria, sampling rules, and required testing equipment cited directly from Indian Standards.")}
           </p>
         </div>
 
         {/* Filter Bar */}
-        <div className="bg-white/95 dark:bg-[#10243A] backdrop-blur-md p-5 rounded-2xl border border-white/20 dark:border-[#263B50] shadow-xl shadow-[#03045E]/30 dark:shadow-[0_10px_25px_-5px_rgba(0,0,0,0.5)] flex flex-col sm:flex-row items-center gap-3">
+        <div className="bg-white/95 dark:bg-[#10243A] backdrop-blur-md p-5 rounded-2xl border border-[#ADE8F4] dark:border-[#263B50] shadow-md shadow-[#0077B6]/10 dark:shadow-[0_10px_25px_-5px_rgba(0,0,0,0.5)] flex flex-col sm:flex-row items-center gap-3">
           <div className="relative flex-1 w-full">
             <Search className="w-4 h-4 text-slate-400 dark:text-[#7F91A5] absolute left-3.5 top-3.5" />
             <input
@@ -81,7 +81,7 @@ function TestingRequirementsContent() {
           <button
             type="button"
             onClick={fetchRequirements}
-            className="w-full sm:w-auto px-6 py-2.5 text-xs sm:text-sm font-bold bg-gradient-to-r from-[#023E8A] via-[#0077B6] to-[#0096C7] hover:from-[#03045E] hover:to-[#023E8A] dark:from-[#1268B3] dark:to-[#1583D1] text-white rounded-xl shadow-md shadow-[#0077B6]/20 transition-all shrink-0 cursor-pointer"
+            className="w-full sm:w-auto px-6 py-2.5 text-xs sm:text-sm font-bold bg-gradient-to-r from-[#023E8A] via-[#0077B6] to-[#0096C7] hover:from-[#0077B6] hover:to-[#023E8A] dark:from-[#1268B3] dark:to-[#1583D1] text-white rounded-xl shadow-md shadow-[#0077B6]/20 transition-all shrink-0 cursor-pointer"
           >
             {t("testing.btn_filter", "Filter Tests")}
           </button>

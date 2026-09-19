@@ -115,7 +115,7 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
       {isOpen && (
         <div
           role="listbox"
-          className="absolute right-0 top-full mt-1.5 w-64 rounded-xl border border-slate-200 dark:border-[#263B50] bg-white dark:bg-[#10243A] shadow-2xl shadow-[#03045E]/20 dark:shadow-[0_10px_25px_-5px_rgba(0,0,0,0.5),0_8px_10px_-6px_rgba(0,0,0,0.4)] p-1.5 z-[100] animate-in fade-in slide-in-from-top-1 duration-150"
+          className="absolute right-0 top-full mt-1.5 w-64 rounded-xl border border-slate-200 dark:border-[#263B50] bg-white dark:bg-[#10243A] shadow-2xl shadow-[#0077B6]/20 dark:shadow-[0_10px_25px_-5px_rgba(0,0,0,0.5),0_8px_10px_-6px_rgba(0,0,0,0.4)] p-1.5 z-[100] animate-in fade-in slide-in-from-top-1 duration-150"
         >
           {/* Search box inside dropdown */}
           <div className="p-1 mb-1 border-b border-slate-100 dark:border-[#263B50]">

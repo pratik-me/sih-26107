@@ -81,7 +81,7 @@ export function Header() {
     <header
       className={`sticky top-0 z-50 transition-all duration-300 backdrop-blur-xl supports-[backdrop-filter]:bg-white/70 dark:supports-[backdrop-filter]:bg-[#07111F]/85 backdrop-saturate-180 ${
         isScrolled
-          ? "bg-white/80 dark:bg-[#07111F]/90 border-b border-slate-200/80 dark:border-[#263B50] shadow-sm shadow-[#03045E]/5"
+          ? "bg-white/80 dark:bg-[#07111F]/90 border-b border-slate-200/80 dark:border-[#263B50] shadow-sm shadow-[#0077B6]/5"
           : "bg-white/60 dark:bg-[#07111F]/75 border-b border-slate-200/40 dark:border-[#263B50]/60"
       }`}
     >
@@ -144,17 +144,17 @@ export function Header() {
                 onKeyDown={(e) => {
                   if (e.key === "Escape") setStandardsDropdownOpen(false);
                 }}
-                className={`inline-flex items-center gap-1 xl:gap-1.5 px-2 xl:px-2.5 py-1.5 rounded-xl text-[11px] xl:text-xs font-semibold whitespace-nowrap transition-all duration-200 cursor-pointer ${
+                className={`group inline-flex items-center gap-1 xl:gap-1.5 px-2 xl:px-2.5 py-1.5 rounded-xl text-[11px] xl:text-xs font-semibold whitespace-nowrap transition-all duration-200 cursor-pointer ${
                   isStandardsActive
                     ? "bg-gradient-to-r from-[#CAF0F8] to-[#ADE8F4]/70 dark:from-[#10243A] dark:to-[#153653] text-[#023E8A] dark:text-[#16A9D8] font-bold border border-[#ADE8F4] dark:border-[#16A9D8]/50 shadow-xs"
-                    : "text-slate-700 dark:text-[#A8B6C7] hover:text-[#0077B6] dark:hover:text-[#F1F5F9] hover:bg-[#CAF0F8]/40 dark:hover:bg-[#153653]/60"
+                    : "text-slate-700 dark:text-[#A8B6C7] hover:text-[#0077B6] dark:hover:text-[#F1F5F9] hover:bg-[#CAF0F8] dark:hover:bg-[#153653]"
                 }`}
               >
                 <Search
                   className={`w-3.5 h-3.5 shrink-0 transition-colors ${
                     isStandardsActive
                       ? "text-[#0077B6] dark:text-[#16A9D8]"
-                      : "text-slate-500 dark:text-[#A8B6C7]"
+                      : "text-slate-500 dark:text-[#A8B6C7] group-hover:text-[#0077B6] dark:group-hover:text-[#16A9D8]"
                   }`}
                 />
                 <span>{t("nav.standards", "Standards")}</span>
@@ -164,21 +164,21 @@ export function Header() {
                       ? "rotate-180 text-[#0077B6] dark:text-[#16A9D8]"
                       : isStandardsActive
                       ? "text-[#0077B6] dark:text-[#16A9D8]"
-                      : "text-slate-400 dark:text-[#7F91A5]"
+                      : "text-slate-400 dark:text-[#7F91A5] group-hover:text-[#0077B6] dark:group-hover:text-[#16A9D8]"
                   }`}
                 />
               </button>
 
               {/* Dropdown Menu */}
               {standardsDropdownOpen && (
-                <div className="absolute top-full left-0 mt-1 w-72 rounded-2xl border border-[#ADE8F4] dark:border-[#263B50] bg-white/95 dark:bg-[#10243A] backdrop-blur-xl shadow-xl shadow-[#03045E]/10 dark:shadow-[0_10px_25px_-5px_rgba(0,0,0,0.5),0_8px_10px_-6px_rgba(0,0,0,0.4)] p-1.5 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
+                <div className="absolute top-full left-0 mt-1 w-72 rounded-2xl border border-[#ADE8F4] dark:border-[#263B50] bg-white/95 dark:bg-[#10243A] backdrop-blur-xl shadow-xl shadow-[#0077B6]/10 dark:shadow-[0_10px_25px_-5px_rgba(0,0,0,0.5),0_8px_10px_-6px_rgba(0,0,0,0.4)] p-1.5 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
                   <Link
                     href="/standards/recommend"
                     onClick={() => setStandardsDropdownOpen(false)}
                     className={`group flex items-start gap-3 p-2.5 rounded-xl transition-all duration-200 ${
                       pathname === "/standards/recommend"
                         ? "bg-gradient-to-r from-[#CAF0F8] to-[#ADE8F4]/60 dark:from-[#153653] dark:to-[#153653] text-[#023E8A] dark:text-[#F1F5F9] font-bold border border-[#ADE8F4] dark:border-[#16A9D8] shadow-2xs"
-                        : "text-slate-700 dark:text-[#F1F5F9] hover:bg-[#CAF0F8]/40 dark:hover:bg-[#153653] hover:text-[#0077B6] dark:hover:text-[#F1F5F9]"
+                        : "text-slate-700 dark:text-[#F1F5F9] hover:bg-[#CAF0F8] dark:hover:bg-[#153653] hover:text-[#0077B6] dark:hover:text-[#F1F5F9]"
                     }`}
                   >
                     <span
@@ -212,7 +212,7 @@ export function Header() {
                     className={`group flex items-start gap-3 p-2.5 rounded-xl transition-all duration-200 mt-1 ${
                       pathname === "/standards"
                         ? "bg-gradient-to-r from-[#CAF0F8] to-[#ADE8F4]/60 dark:from-[#153653] dark:to-[#153653] text-[#023E8A] dark:text-[#F1F5F9] font-bold border border-[#ADE8F4] dark:border-[#16A9D8] shadow-2xs"
-                        : "text-slate-700 dark:text-[#F1F5F9] hover:bg-[#CAF0F8]/40 dark:hover:bg-[#153653] hover:text-[#0077B6] dark:hover:text-[#F1F5F9]"
+                        : "text-slate-700 dark:text-[#F1F5F9] hover:bg-[#CAF0F8] dark:hover:bg-[#153653] hover:text-[#0077B6] dark:hover:text-[#F1F5F9]"
                     }`}
                   >
                     <span
@@ -251,17 +251,17 @@ export function Header() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`inline-flex items-center gap-1 xl:gap-1.5 px-2 xl:px-2.5 py-1.5 rounded-xl text-[11px] xl:text-xs font-semibold whitespace-nowrap transition-all duration-200 ${
+                  className={`group inline-flex items-center gap-1 xl:gap-1.5 px-2 xl:px-2.5 py-1.5 rounded-xl text-[11px] xl:text-xs font-semibold whitespace-nowrap transition-all duration-200 ${
                     isActive
                       ? "bg-gradient-to-r from-[#CAF0F8] to-[#ADE8F4]/70 dark:from-[#10243A] dark:to-[#153653] text-[#023E8A] dark:text-[#16A9D8] font-bold border border-[#ADE8F4] dark:border-[#16A9D8]/50 shadow-xs"
-                      : "text-slate-700 dark:text-[#A8B6C7] hover:text-[#0077B6] dark:hover:text-[#F1F5F9] hover:bg-[#CAF0F8]/40 dark:hover:bg-[#153653]/60"
+                      : "text-slate-700 dark:text-[#A8B6C7] hover:text-[#0077B6] dark:hover:text-[#F1F5F9] hover:bg-[#CAF0F8] dark:hover:bg-[#153653]"
                   }`}
                 >
                   <Icon
-                    className={`w-3.5 h-3.5 shrink-0 ${
+                    className={`w-3.5 h-3.5 shrink-0 transition-colors ${
                       isActive
                         ? "text-[#0077B6] dark:text-[#16A9D8]"
-                        : "text-slate-500 dark:text-[#A8B6C7]"
+                        : "text-slate-500 dark:text-[#A8B6C7] group-hover:text-[#0077B6] dark:group-hover:text-[#16A9D8]"
                     }`}
                   />
                   <span>{link.label}</span>
@@ -283,7 +283,7 @@ export function Header() {
             <div className="flex items-center gap-2">
               <Link
                 href="/chat"
-                className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold bg-gradient-to-r from-[#023E8A] to-[#0077B6] hover:from-[#03045E] hover:to-[#023E8A] dark:from-[#1268B3] dark:to-[#1583D1] dark:hover:from-[#1583D1] dark:hover:to-[#16A9D8] text-white shadow-sm shadow-[#0077B6]/25 dark:shadow-[#1268B3]/25 transition-all whitespace-nowrap"
+                className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold bg-gradient-to-r from-[#023E8A] to-[#0077B6] hover:from-[#0077B6] hover:to-[#023E8A] dark:from-[#1268B3] dark:to-[#1583D1] dark:hover:from-[#1583D1] dark:hover:to-[#16A9D8] text-white shadow-sm shadow-[#0077B6]/25 dark:shadow-[#1268B3]/25 transition-all whitespace-nowrap"
               >
                 <MessageSquare className="w-3.5 h-3.5" />
                 <span className="hidden sm:inline">{t("nav.ask_bis_ai", "Ask BIS AI")}</span>
@@ -318,7 +318,7 @@ export function Header() {
               className={`flex items-center justify-between w-full px-3 py-2 rounded-lg text-sm font-semibold transition-colors ${
                 isStandardsActive
                   ? "bg-[#CAF0F8]/80 text-[#023E8A] dark:bg-[#153653] dark:text-[#F1F5F9] font-bold border border-[#ADE8F4] dark:border-[#16A9D8]/50"
-                  : "text-slate-700 dark:text-[#F1F5F9] hover:bg-[#CAF0F8]/30 dark:hover:bg-[#153653]"
+                  : "text-slate-700 dark:text-[#F1F5F9] hover:bg-[#CAF0F8] dark:hover:bg-[#153653]"
               }`}
             >
               <div className="flex items-center gap-2.5">
@@ -339,7 +339,7 @@ export function Header() {
                   className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
                     pathname === "/standards/recommend"
                       ? "bg-[#CAF0F8] text-[#023E8A] dark:bg-[#153653] dark:text-[#F1F5F9] font-bold border border-[#ADE8F4] dark:border-[#16A9D8]/50"
-                      : "text-slate-600 dark:text-[#A8B6C7] hover:text-[#0077B6] dark:hover:bg-[#153653] dark:hover:text-[#F1F5F9]"
+                      : "text-slate-600 dark:text-[#A8B6C7] hover:bg-[#CAF0F8] hover:text-[#0077B6] dark:hover:bg-[#153653] dark:hover:text-[#F1F5F9]"
                   }`}
                 >
                   <Compass className="w-3.5 h-3.5 text-[#0077B6] dark:text-[#16A9D8]" />
@@ -351,7 +351,7 @@ export function Header() {
                   className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
                     pathname === "/standards"
                       ? "bg-[#CAF0F8] text-[#023E8A] dark:bg-[#153653] dark:text-[#F1F5F9] font-bold border border-[#ADE8F4] dark:border-[#16A9D8]/50"
-                      : "text-slate-600 dark:text-[#A8B6C7] hover:text-[#0077B6] dark:hover:bg-[#153653] dark:hover:text-[#F1F5F9]"
+                      : "text-slate-600 dark:text-[#A8B6C7] hover:bg-[#CAF0F8] hover:text-[#0077B6] dark:hover:bg-[#153653] dark:hover:text-[#F1F5F9]"
                   }`}
                 >
                   <Search className="w-3.5 h-3.5 text-[#0077B6] dark:text-[#16A9D8]" />
@@ -372,7 +372,7 @@ export function Header() {
                 className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                   isActive
                     ? "bg-[#CAF0F8]/80 text-[#023E8A] dark:bg-[#153653] dark:text-[#F1F5F9] font-bold border border-[#ADE8F4] dark:border-[#16A9D8]/40"
-                    : "text-slate-700 dark:text-[#A8B6C7] hover:bg-[#CAF0F8]/30 dark:hover:bg-[#153653] dark:hover:text-[#F1F5F9]"
+                    : "text-slate-700 dark:text-[#A8B6C7] hover:bg-[#CAF0F8] hover:text-[#0077B6] dark:hover:bg-[#153653] dark:hover:text-[#F1F5F9]"
                 }`}
               >
                 <Icon className="w-4 h-4 text-[#0077B6] dark:text-[#16A9D8]" />
@@ -405,7 +405,7 @@ export function Header() {
             <Link
               href="/chat"
               onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center justify-center gap-2 w-full px-3 py-2.5 rounded-lg text-sm font-bold bg-gradient-to-r from-[#023E8A] to-[#0077B6] hover:from-[#03045E] hover:to-[#023E8A] dark:from-[#1268B3] dark:to-[#1583D1] text-white shadow-sm shadow-[#0077B6]/25 dark:shadow-[#1268B3]/25"
+              className="flex items-center justify-center gap-2 w-full px-3 py-2.5 rounded-lg text-sm font-bold bg-gradient-to-r from-[#023E8A] to-[#0077B6] hover:from-[#0077B6] hover:to-[#023E8A] dark:from-[#1268B3] dark:to-[#1583D1] text-white shadow-sm shadow-[#0077B6]/25 dark:shadow-[#1268B3]/25"
             >
               <MessageSquare className="w-4 h-4" />
               <span>{t("nav.ask_bis_ai", "Ask BIS AI")}</span>

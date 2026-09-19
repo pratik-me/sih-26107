@@ -145,7 +145,7 @@ export default function LandingPage() {
         "Search standards, schemes, reports, or administrative guidelines...",
       ),
       accentBadge:
-        "text-white bg-gradient-to-r from-[#03045E] to-[#023E8A] border border-[#03045E]/50 shadow-xs shadow-[#03045E]/20",
+        "text-white bg-gradient-to-r from-[#023E8A] to-[#0077B6] border border-[#023E8A]/50 shadow-xs shadow-[#023E8A]/20",
       prompts: [
         t(
           "prompts.admin.1",
@@ -182,14 +182,14 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="flex flex-col min-h-full">
-      {/* Hero Section with White-to-Blue Gradient */}
-      <section className="relative w-full bg-gradient-to-b from-white via-[#CAF0F8]/50 to-[#ADE8F4]/60 dark:from-[#07111F] dark:via-[#07111F] dark:to-[#0B1A2B] overflow-hidden">
-        {/* Ambient Atmospheric Accents */}
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[850px] h-[320px] bg-[#90E0EF]/35 dark:bg-[#1268B3]/10 rounded-full blur-3xl pointer-events-none -z-10" />
-        <div className="absolute -bottom-10 right-10 w-96 h-96 bg-[#ADE8F4]/45 dark:bg-[#16A9D8]/10 rounded-full blur-3xl pointer-events-none -z-10" />
-        <div className="absolute -bottom-10 left-10 w-96 h-96 bg-[#CAF0F8]/55 dark:bg-[#0B1A2B]/40 rounded-full blur-3xl pointer-events-none -z-10" />
+    <div className="relative min-h-full w-full bg-gradient-to-b from-white via-[#CAF0F8]/40 to-[#90E0EF]/55 dark:from-[#07111F] dark:via-[#0A1A2E] dark:to-[#0F2942] overflow-hidden">
+      <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[900px] h-[350px] bg-[#90E0EF]/35 dark:bg-[#1268B3]/10 rounded-full blur-3xl pointer-events-none -z-10" />
+      <div className="absolute top-1/4 right-10 w-96 h-96 bg-[#ADE8F4]/40 dark:bg-[#16A9D8]/10 rounded-full blur-3xl pointer-events-none -z-10" />
+      <div className="absolute top-1/2 left-10 w-96 h-96 bg-[#CAF0F8]/50 dark:bg-[#0B1A2B]/40 rounded-full blur-3xl pointer-events-none -z-10" />
+      <div className="absolute bottom-20 right-1/4 w-[600px] h-[300px] bg-[#90E0EF]/25 dark:bg-[#1268B3]/10 rounded-full blur-3xl pointer-events-none -z-10" />
 
+      {/* Hero Section */}
+      <section className="relative w-full overflow-hidden">
         <div className="relative pt-12 pb-20 px-4 sm:px-6 max-w-7xl mx-auto w-full text-center">
           {/* Main Headline */}
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-900 dark:text-[#F1F5F9] tracking-tight leading-tight max-w-4xl mx-auto">
@@ -234,12 +234,12 @@ export default function LandingPage() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder={currentModeConfig.placeholder}
-                className="w-full px-3 py-2 text-sm sm:text-base text-slate-900 dark:text-[#F1F5F9] bg-transparent focus:outline-none placeholder:text-slate-400 dark:placeholder:text-[#7F91A5] transition-all"
+                className="w-full px-3 py-2 text-sm sm:text-base text-slate-900 dark:text-[#F1F5F9] bg-transparent outline-none placeholder:text-slate-400 dark:placeholder:text-[#7F91A5] transition-all"
               />
               <button
                 type="submit"
                 suppressHydrationWarning
-                className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-gradient-to-r from-[#023E8A] via-[#0077B6] to-[#0096C7] hover:from-[#03045E] hover:to-[#023E8A] dark:from-[#1268B3] dark:to-[#1583D1] dark:hover:from-[#1583D1] dark:hover:to-[#16A9D8] text-white shadow-md shadow-[#0077B6]/25 dark:shadow-[#1268B3]/25 transition-all shrink-0 cursor-pointer"
+                className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-gradient-to-r from-[#023E8A] via-[#0077B6] to-[#0096C7] hover:from-[#0077B6] hover:to-[#023E8A] dark:from-[#1268B3] dark:to-[#1583D1] dark:hover:from-[#1583D1] dark:hover:to-[#16A9D8] text-white shadow-md shadow-[#0077B6]/25 dark:shadow-[#1268B3]/25 transition-all shrink-0 cursor-pointer"
               >
                 <span>{t("hero.ask_ai_btn", "Ask AI")}</span>
                 <ArrowRight className="w-4 h-4" />
@@ -282,23 +282,18 @@ export default function LandingPage() {
       </section>
 
       {/* Feature Cards Grid */}
-      <section className="relative py-20 bg-gradient-to-b from-[#03045E] via-[#023E8A] to-[#03045E] dark:from-[#07111F] dark:via-[#0B1A2B] dark:to-[#07111F] border-y border-[#0077B6]/30 dark:border-[#263B50] px-4 sm:px-6 overflow-hidden">
-        {/* Ambient Glowing Blobs / Backdrop Effects */}
-        <div className="absolute top-12 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-[#00B4D8]/15 dark:bg-[#1268B3]/10 rounded-full blur-3xl pointer-events-none animate-pulse" />
-        <div className="absolute top-0 right-10 w-80 h-80 bg-[#0077B6]/20 dark:bg-[#16A9D8]/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-10 w-80 h-80 bg-[#48CAE4]/15 dark:bg-[#0B1A2B]/40 rounded-full blur-3xl pointer-events-none" />
-
+      <section className="relative py-16 px-4 sm:px-6 overflow-hidden">
         <div className="relative max-w-7xl mx-auto">
           {/* Header Box with Badge and Animated Typography */}
           <div className="text-center max-w-3xl mx-auto mb-14">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 dark:text-white tracking-tight leading-tight">
               {t(
                 "home.features_title",
                 "Comprehensive Bureau of Indian Standards Intelligence",
               )}
             </h2>
 
-            <p className="mt-3 text-sm sm:text-base text-[#ADE8F4]/90 dark:text-[#A8B6C7] max-w-2xl mx-auto leading-relaxed font-normal">
+            <p className="mt-3 text-sm sm:text-base text-slate-600 dark:text-[#A8B6C7] max-w-2xl mx-auto leading-relaxed font-normal">
               {t(
                 "home.features_subtitle",
                 "Structured modules for manufacturers, compliance officers, consumers, and research scholars.",
@@ -322,9 +317,9 @@ export default function LandingPage() {
                 ),
                 action: t("home.features_find_action", "Start Profiler →"),
                 icon: Compass,
-                iconBg: "bg-gradient-to-br from-[#03045E] to-[#023E8A] dark:from-[#1268B3] dark:to-[#1583D1]",
+                iconBg: "bg-gradient-to-br from-[#023E8A] to-[#0077B6] dark:from-[#1268B3] dark:to-[#1583D1]",
                 ring: "ring-[#0077B6]/30 dark:ring-[#16A9D8]/30",
-                bar: "from-[#03045E] via-[#023E8A] to-[#0077B6] dark:from-[#1268B3] dark:to-[#16A9D8]",
+                bar: "from-[#023E8A] via-[#0077B6] to-[#0096C7] dark:from-[#1268B3] dark:to-[#16A9D8]",
                 dot: "bg-[#023E8A] dark:bg-[#16A9D8]",
                 badgeStyle:
                   "border-[#023E8A]/30 bg-[#CAF0F8]/70 text-[#023E8A] dark:bg-[#153653] dark:text-[#16A9D8] dark:border-[#263B50]",
@@ -436,9 +431,9 @@ export default function LandingPage() {
                 ),
                 action: t("home.features_consumer_action", "Consumer Hub →"),
                 icon: ShieldCheck,
-                iconBg: "bg-gradient-to-br from-[#03045E] to-[#0077B6] dark:from-[#1268B3] dark:to-[#1583D1]",
+                iconBg: "bg-gradient-to-br from-[#023E8A] to-[#0077B6] dark:from-[#1268B3] dark:to-[#1583D1]",
                 ring: "ring-[#0077B6]/30 dark:ring-[#16A9D8]/30",
-                bar: "from-[#03045E] via-[#0077B6] to-[#00B4D8] dark:from-[#1268B3] dark:to-[#16A9D8]",
+                bar: "from-[#023E8A] via-[#0077B6] to-[#00B4D8] dark:from-[#1268B3] dark:to-[#16A9D8]",
                 dot: "bg-[#0077B6] dark:bg-[#16A9D8]",
                 badgeStyle:
                   "border-[#023E8A]/30 bg-[#CAF0F8]/70 text-[#023E8A] dark:bg-[#153653] dark:text-[#16A9D8] dark:border-[#263B50]",
@@ -449,7 +444,7 @@ export default function LandingPage() {
                 <Link
                   key={idx}
                   href={card.href}
-                  className="group relative p-5 sm:p-6 rounded-2xl border border-white/20 dark:border-[#263B50] bg-white/95 dark:bg-[#10243A] shadow-md hover:shadow-2xl hover:shadow-[#00B4D8]/20 dark:hover:shadow-black/40 hover:border-[#48CAE4] dark:hover:border-[#16A9D8] hover:bg-gradient-to-br hover:from-white hover:via-[#CAF0F8]/30 hover:to-[#ADE8F4]/20 dark:hover:bg-[#153653] hover:-translate-y-1.5 transition-all duration-300 ease-out overflow-hidden flex flex-col justify-between cursor-pointer backdrop-blur-sm"
+                  className="group relative p-5 sm:p-6 rounded-2xl border border-[#ADE8F4] dark:border-[#263B50] bg-white/95 dark:bg-[#10243A] shadow-md hover:shadow-2xl hover:shadow-[#00B4D8]/20 dark:hover:shadow-black/50 hover:border-[#0077B6] dark:hover:border-[#16A9D8] hover:bg-gradient-to-br hover:from-white hover:via-[#CAF0F8]/30 hover:to-[#ADE8F4]/20 dark:hover:from-[#153653] dark:hover:via-[#1a4163] dark:hover:to-[#122c45] hover:-translate-y-1.5 transition-all duration-300 ease-out overflow-hidden flex flex-col justify-between cursor-pointer backdrop-blur-sm"
                 >
                   {/* Top Glowing Accent Line */}
                   <div
@@ -502,11 +497,7 @@ export default function LandingPage() {
       </section>
 
       {/* "How it Works" Architecture Pipeline */}
-      <section className="relative py-20 bg-gradient-to-b from-[#CAF0F8]/50 via-[#ADE8F4]/25 to-[#CAF0F8]/40 dark:from-[#07111F] dark:via-[#0B1A2B] dark:to-[#07111F] border-y border-[#ADE8F4] dark:border-[#263B50] px-4 sm:px-6 w-full overflow-hidden">
-        {/* Ambient Glows */}
-        <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-96 h-96 bg-[#90E0EF]/30 dark:bg-[#1268B3]/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-96 h-96 bg-[#48CAE4]/20 dark:bg-[#16A9D8]/10 rounded-full blur-3xl pointer-events-none" />
-
+      <section className="relative py-16 px-4 sm:px-6 w-full overflow-hidden">
         <div className="relative max-w-7xl mx-auto">
           <div className="text-center max-w-2xl mx-auto mb-14">
             <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/90 dark:bg-[#10243A] text-[#023E8A] dark:text-[#16A9D8] text-xs font-bold mb-3.5 border border-[#ADE8F4] dark:border-[#263B50] shadow-xs backdrop-blur-sm">
@@ -597,12 +588,11 @@ export default function LandingPage() {
       </section>
 
       {/* Trust & Grounding Guarantee Section */}
-      <section className="py-14 bg-gradient-to-r from-[#03045E] via-[#023E8A] to-[#0077B6] dark:from-[#0B1A2B] dark:via-[#10243A] dark:to-[#0B1A2B] text-white px-4 sm:px-6 relative overflow-hidden border-t border-transparent dark:border-[#263B50]">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-[#00B4D8]/20 dark:bg-[#16A9D8]/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="relative max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
+      <section className="py-14 px-4 sm:px-6 relative overflow-hidden">
+        <div className="relative max-w-5xl mx-auto p-8 rounded-3xl bg-white/70 dark:bg-[#10243A]/80 backdrop-blur-md border border-[#ADE8F4] dark:border-[#263B50] shadow-lg shadow-[#0077B6]/10 flex flex-col md:flex-row items-center justify-between gap-8">
           <div className="space-y-2">
-            <div className="flex items-center gap-2 text-[#48CAE4] dark:text-[#16A9D8] font-bold text-sm">
-              <ShieldCheck className="w-5 h-5 text-[#90E0EF] dark:text-[#16A9D8]" />
+            <div className="flex items-center gap-2 text-[#0077B6] dark:text-[#16A9D8] font-bold text-sm">
+              <ShieldCheck className="w-5 h-5 text-[#0077B6] dark:text-[#16A9D8]" />
               <span className="tracking-wide">
                 {t(
                   "home.trust_badge",
@@ -610,13 +600,13 @@ export default function LandingPage() {
                 )}
               </span>
             </div>
-            <h3 className="text-2xl sm:text-3xl font-black text-white dark:text-[#F1F5F9] tracking-tight">
+            <h3 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-[#F1F5F9] tracking-tight">
               {t(
                 "home.trust_title",
                 "Trusted by MSMEs, Compliance Teams & Citizens",
               )}
             </h3>
-            <p className="text-xs sm:text-sm text-[#CAF0F8]/90 dark:text-[#A8B6C7] max-w-xl leading-relaxed">
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-[#A8B6C7] max-w-xl leading-relaxed">
               {t(
                 "home.trust_desc",
                 "BIS Saarthi never invents Indian Standard numbers, test clauses, or lab recognition statuses. If official evidence is not available in the database, the system will explicitly state that the requirement cannot be verified.",
@@ -625,7 +615,7 @@ export default function LandingPage() {
           </div>
           <Link
             href="/chat"
-            className="px-6 py-3.5 rounded-xl text-sm font-bold bg-gradient-to-r from-[#0096C7] via-[#00B4D8] to-[#48CAE4] dark:from-[#1268B3] dark:to-[#16A9D8] hover:from-[#0077B6] hover:to-[#00B4D8] dark:hover:from-[#1583D1] dark:hover:to-[#16A9D8] text-slate-950 dark:text-white hover:text-white shadow-lg shadow-[#03045E]/40 dark:shadow-black/40 transition-all shrink-0 hover:scale-105 active:scale-95"
+            className="px-6 py-3.5 rounded-xl text-sm font-bold bg-gradient-to-r from-[#023E8A] via-[#0077B6] to-[#0096C7] dark:from-[#1268B3] dark:to-[#16A9D8] hover:from-[#0077B6] hover:to-[#023E8A] dark:hover:from-[#1583D1] dark:hover:to-[#16A9D8] text-white shadow-lg shadow-[#0077B6]/25 dark:shadow-black/40 transition-all shrink-0 hover:scale-105 active:scale-95"
           >
             {t("home.trust_action", "Launch AI Workspace →")}
           </Link>
