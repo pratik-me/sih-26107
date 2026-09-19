@@ -123,19 +123,19 @@ export default function FindMyStandardPage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* Left Form (5 cols) */}
-          <div className="lg:col-span-5 bg-white/95 dark:bg-slate-900/90 backdrop-blur-md p-6 rounded-2xl border border-[#ADE8F4] dark:border-slate-800 shadow-md shadow-[#0077B6]/5 space-y-5">
-            <div className="border-b border-slate-100 dark:border-slate-800 pb-3">
-              <h2 className="text-base font-bold text-slate-900 dark:text-slate-100">
+          <div className="lg:col-span-5 bg-white/95 dark:bg-[#10243A] backdrop-blur-md p-6 rounded-2xl border border-[#ADE8F4] dark:border-[#263B50] shadow-md dark:shadow-[0_10px_25px_-5px_rgba(0,0,0,0.5)] space-y-5">
+            <div className="border-b border-slate-100 dark:border-[#263B50] pb-3">
+              <h2 className="text-base font-bold text-slate-900 dark:text-[#F1F5F9]">
                 {t("findstd.form_title", "Product Specification Form")}
               </h2>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
+              <p className="text-xs text-slate-500 dark:text-[#A8B6C7]">
                 {t("findstd.form_subtitle", "Provide as many details as possible for precise standard matching.")}
               </p>
             </div>
 
           <form onSubmit={handleSubmit} className="space-y-4 text-xs">
             <div>
-              <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label className="block font-semibold text-slate-700 dark:text-[#F1F5F9] mb-1">
                 {t("findstd.field_product", "Product Name / Type")} <span className="text-red-500">*</span>
               </label>
               <input
@@ -146,12 +146,12 @@ export default function FindMyStandardPage() {
                   setFormData({ ...formData, productName: e.target.value })
                 }
                 placeholder={t("findstd.placeholder_product", "e.g. Stainless steel water bottle, PVC insulated cable, TMT bar")}
-                className="w-full px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#0077B6] focus:border-[#023E8A]"
+                className="w-full px-3.5 py-2 rounded-xl border border-slate-300 dark:border-[#263B50] bg-transparent dark:bg-[#0B1A2B] text-slate-900 dark:text-[#F1F5F9] focus:outline-none focus:ring-2 focus:ring-[#0077B6] dark:focus:ring-[#16A9D8] focus:border-[#023E8A]"
               />
             </div>
 
             <div>
-              <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label className="block font-semibold text-slate-700 dark:text-[#F1F5F9] mb-1">
                 {t("findstd.field_material", "Raw Material Composition")}
               </label>
               <input
@@ -161,12 +161,12 @@ export default function FindMyStandardPage() {
                   setFormData({ ...formData, material: e.target.value })
                 }
                 placeholder={t("findstd.placeholder_material", "e.g. SS 304, Aluminium alloy, High density polyethylene")}
-                className="w-full px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#0077B6] focus:border-[#023E8A]"
+                className="w-full px-3.5 py-2 rounded-xl border border-slate-300 dark:border-[#263B50] bg-transparent dark:bg-[#0B1A2B] text-slate-900 dark:text-[#F1F5F9] focus:outline-none focus:ring-2 focus:ring-[#0077B6] dark:focus:ring-[#16A9D8] focus:border-[#023E8A]"
               />
             </div>
 
             <div>
-              <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label className="block font-semibold text-slate-700 dark:text-[#F1F5F9] mb-1">
                 {t("findstd.field_application", "Intended Application / Usage")}
               </label>
               <input
@@ -179,12 +179,12 @@ export default function FindMyStandardPage() {
                   })
                 }
                 placeholder={t("findstd.placeholder_application", "e.g. Drinking water storage, building construction, underground cabling")}
-                className="w-full px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#0077B6] focus:border-[#023E8A]"
+                className="w-full px-3.5 py-2 rounded-xl border border-slate-300 dark:border-[#263B50] bg-transparent dark:bg-[#0B1A2B] text-slate-900 dark:text-[#F1F5F9] focus:outline-none focus:ring-2 focus:ring-[#0077B6] dark:focus:ring-[#16A9D8] focus:border-[#023E8A]"
               />
             </div>
 
             <div>
-              <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label className="block font-semibold text-slate-700 dark:text-[#F1F5F9] mb-1">
                 {t("findstd.field_industry", "Industry / Domain Sector")}
               </label>
               <input
@@ -194,12 +194,12 @@ export default function FindMyStandardPage() {
                   setFormData({ ...formData, industry: e.target.value })
                 }
                 placeholder={t("findstd.placeholder_industry", "e.g. Metallurgical, Food & Agriculture, Civil, Electrical")}
-                className="w-full px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#0077B6] focus:border-[#023E8A]"
+                className="w-full px-3.5 py-2 rounded-xl border border-slate-300 dark:border-[#263B50] bg-transparent dark:bg-[#0B1A2B] text-slate-900 dark:text-[#F1F5F9] focus:outline-none focus:ring-2 focus:ring-[#0077B6] dark:focus:ring-[#16A9D8] focus:border-[#023E8A]"
               />
             </div>
 
             <div>
-              <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label className="block font-semibold text-slate-700 dark:text-[#F1F5F9] mb-1">
                 {t("findstd.field_capacity", "Capacity / Size")}
               </label>
               <input
@@ -209,12 +209,12 @@ export default function FindMyStandardPage() {
                   setFormData({ ...formData, capacity: e.target.value })
                 }
                 placeholder={t("findstd.placeholder_capacity", "e.g. 750 ml / 1000 ml double wall, 1.1kV, 12mm")}
-                className="w-full px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#0077B6] focus:border-[#023E8A]"
+                className="w-full px-3.5 py-2 rounded-xl border border-slate-300 dark:border-[#263B50] bg-transparent dark:bg-[#0B1A2B] text-slate-900 dark:text-[#F1F5F9] focus:outline-none focus:ring-2 focus:ring-[#0077B6] dark:focus:ring-[#16A9D8] focus:border-[#023E8A]"
               />
             </div>
 
             <div>
-              <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label className="block font-semibold text-slate-700 dark:text-[#F1F5F9] mb-1">
                 {t("findstd.field_techspec", "Technical Specifications")}
               </label>
               <textarea
@@ -227,14 +227,14 @@ export default function FindMyStandardPage() {
                   })
                 }
                 placeholder={t("findstd.placeholder_techspec", "e.g. Voltage rating 1.1kV, double wall vacuum insulation, diameter 12mm Fe 500D")}
-                className="w-full px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#0077B6] focus:border-[#023E8A]"
+                className="w-full px-3.5 py-2 rounded-xl border border-slate-300 dark:border-[#263B50] bg-transparent dark:bg-[#0B1A2B] text-slate-900 dark:text-[#F1F5F9] focus:outline-none focus:ring-2 focus:ring-[#0077B6] dark:focus:ring-[#16A9D8] focus:border-[#023E8A]"
               />
             </div>
 
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-3 px-4 rounded-xl text-xs font-bold bg-gradient-to-r from-[#023E8A] via-[#0077B6] to-[#0096C7] hover:from-[#03045E] hover:to-[#023E8A] text-white shadow-md shadow-[#0077B6]/25 transition-all flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
+              className="w-full py-3 px-4 rounded-xl text-xs font-bold bg-gradient-to-r from-[#023E8A] via-[#0077B6] to-[#0096C7] hover:from-[#03045E] hover:to-[#023E8A] dark:from-[#1268B3] dark:to-[#1583D1] text-white shadow-md shadow-[#0077B6]/25 transition-all flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
             >
               <span>{t("findstd.btn_evaluate", "Evaluate Applicable Standards")}</span>
             </button>
@@ -244,7 +244,7 @@ export default function FindMyStandardPage() {
                 type="button"
                 onClick={handleClear}
                 disabled={isLoading}
-                className="flex-1 py-2 px-3 rounded-xl text-xs font-semibold bg-transparent hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 border border-slate-200 dark:border-slate-700 transition-all cursor-pointer"
+                className="flex-1 py-2 px-3 rounded-xl text-xs font-semibold bg-transparent hover:bg-slate-100 dark:hover:bg-[#153653] text-slate-500 dark:text-[#A8B6C7] border border-slate-200 dark:border-[#263B50] transition-all cursor-pointer"
               >
                 {t("findstd.btn_clear", "Clear")}
               </button>
@@ -255,12 +255,12 @@ export default function FindMyStandardPage() {
         {/* Right Results (7 cols) */}
         <div className="lg:col-span-7 space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-base font-bold text-slate-900 dark:text-slate-100">
+            <h2 className="text-base font-bold text-slate-900 dark:text-[#F1F5F9]">
               {t("findstd.results_title", "Evaluated Indian Standards")}{" "}
               {result ? `(${result.totalMatches})` : ""}
             </h2>
             {result && (
-              <span className="text-xs text-slate-500 font-medium">
+              <span className="text-xs text-slate-500 dark:text-[#7F91A5] font-medium">
                 {t("findstd.results_complete", "Grounded Assessment Completed")}
               </span>
             )}
@@ -273,8 +273,8 @@ export default function FindMyStandardPage() {
             />
           ) : result && result.matches.length > 0 ? (
             <div className="space-y-4">
-              <div className="p-3.5 rounded-xl bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900 text-xs text-blue-900 dark:text-blue-200 flex items-start gap-2">
-                <AlertCircle className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
+              <div className="p-3.5 rounded-xl bg-blue-50 dark:bg-[#0B1A2B] border border-blue-200 dark:border-[#263B50] text-xs text-blue-900 dark:text-[#A8B6C7] flex items-start gap-2">
+                <AlertCircle className="w-4 h-4 text-blue-600 dark:text-[#16A9D8] shrink-0 mt-0.5" />
                 <span>{result.guidanceNotes}</span>
               </div>
 

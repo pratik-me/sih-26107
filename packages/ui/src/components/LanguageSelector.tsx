@@ -98,15 +98,15 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
         onClick={() => setIsOpen(!isOpen)}
         aria-haspopup="listbox"
         aria-expanded={isOpen}
-        className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold text-slate-700 dark:text-slate-200 hover:text-[#0077B6] dark:hover:text-[#48CAE4] bg-white/90 dark:bg-slate-800/90 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all border border-slate-200/90 dark:border-slate-700 shadow-2xs cursor-pointer"
+        className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold text-slate-700 dark:text-[#F1F5F9] hover:text-[#0077B6] dark:hover:text-[#16A9D8] bg-white/90 dark:bg-[#10243A] hover:bg-slate-100 dark:hover:bg-[#153653] transition-all border border-slate-200/90 dark:border-[#263B50] shadow-2xs cursor-pointer"
       >
-        <Globe className="w-3.5 h-3.5 text-[#0077B6] dark:text-[#48CAE4] shrink-0" />
+        <Globe className="w-3.5 h-3.5 text-[#0077B6] dark:text-[#16A9D8] shrink-0" />
         <span className="truncate max-w-[95px] sm:max-w-[130px]">
           {activeItem.label}
         </span>
         <ChevronDown
-          className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-200 shrink-0 ${
-            isOpen ? "rotate-180 text-[#0077B6] dark:text-[#48CAE4]" : ""
+          className={`w-3.5 h-3.5 text-slate-400 dark:text-[#A8B6C7] transition-transform duration-200 shrink-0 ${
+            isOpen ? "rotate-180 text-[#0077B6] dark:text-[#16A9D8]" : ""
           }`}
         />
       </button>
@@ -115,19 +115,19 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
       {isOpen && (
         <div
           role="listbox"
-          className="absolute right-0 top-full mt-1.5 w-64 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-2xl shadow-[#03045E]/20 p-1.5 z-[100] animate-in fade-in slide-in-from-top-1 duration-150"
+          className="absolute right-0 top-full mt-1.5 w-64 rounded-xl border border-slate-200 dark:border-[#263B50] bg-white dark:bg-[#10243A] shadow-2xl shadow-[#03045E]/20 dark:shadow-[0_10px_25px_-5px_rgba(0,0,0,0.5),0_8px_10px_-6px_rgba(0,0,0,0.4)] p-1.5 z-[100] animate-in fade-in slide-in-from-top-1 duration-150"
         >
           {/* Search box inside dropdown */}
-          <div className="p-1 mb-1 border-b border-slate-100 dark:border-slate-800">
-            <div className="relative flex items-center bg-slate-50 dark:bg-slate-800/80 rounded-lg px-2 py-1 border border-slate-200 dark:border-slate-700">
-              <Search className="w-3 h-3 text-slate-400 mr-1.5 shrink-0" />
+          <div className="p-1 mb-1 border-b border-slate-100 dark:border-[#263B50]">
+            <div className="relative flex items-center bg-slate-50 dark:bg-[#0B1A2B] rounded-lg px-2 py-1 border border-slate-200 dark:border-[#263B50] focus-within:border-[#0077B6] dark:focus-within:border-[#16A9D8]">
+              <Search className="w-3 h-3 text-slate-400 dark:text-[#7F91A5] mr-1.5 shrink-0" />
               <input
                 ref={searchInputRef}
                 type="text"
                 value={searchFilter}
                 onChange={(e) => setSearchFilter(e.target.value)}
                 placeholder={searchPlaceholder}
-                className="w-full text-xs text-slate-900 dark:text-slate-100 bg-transparent focus:outline-none placeholder:text-slate-400"
+                className="w-full text-xs text-slate-900 dark:text-[#F1F5F9] bg-transparent focus:outline-none placeholder:text-slate-400 dark:placeholder:text-[#7F91A5]"
               />
             </div>
           </div>
@@ -135,7 +135,7 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
           {/* Languages list */}
           <div className="max-h-60 overflow-y-auto space-y-0.5 pr-0.5 custom-scrollbar">
             {filteredLanguages.length === 0 ? (
-              <div className="py-3 text-center text-xs text-slate-400">
+              <div className="py-3 text-center text-xs text-slate-400 dark:text-[#7F91A5]">
                 {noLanguageFound}
               </div>
             ) : (
@@ -150,13 +150,13 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
                     aria-selected={isSelected}
                     className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs font-medium text-left transition-colors cursor-pointer ${
                       isSelected
-                        ? "bg-[#CAF0F8]/80 dark:bg-[#03045E]/70 text-[#023E8A] dark:text-[#90E0EF] font-bold"
-                        : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-[#0077B6] dark:hover:text-[#48CAE4]"
+                        ? "bg-[#CAF0F8]/80 dark:bg-[#153653] text-[#023E8A] dark:text-[#16A9D8] font-bold border border-transparent dark:border-[#16A9D8]/40"
+                        : "text-slate-700 dark:text-[#A8B6C7] hover:bg-slate-100 dark:hover:bg-[#153653] hover:text-[#0077B6] dark:hover:text-[#F1F5F9]"
                     }`}
                   >
                     <span>{lang.label}</span>
                     {isSelected && (
-                      <Check className="w-3.5 h-3.5 text-[#0077B6] dark:text-[#48CAE4] shrink-0" />
+                      <Check className="w-3.5 h-3.5 text-[#0077B6] dark:text-[#16A9D8] shrink-0" />
                     )}
                   </button>
                 );

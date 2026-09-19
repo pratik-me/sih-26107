@@ -32,75 +32,75 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center px-4 py-12 bg-ashoka-pattern">
-      <div className="max-w-md w-full bg-white dark:bg-slate-900 p-8 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xl space-y-6">
+      <div className="max-w-md w-full bg-white dark:bg-[#10243A] p-8 rounded-2xl border border-slate-200 dark:border-[#263B50] shadow-xl dark:shadow-[0_10px_25px_-5px_rgba(0,0,0,0.5)] space-y-6">
         <div className="text-center space-y-2">
           {/* <AshokaMotif size={42} className="mx-auto text-blue-700 dark:text-blue-500" /> */}
           <Image src={"/BIS-LOGO.png"} alt='BIS-LOGO' height={42} width={42} />
-          <h1 className="text-2xl font-black text-slate-900 dark:text-slate-100 tracking-tight">
+          <h1 className="text-2xl font-black text-slate-900 dark:text-[#F1F5F9] tracking-tight">
             BIS Saarthi Login
           </h1>
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-slate-500 dark:text-[#A8B6C7]">
             Sign in to access your saved standards investigations, compliance reports, and audit logs.
           </p>
         </div>
 
         {error && (
-          <div className="p-3 rounded-xl bg-rose-50 text-rose-700 text-xs border border-rose-200">
+          <div className="p-3 rounded-xl bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 text-xs border border-rose-200 dark:border-rose-800">
             {error}
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4 text-xs">
           <div>
-            <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">
+            <label className="block font-semibold text-slate-700 dark:text-[#F1F5F9] mb-1">
               Official Email Address
             </label>
             <div className="relative">
-              <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+              <Mail className="w-4 h-4 text-slate-400 dark:text-[#7F91A5] absolute left-3 top-3" />
               <input
                 type="email"
                 required
                 value={email}
                 onChange={e => setEmail(e.target.value)}
-                className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-slate-300 dark:border-[#263B50] bg-transparent dark:bg-[#0B1A2B] text-slate-900 dark:text-[#F1F5F9] focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-[#16A9D8]"
               />
             </div>
           </div>
 
           <div>
-            <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">
+            <label className="block font-semibold text-slate-700 dark:text-[#F1F5F9] mb-1">
               Password
             </label>
             <div className="relative">
-              <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+              <Lock className="w-4 h-4 text-slate-400 dark:text-[#7F91A5] absolute left-3 top-3" />
               <input
                 type="password"
                 required
                 value={password}
                 onChange={e => setPassword(e.target.value)}
-                className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-slate-300 dark:border-[#263B50] bg-transparent dark:bg-[#0B1A2B] text-slate-900 dark:text-[#F1F5F9] focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-[#16A9D8]"
               />
             </div>
           </div>
 
-          <div className="p-2.5 rounded-lg bg-slate-50 dark:bg-slate-800 text-[11px] text-slate-500 flex items-center gap-1.5">
-            <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
+          <div className="p-2.5 rounded-lg bg-slate-50 dark:bg-[#0B1A2B] dark:border dark:border-[#263B50] text-[11px] text-slate-500 dark:text-[#A8B6C7] flex items-center gap-1.5">
+            <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-[#22C55E] shrink-0" />
             <span>Demo credentials prefilled for instant testing.</span>
           </div>
 
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full py-2.5 px-4 rounded-xl text-xs font-bold bg-blue-700 hover:bg-blue-800 text-white shadow-sm transition-all flex items-center justify-center gap-1.5"
+            className="w-full py-2.5 px-4 rounded-xl text-xs font-bold bg-blue-700 hover:bg-blue-800 dark:bg-[#1268B3] dark:hover:bg-[#1583D1] text-white shadow-sm transition-all flex items-center justify-center gap-1.5 cursor-pointer"
           >
             <span>{isLoading ? 'Authenticating...' : 'Sign In to Portal'}</span>
             <ArrowRight className="w-4 h-4" />
           </button>
         </form>
 
-        <div className="text-center text-xs text-slate-500 pt-2 border-t border-slate-100 dark:border-slate-800">
+        <div className="text-center text-xs text-slate-500 dark:text-[#A8B6C7] pt-2 border-t border-slate-100 dark:border-[#263B50]">
           <span>Don&apos;t have an account? </span>
-          <Link href="/register" className="text-blue-600 font-semibold hover:underline">
+          <Link href="/register" className="text-blue-600 dark:text-[#16A9D8] font-semibold hover:underline">
             Register as MSME / Citizen
           </Link>
         </div>

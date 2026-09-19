@@ -61,9 +61,9 @@ function TestingRequirementsContent() {
         </div>
 
         {/* Filter Bar */}
-        <div className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md p-5 rounded-2xl border border-white/20 dark:border-slate-800 shadow-xl shadow-[#03045E]/30 flex flex-col sm:flex-row items-center gap-3">
+        <div className="bg-white/95 dark:bg-[#10243A] backdrop-blur-md p-5 rounded-2xl border border-white/20 dark:border-[#263B50] shadow-xl shadow-[#03045E]/30 dark:shadow-[0_10px_25px_-5px_rgba(0,0,0,0.5)] flex flex-col sm:flex-row items-center gap-3">
           <div className="relative flex-1 w-full">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
+            <Search className="w-4 h-4 text-slate-400 dark:text-[#7F91A5] absolute left-3.5 top-3.5" />
             <input
               type="text"
               value={filterStd}
@@ -75,13 +75,13 @@ function TestingRequirementsContent() {
                 }
               }}
               placeholder={t("testing.filter_placeholder", "Filter by Standard Number (e.g. IS 17526, IS 10500, IS 1786)...")}
-              className="w-full pl-10 pr-3.5 py-2.5 text-xs sm:text-sm rounded-xl border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#0077B6] focus:border-[#023E8A]"
+              className="w-full pl-10 pr-3.5 py-2.5 text-xs sm:text-sm rounded-xl border border-slate-300 dark:border-[#263B50] bg-white/50 dark:bg-[#0B1A2B] text-slate-900 dark:text-[#F1F5F9] focus:outline-none focus:ring-2 focus:ring-[#0077B6] dark:focus:ring-[#16A9D8] focus:border-[#023E8A]"
             />
           </div>
           <button
             type="button"
             onClick={fetchRequirements}
-            className="w-full sm:w-auto px-6 py-2.5 text-xs sm:text-sm font-bold bg-gradient-to-r from-[#023E8A] via-[#0077B6] to-[#0096C7] hover:from-[#03045E] hover:to-[#023E8A] text-white rounded-xl shadow-md shadow-[#0077B6]/20 transition-all shrink-0 cursor-pointer"
+            className="w-full sm:w-auto px-6 py-2.5 text-xs sm:text-sm font-bold bg-gradient-to-r from-[#023E8A] via-[#0077B6] to-[#0096C7] hover:from-[#03045E] hover:to-[#023E8A] dark:from-[#1268B3] dark:to-[#1583D1] text-white rounded-xl shadow-md shadow-[#0077B6]/20 transition-all shrink-0 cursor-pointer"
           >
             {t("testing.btn_filter", "Filter Tests")}
           </button>

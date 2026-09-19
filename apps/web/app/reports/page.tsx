@@ -108,11 +108,11 @@ function ComplianceReportsContent() {
         </div>
 
         {/* Printable Report Document Card */}
-        <div className="p-8 sm:p-12 rounded-2xl bg-white dark:bg-slate-900 border border-white/20 dark:border-slate-800 shadow-2xl space-y-8 text-slate-900 dark:text-slate-100 print:border-none print:shadow-none print:p-0">
+        <div className="p-8 sm:p-12 rounded-2xl bg-white dark:bg-[#10243A] border border-white/20 dark:border-[#263B50] shadow-2xl dark:shadow-[0_10px_25px_-5px_rgba(0,0,0,0.5)] space-y-8 text-slate-900 dark:text-[#F1F5F9] print:border-none print:shadow-none print:p-0">
           {/* Document Header with Ashoka Emblem Motif */}
-          <div className="border-b-2 border-slate-900 dark:border-slate-100 pb-6 flex items-start justify-between">
+          <div className="border-b-2 border-slate-900 dark:border-[#263B50] pb-6 flex items-start justify-between">
             <div className="space-y-1">
-              <div className="flex items-center gap-2 text-blue-800 dark:text-blue-400 font-bold text-xs uppercase tracking-wider">
+              <div className="flex items-center gap-2 text-blue-800 dark:text-[#16A9D8] font-bold text-xs uppercase tracking-wider">
                 {/* <AshokaMotif size={24} /> */}
                 <Image
                   src={"/BIS-LOGO.png"}
@@ -133,13 +133,13 @@ function ComplianceReportsContent() {
                   "BIS Product Compliance & Conformity Roadmap",
                 )}
               </h2>
-              <p className="text-xs text-slate-500 font-mono">
+              <p className="text-xs text-slate-500 dark:text-[#7F91A5] font-mono">
                 Report ID: {report.id} • Generated: {report.generationDate}
               </p>
             </div>
 
             <div className="text-right text-xs">
-              <span className="font-bold px-2 py-1 rounded bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 border border-blue-200">
+              <span className="font-bold px-2 py-1 rounded bg-blue-50 dark:bg-[#153653] text-blue-700 dark:text-[#16A9D8] border border-blue-200 dark:border-[#263B50]">
                 {report.manufacturerType}
               </span>
             </div>
@@ -147,24 +147,24 @@ function ComplianceReportsContent() {
 
           {/* 1. Product Profile */}
           <div className="space-y-2">
-            <h3 className="text-sm font-bold uppercase tracking-wider text-blue-800 dark:text-blue-400">
+            <h3 className="text-sm font-bold uppercase tracking-wider text-blue-800 dark:text-[#16A9D8]">
               {t("reports.section1", "1. Target Product Profile")}
             </h3>
-            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-700 text-xs grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="p-4 rounded-xl bg-slate-50 dark:bg-[#0B1A2B] border border-slate-200 dark:border-[#263B50] text-xs grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <span className="font-semibold text-slate-500 block">
+                <span className="font-semibold text-slate-500 dark:text-[#7F91A5] block">
                   {t("reports.label_product", "Product Evaluated:")}
                 </span>
                 <span className="font-bold text-sm">{report.productName}</span>
               </div>
               <div>
-                <span className="font-semibold text-slate-500 block">
+                <span className="font-semibold text-slate-500 dark:text-[#7F91A5] block">
                   {t(
                     "reports.label_primarystd",
                     "Primary Applicable Standard:",
                   )}
                 </span>
-                <span className="font-bold text-sm text-blue-700 dark:text-blue-300">
+                <span className="font-bold text-sm text-blue-700 dark:text-[#16A9D8]">
                   {report.applicableStandards[0]?.standardNumber || stdParam}
                 </span>
               </div>
@@ -173,7 +173,7 @@ function ComplianceReportsContent() {
 
           {/* 2. Applicable Indian Standards */}
           <div className="space-y-2">
-            <h3 className="text-sm font-bold uppercase tracking-wider text-blue-800 dark:text-blue-400">
+            <h3 className="text-sm font-bold uppercase tracking-wider text-blue-800 dark:text-[#16A9D8]">
               {t(
                 "reports.section2",
                 "2. Applicable Indian Standards & QCO Mandates",
@@ -183,19 +183,19 @@ function ComplianceReportsContent() {
               {report.applicableStandards.map((std, i) => (
                 <div
                   key={i}
-                  className="p-3.5 rounded-xl border border-slate-200 dark:border-slate-700 text-xs space-y-1"
+                  className="p-3.5 rounded-xl border border-slate-200 dark:border-[#263B50] text-xs space-y-1"
                 >
                   <div className="flex items-center justify-between">
                     <span className="font-bold text-sm">
                       {std.standardNumber} — {std.title}
                     </span>
                     {std.isMandatory && (
-                      <span className="px-2 py-0.5 rounded bg-amber-50 text-amber-700 font-semibold text-[10px]">
+                      <span className="px-2 py-0.5 rounded bg-amber-50 dark:bg-amber-950/50 text-amber-700 dark:text-amber-300 font-semibold text-[10px] border border-amber-200 dark:border-amber-800/50">
                         {t("reports.tag_mandatory", "Mandatory QCO Order")}
                       </span>
                     )}
                   </div>
-                  <p className="text-slate-600 dark:text-slate-400">
+                  <p className="text-slate-600 dark:text-[#A8B6C7]">
                     {t("reports.label_regulatory", "Regulatory Notification:")}{" "}
                     {std.qcoDetails}
                   </p>
@@ -206,17 +206,17 @@ function ComplianceReportsContent() {
 
           {/* 3. Certification Scheme Overview */}
           <div className="space-y-2">
-            <h3 className="text-sm font-bold uppercase tracking-wider text-blue-800 dark:text-blue-400">
+            <h3 className="text-sm font-bold uppercase tracking-wider text-blue-800 dark:text-[#16A9D8]">
               {t("reports.section3", "3. Applicable BIS Certification Scheme")}
             </h3>
-            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-700 text-xs space-y-2">
+            <div className="p-4 rounded-xl bg-slate-50 dark:bg-[#0B1A2B] border border-slate-200 dark:border-[#263B50] text-xs space-y-2">
               <h4 className="font-bold text-sm">
                 {report.certificationScheme.name}
               </h4>
-              <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
+              <p className="text-slate-600 dark:text-[#A8B6C7] leading-relaxed">
                 {report.certificationScheme.description}
               </p>
-              <div className="pt-2 flex flex-wrap gap-4 text-[11px] text-slate-500">
+              <div className="pt-2 flex flex-wrap gap-4 text-[11px] text-slate-500 dark:text-[#7F91A5]">
                 <span>
                   <strong>{t("reports.label_validity", "Validity:")}</strong>{" "}
                   {report.certificationScheme.validityPeriod}
@@ -233,41 +233,41 @@ function ComplianceReportsContent() {
 
           {/* 4. Mandatory Testing Checklist */}
           <div className="space-y-2">
-            <h3 className="text-sm font-bold uppercase tracking-wider text-blue-800 dark:text-blue-400">
+            <h3 className="text-sm font-bold uppercase tracking-wider text-blue-800 dark:text-[#16A9D8]">
               {t(
                 "reports.section4",
                 "4. Mandatory Testing Requirements & Sampling Criteria",
               )}
             </h3>
-            <div className="border border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden text-xs">
+            <div className="border border-slate-200 dark:border-[#263B50] rounded-xl overflow-hidden text-xs">
               <table className="w-full text-left border-collapse">
-                <thead className="bg-slate-100 dark:bg-slate-800 font-bold text-slate-700 dark:text-slate-200">
+                <thead className="bg-slate-100 dark:bg-[#0B1A2B] font-bold text-slate-700 dark:text-[#F1F5F9]">
                   <tr>
-                    <th className="p-3 border-b border-slate-200 dark:border-slate-700">
+                    <th className="p-3 border-b border-slate-200 dark:border-[#263B50]">
                       {t("reports.col_test", "Test Parameter")}
                     </th>
-                    <th className="p-3 border-b border-slate-200 dark:border-slate-700">
+                    <th className="p-3 border-b border-slate-200 dark:border-[#263B50]">
                       {t("reports.col_clause", "Standard Clause")}
                     </th>
-                    <th className="p-3 border-b border-slate-200 dark:border-slate-700">
+                    <th className="p-3 border-b border-slate-200 dark:border-[#263B50]">
                       {t("reports.col_type", "Type")}
                     </th>
-                    <th className="p-3 border-b border-slate-200 dark:border-slate-700">
+                    <th className="p-3 border-b border-slate-200 dark:border-[#263B50]">
                       {t("reports.col_sampling", "Sampling Rule")}
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
+                <tbody className="divide-y divide-slate-200 dark:divide-[#263B50]">
                   {report.testingChecklist.map((test, i) => (
-                    <tr key={i}>
-                      <td className="p-3 font-semibold">{test.testName}</td>
-                      <td className="p-3 font-mono">{test.clause}</td>
+                    <tr key={i} className="dark:hover:bg-[#153653]/30">
+                      <td className="p-3 font-semibold dark:text-[#F1F5F9]">{test.testName}</td>
+                      <td className="p-3 font-mono dark:text-[#16A9D8]">{test.clause}</td>
                       <td className="p-3">
-                        <span className="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-semibold text-[10px]">
+                        <span className="px-2 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-[#22C55E] font-semibold text-[10px] dark:border dark:border-emerald-800">
                           {t("reports.tag_mandatory", "Mandatory")}
                         </span>
                       </td>
-                      <td className="p-3 text-slate-500">
+                      <td className="p-3 text-slate-500 dark:text-[#A8B6C7]">
                         {test.samplingRule}
                       </td>
                     </tr>
@@ -279,20 +279,20 @@ function ComplianceReportsContent() {
 
           {/* 5. Accredited Laboratories */}
           <div className="space-y-2">
-            <h3 className="text-sm font-bold uppercase tracking-wider text-blue-800 dark:text-blue-400">
+            <h3 className="text-sm font-bold uppercase tracking-wider text-blue-800 dark:text-[#16A9D8]">
               {t("reports.section5", "5. Recommended Testing Laboratories")}
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
               {report.accreditedLaboratories.map((lab, i) => (
                 <div
                   key={i}
-                  className="p-3 rounded-xl border border-slate-200 dark:border-slate-700 flex items-center justify-between"
+                  className="p-3 rounded-xl border border-slate-200 dark:border-[#263B50] bg-white dark:bg-[#0B1A2B] flex items-center justify-between"
                 >
                   <div>
-                    <h4 className="font-bold">{lab.name}</h4>
-                    <p className="text-slate-500">{lab.location}</p>
+                    <h4 className="font-bold dark:text-[#F1F5F9]">{lab.name}</h4>
+                    <p className="text-slate-500 dark:text-[#7F91A5]">{lab.location}</p>
                   </div>
-                  <span className="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-semibold text-[10px]">
+                  <span className="px-2 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-[#22C55E] font-semibold text-[10px] dark:border dark:border-emerald-800">
                     {lab.accreditationStatus}
                   </span>
                 </div>
@@ -302,13 +302,13 @@ function ComplianceReportsContent() {
 
           {/* 6. Documentation Checklist */}
           <div className="space-y-2">
-            <h3 className="text-sm font-bold uppercase tracking-wider text-blue-800 dark:text-blue-400">
+            <h3 className="text-sm font-bold uppercase tracking-wider text-blue-800 dark:text-[#16A9D8]">
               6. Statutory Documentation Checklist
             </h3>
-            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-700 text-xs space-y-1.5">
+            <div className="p-4 rounded-xl bg-slate-50 dark:bg-[#0B1A2B] border border-slate-200 dark:border-[#263B50] text-xs space-y-1.5">
               {report.documentationChecklist.map((doc, i) => (
-                <div key={i} className="flex items-center gap-2">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                <div key={i} className="flex items-center gap-2 dark:text-[#A8B6C7]">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-[#22C55E]" />
                   <span>{doc}</span>
                 </div>
               ))}
@@ -329,12 +329,12 @@ function ComplianceReportsContent() {
           </div>
 
           {/* Disclaimer Footer */}
-          <div className="pt-6 border-t border-slate-200 dark:border-slate-800 text-[11px] text-slate-500 space-y-1 leading-relaxed">
-            <div className="flex items-center gap-1.5 font-bold text-slate-700 dark:text-slate-300">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+          <div className="pt-6 border-t border-slate-200 dark:border-[#263B50] text-[11px] text-slate-500 dark:text-[#7F91A5] space-y-1 leading-relaxed">
+            <div className="flex items-center gap-1.5 font-bold text-slate-700 dark:text-[#F1F5F9]">
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-[#22C55E]" />
               <span>Authoritative Compliance Notice:</span>
             </div>
-            <p>{report.disclaimer}</p>
+            <p className="dark:text-[#A8B6C7]">{report.disclaimer}</p>
           </div>
         </div>
       </div>

@@ -18,6 +18,21 @@ module.exports = {
           slate: '#F8FAFC',
           gold: '#B45309'
         },
+        navy: {
+          bg: '#07111F',
+          section: '#0B1A2B',
+          card: '#10243A',
+          'card-hover': '#153653',
+          'card-active': '#102E47',
+          border: '#263B50',
+          blue: '#1268B3',
+          action: '#1583D1',
+          cyan: '#16A9D8',
+          text: '#F1F5F9',
+          'text-secondary': '#A8B6C7',
+          'text-muted': '#7F91A5',
+          success: '#22C55E'
+        },
         bis: {
           900: '#03045E', // Deep Twilight
           800: '#023E8A', // French Blue
