@@ -105,6 +105,7 @@ export class ChatService {
 
         this.inMemorySessions.set(sessionId, memSession);
       }
+
       memSession.messages.push({
         id: randomUUID(),
         sessionId: sessionId,
@@ -197,6 +198,7 @@ export class ChatService {
       };
       this.inMemorySessions.set(dbSession.id, memSession);
     }
+
     memSession.messages.push(reply);
     memSession.updatedAt = new Date().toISOString();
 
@@ -269,30 +271,58 @@ export class ChatService {
   }
 
   async getSessionById(id: string, userId?: string): Promise<ChatSession> {
+    try {
+      const record = await this.prisma.chatSession.findUnique({
+        where: { id },
+        include: {
+          messages: {
+            orderBy: { createdAt: "asc" },
+          },
+        },
+      });
+
+      if (
+        !record ||
+        (record.userId && userId && record.userId !== userId) ||
+        (record.userId && !userId)
+      ) {
+        throw new NotFoundException(`Chat session '${id}' not found`);
+      }
+
+      return this.mapDbSessionToDomain(record);
+    } catch (err) {
+      if (err instanceof NotFoundException) {
+        throw err;
+      }
+
+      const memSession = this.inMemorySessions.get(id);
+
+      if (
+        !memSession ||
+        (memSession.userId && userId && memSession.userId !== userId) ||
+        (memSession.userId && !userId)
+      ) {
+        throw new NotFoundException(`Chat session '${id}' not found`);
+      }
+
+      return memSession;
+    }
+  }
+
+  async deleteSession(id: string, userId: string): Promise<void> {
     const record = await this.prisma.chatSession.findUnique({
       where: { id },
-      include: {
-        messages: {
-          orderBy: { createdAt: "asc" },
-        },
-      },
+      select: { userId: true },
     });
 
-    if (!record || (record.userId && userId && record.userId !== userId)) {
+    if (!record || record.userId !== userId) {
       throw new NotFoundException(`Chat session '${id}' not found`);
     }
 
-    return this.mapDbSessionToDomain(record);
-  }
+    await this.prisma.chatSession.delete({
+      where: { id },
+    });
 
-  async deleteSession(id: string): Promise<void> {
-    try {
-      await this.prisma.chatSession.delete({
-        where: { id },
-      });
-    } catch {
-      // ignore
-    }
     this.inMemorySessions.delete(id);
   }
 

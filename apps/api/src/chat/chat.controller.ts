@@ -7,36 +7,36 @@ import {
   Delete,
   Sse,
   Query,
-  UseGuards,
-} from "@nestjs/common";
+  UseGuards
+} from '@nestjs/common';
 
-import { ApiTags, ApiOperation, ApiBearerAuth } from "@nestjs/swagger";
+import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 
-import { ChatService } from "./chat.service";
+import { ChatService } from './chat.service';
 
-import { IndianLanguage, type UserProfile } from "@bis/shared-types";
+import { IndianLanguage, type UserProfile } from '@bis/shared-types';
 
-import { Observable } from "rxjs";
+import { Observable } from 'rxjs';
 
 import {
   JwtAuthGuard,
-  OptionalJwtAuthGuard,
-} from "../common/guards/jwt-auth.guard";
+  OptionalJwtAuthGuard
+} from '../common/guards/jwt-auth.guard';
 
-import { CurrentUser } from "../common/decorators/current-user.decorator";
+import { CurrentUser } from '../common/decorators/current-user.decorator';
 
-@ApiTags("Chat & AI Assistant")
+@ApiTags('Chat & AI Assistant')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
-@Controller("chat")
+@Controller('chat')
 export class ChatController {
   constructor(private chatService: ChatService) {}
 
   @UseGuards(OptionalJwtAuthGuard)
-  @Post("message")
+  @Post('message')
   @ApiOperation({
     summary:
-      "Send a message to the BIS Saarthi AI Assistant and receive grounded responses with evidence",
+      'Send a message to the BIS Saarthi AI Assistant and receive grounded responses with evidence'
   })
   async sendMessage(
     @Body()
@@ -47,51 +47,54 @@ export class ChatController {
       language?: IndianLanguage;
       userId?: string;
     },
-    @CurrentUser() user?: UserProfile,
+    @CurrentUser() user?: UserProfile
   ) {
     return this.chatService.sendMessage({
       ...body,
-      userId: user?.id || body.userId,
+      userId: user?.id || body.userId
     });
   }
 
   @UseGuards(OptionalJwtAuthGuard)
-  @Sse("stream")
+  @Sse('stream')
   @ApiOperation({
     summary:
-      "Server-Sent Events streaming chat endpoint for real-time token delivery",
+      'Server-Sent Events streaming chat endpoint for real-time token delivery'
   })
   streamMessage(
-    @Query("message") message: string,
-    @Query("language") language?: IndianLanguage,
+    @Query('message') message: string,
+    @Query('language') language?: IndianLanguage
   ): Observable<{ data: string }> {
     return this.chatService.streamMessage({
-      message: message || "",
-      language,
+      message: message || '',
+      language
     });
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get("sessions")
-  @ApiOperation({ summary: "Get all active chat sessions" })
+  @Get('sessions')
+  @ApiOperation({ summary: 'Get all active chat sessions' })
   async getSessions(@CurrentUser() user: UserProfile) {
     return this.chatService.getSessions(user.id);
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get("sessions/:id")
-  @ApiOperation({ summary: "Get a specific chat session by ID" })
+  @Get('sessions/:id')
+  @ApiOperation({ summary: 'Get a specific chat session by ID' })
   async getSessionById(
-    @Param("id") id: string,
-    @CurrentUser() user: UserProfile,
+    @Param('id') id: string,
+    @CurrentUser() user: UserProfile
   ) {
     return this.chatService.getSessionById(id, user.id);
   }
 
   @UseGuards(JwtAuthGuard)
-  @Delete("sessions/:id")
-  @ApiOperation({ summary: "Delete a chat session" })
-  async deleteSession(@Param("id") id: string) {
-    return this.chatService.deleteSession(id);
+  @Delete('sessions/:id')
+  @ApiOperation({ summary: 'Delete a chat session' })
+  async deleteSession(
+    @Param('id') id: string,
+    @CurrentUser() user: UserProfile
+  ) {
+    return this.chatService.deleteSession(id, user.id);
   }
 }
