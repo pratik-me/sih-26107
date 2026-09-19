@@ -22,17 +22,17 @@ export const ModeSelector: React.FC<ModeSelectorProps> = ({
       icon: Factory,
       theme: {
         activeCard:
-          'bg-gradient-to-br from-[#CAF0F8]/60 via-white to-[#ADE8F4]/40 dark:from-[#03045E]/40 dark:via-[#023E8A]/20 dark:to-slate-900 border-[#023E8A] dark:border-[#0077B6] shadow-xl shadow-[#023E8A]/15 ring-2 ring-[#023E8A]/20 -translate-y-1.5',
+          'bg-gradient-to-br from-[#CAF0F8]/60 via-white to-[#ADE8F4]/40 dark:from-[#102E47] dark:via-[#102E47] dark:to-[#10243A] border-[#023E8A] dark:border-[#16A9D8] shadow-xl shadow-[#023E8A]/15 dark:shadow-[0_0_15px_rgba(22,169,216,0.15)] ring-2 ring-[#023E8A]/20 dark:ring-[#16A9D8]/30 -translate-y-1.5',
         hoverCard:
-          'hover:border-[#023E8A]/70 dark:hover:border-[#0077B6]/70 hover:shadow-xl hover:shadow-[#023E8A]/10 hover:-translate-y-1.5',
+          'hover:border-[#023E8A]/70 dark:hover:border-[#16A9D8]/70 hover:shadow-xl hover:shadow-[#023E8A]/10 hover:-translate-y-1.5',
         activeIcon:
-          'bg-gradient-to-br from-[#03045E] to-[#023E8A] text-white shadow-md shadow-[#023E8A]/35 ring-2 ring-[#0077B6]/30',
+          'bg-gradient-to-br from-[#03045E] to-[#023E8A] dark:from-[#1268B3] dark:to-[#1583D1] text-white shadow-md shadow-[#023E8A]/35 ring-2 ring-[#0077B6]/30 dark:ring-[#16A9D8]/30',
         inactiveIcon:
-          'bg-[#CAF0F8] dark:bg-[#03045E]/60 text-[#023E8A] dark:text-[#90E0EF] group-hover:bg-[#ADE8F4] dark:group-hover:bg-[#023E8A]/80 group-hover:text-[#03045E]',
+          'bg-[#CAF0F8] dark:bg-[#153653] text-[#023E8A] dark:text-[#16A9D8] group-hover:bg-[#ADE8F4] dark:group-hover:bg-[#102E47] group-hover:text-[#03045E] dark:group-hover:text-[#F1F5F9]',
         activeBadge:
-          'bg-[#023E8A] text-white border-[#03045E]',
-        titleHover: 'group-hover:text-[#023E8A] dark:group-hover:text-[#90E0EF]',
-        bar: 'from-[#03045E] via-[#023E8A] to-[#0077B6]'
+          'bg-[#023E8A] dark:bg-[#1268B3] text-white border-[#03045E] dark:border-[#1583D1]',
+        titleHover: 'group-hover:text-[#023E8A] dark:group-hover:text-[#16A9D8]',
+        bar: 'from-[#03045E] via-[#023E8A] to-[#0077B6] dark:from-[#1268B3] dark:to-[#16A9D8]'
       }
     },
     {
@@ -43,17 +43,17 @@ export const ModeSelector: React.FC<ModeSelectorProps> = ({
       icon: ShoppingBag,
       theme: {
         activeCard:
-          'bg-gradient-to-br from-[#ADE8F4]/60 via-white to-[#90E0EF]/40 dark:from-[#023E8A]/40 dark:via-[#0077B6]/20 dark:to-slate-900 border-[#0077B6] dark:border-[#0096C7] shadow-xl shadow-[#0077B6]/15 ring-2 ring-[#0077B6]/20 -translate-y-1.5',
+          'bg-gradient-to-br from-[#ADE8F4]/60 via-white to-[#90E0EF]/40 dark:from-[#102E47] dark:via-[#102E47] dark:to-[#10243A] border-[#0077B6] dark:border-[#16A9D8] shadow-xl shadow-[#0077B6]/15 dark:shadow-[0_0_15px_rgba(22,169,216,0.15)] ring-2 ring-[#0077B6]/20 dark:ring-[#16A9D8]/30 -translate-y-1.5',
         hoverCard:
-          'hover:border-[#0077B6]/70 dark:hover:border-[#0096C7]/70 hover:shadow-xl hover:shadow-[#0077B6]/10 hover:-translate-y-1.5',
+          'hover:border-[#0077B6]/70 dark:hover:border-[#16A9D8]/70 hover:shadow-xl hover:shadow-[#0077B6]/10 hover:-translate-y-1.5',
         activeIcon:
-          'bg-gradient-to-br from-[#0077B6] to-[#0096C7] text-white shadow-md shadow-[#0077B6]/35 ring-2 ring-[#00B4D8]/30',
+          'bg-gradient-to-br from-[#0077B6] to-[#0096C7] dark:from-[#1268B3] dark:to-[#1583D1] text-white shadow-md shadow-[#0077B6]/35 ring-2 ring-[#00B4D8]/30 dark:ring-[#16A9D8]/30',
         inactiveIcon:
-          'bg-[#ADE8F4] dark:bg-[#023E8A]/60 text-[#0077B6] dark:text-[#48CAE4] group-hover:bg-[#90E0EF] dark:group-hover:bg-[#0077B6]/80 group-hover:text-[#0077B6]',
+          'bg-[#ADE8F4] dark:bg-[#153653] text-[#0077B6] dark:text-[#16A9D8] group-hover:bg-[#90E0EF] dark:group-hover:bg-[#102E47] group-hover:text-[#0077B6] dark:group-hover:text-[#F1F5F9]',
         activeBadge:
-          'bg-[#0077B6] text-white border-[#0096C7]',
-        titleHover: 'group-hover:text-[#0077B6] dark:group-hover:text-[#48CAE4]',
-        bar: 'from-[#0077B6] via-[#0096C7] to-[#00B4D8]'
+          'bg-[#0077B6] dark:bg-[#1268B3] text-white border-[#0096C7] dark:border-[#1583D1]',
+        titleHover: 'group-hover:text-[#0077B6] dark:group-hover:text-[#16A9D8]',
+        bar: 'from-[#0077B6] via-[#0096C7] to-[#00B4D8] dark:from-[#1268B3] dark:to-[#16A9D8]'
       }
     },
     {
@@ -64,17 +64,17 @@ export const ModeSelector: React.FC<ModeSelectorProps> = ({
       icon: GraduationCap,
       theme: {
         activeCard:
-          'bg-gradient-to-br from-[#90E0EF]/60 via-white to-[#CAF0F8]/60 dark:from-[#0077B6]/40 dark:via-[#0096C7]/20 dark:to-slate-900 border-[#00B4D8] dark:border-[#48CAE4] shadow-xl shadow-[#00B4D8]/15 ring-2 ring-[#00B4D8]/20 -translate-y-1.5',
+          'bg-gradient-to-br from-[#90E0EF]/60 via-white to-[#CAF0F8]/60 dark:from-[#102E47] dark:via-[#102E47] dark:to-[#10243A] border-[#00B4D8] dark:border-[#16A9D8] shadow-xl shadow-[#00B4D8]/15 dark:shadow-[0_0_15px_rgba(22,169,216,0.15)] ring-2 ring-[#00B4D8]/20 dark:ring-[#16A9D8]/30 -translate-y-1.5',
         hoverCard:
-          'hover:border-[#00B4D8]/70 dark:hover:border-[#48CAE4]/70 hover:shadow-xl hover:shadow-[#00B4D8]/10 hover:-translate-y-1.5',
+          'hover:border-[#00B4D8]/70 dark:hover:border-[#16A9D8]/70 hover:shadow-xl hover:shadow-[#00B4D8]/10 hover:-translate-y-1.5',
         activeIcon:
-          'bg-gradient-to-br from-[#0096C7] via-[#00B4D8] to-[#48CAE4] text-white shadow-md shadow-[#00B4D8]/35 ring-2 ring-[#48CAE4]/30',
+          'bg-gradient-to-br from-[#0096C7] via-[#00B4D8] to-[#48CAE4] dark:from-[#1268B3] dark:to-[#1583D1] text-white shadow-md shadow-[#00B4D8]/35 ring-2 ring-[#48CAE4]/30 dark:ring-[#16A9D8]/30',
         inactiveIcon:
-          'bg-[#CAF0F8] dark:bg-[#0077B6]/50 text-[#0096C7] dark:text-[#90E0EF] group-hover:bg-[#90E0EF] dark:group-hover:bg-[#0096C7]/60 group-hover:text-[#0096C7]',
+          'bg-[#CAF0F8] dark:bg-[#153653] text-[#0096C7] dark:text-[#16A9D8] group-hover:bg-[#90E0EF] dark:group-hover:bg-[#102E47] group-hover:text-[#0096C7] dark:group-hover:text-[#F1F5F9]',
         activeBadge:
-          'bg-[#0096C7] text-white border-[#00B4D8]',
-        titleHover: 'group-hover:text-[#0096C7] dark:group-hover:text-[#48CAE4]',
-        bar: 'from-[#0096C7] via-[#00B4D8] to-[#48CAE4]'
+          'bg-[#0096C7] dark:bg-[#1268B3] text-white border-[#00B4D8] dark:border-[#1583D1]',
+        titleHover: 'group-hover:text-[#0096C7] dark:group-hover:text-[#16A9D8]',
+        bar: 'from-[#0096C7] via-[#00B4D8] to-[#48CAE4] dark:from-[#1268B3] dark:to-[#16A9D8]'
       }
     }
   ];
@@ -94,7 +94,7 @@ export const ModeSelector: React.FC<ModeSelectorProps> = ({
             className={`group relative p-4 rounded-2xl border text-left transition-all duration-300 ease-out overflow-hidden cursor-pointer ${
               isSelected
                 ? theme.activeCard
-                : `bg-white dark:bg-slate-900/90 border-slate-200/90 dark:border-slate-800/90 shadow-sm ${theme.hoverCard}`
+                : `bg-white dark:bg-[#10243A] border-slate-200/90 dark:border-[#263B50] shadow-sm ${theme.hoverCard}`
             }`}
           >
             {/* Top Glowing Accent Line for Active Mode */}
@@ -117,8 +117,8 @@ export const ModeSelector: React.FC<ModeSelectorProps> = ({
                   <h4
                     className={`text-sm font-bold transition-colors duration-200 ${
                       isSelected
-                        ? 'text-slate-900 dark:text-white'
-                        : `text-slate-800 dark:text-slate-200 ${theme.titleHover}`
+                        ? 'text-slate-900 dark:text-[#F1F5F9]'
+                        : `text-slate-800 dark:text-[#F1F5F9] ${theme.titleHover}`
                     }`}
                   >
                     {m.label}
@@ -136,27 +136,27 @@ export const ModeSelector: React.FC<ModeSelectorProps> = ({
                     Active
                   </span>
                 ) : (
-                  <span className="inline-flex items-center whitespace-nowrap text-[11px] font-semibold text-slate-400 dark:text-slate-500 group-hover:text-slate-700 dark:group-hover:text-slate-200 opacity-0 group-hover:opacity-100 transition-all duration-200 translate-x-1 group-hover:translate-x-0">
+                  <span className="inline-flex items-center whitespace-nowrap text-[11px] font-semibold text-slate-400 dark:text-[#7F91A5] group-hover:text-slate-700 dark:group-hover:text-[#16A9D8] opacity-0 group-hover:opacity-100 transition-all duration-200 translate-x-1 group-hover:translate-x-0">
                     Switch &rarr;
                   </span>
                 )}
               </div>
             </div>
 
-            <p className="text-xs text-slate-600 dark:text-slate-400 line-clamp-2 leading-relaxed">
+            <p className="text-xs text-slate-600 dark:text-[#A8B6C7] line-clamp-2 leading-relaxed">
               {m.desc}
             </p>
 
             {/* Subtle role badge tag */}
-            <div className="mt-2.5 pt-2 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between">
-              <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-400">
+            <div className="mt-2.5 pt-2 border-t border-slate-100 dark:border-[#263B50] flex items-center justify-between">
+              <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-400 dark:text-[#7F91A5]">
                 {m.badge}
               </span>
               <span
                 className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
                   isSelected
                     ? `bg-gradient-to-r ${theme.bar} scale-125`
-                    : 'bg-slate-300 dark:bg-slate-700 group-hover:scale-110'
+                    : 'bg-slate-300 dark:bg-[#263B50] group-hover:scale-110'
                 }`}
               />
             </div>

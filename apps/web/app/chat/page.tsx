@@ -699,10 +699,10 @@ function ChatContent() {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row h-[calc(100dvh-105px)] overflow-hidden bg-slate-100 dark:bg-slate-950">
+    <div className="flex flex-col lg:flex-row h-[calc(100dvh-105px)] overflow-hidden bg-slate-100 dark:bg-[#07111F]">
       {/* 1. LEFT SIDEBAR */}
-      <aside className="hidden lg:flex flex-col w-64 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 shrink-0">
-        <div className="p-3 border-b border-slate-200 dark:border-slate-800">
+      <aside className="hidden lg:flex flex-col w-64 bg-white dark:bg-[#0B1A2B] border-r border-slate-200 dark:border-[#263B50] shrink-0">
+        <div className="p-3 border-b border-slate-200 dark:border-[#263B50]">
           <button
             type="button"
             onClick={startNewChat}
@@ -714,47 +714,47 @@ function ChatContent() {
         </div>
 
         {/* Quick Tools Navigation */}
-        <div className="p-3 border-b border-slate-200 dark:border-slate-800 space-y-1">
-          <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-2">
+        <div className="p-3 border-b border-slate-200 dark:border-[#263B50] space-y-1">
+          <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-[#7F91A5] px-2">
             {t("chat.specialized_tools", "BIS Specialized Tools")}
           </span>
           <Link
             href="/standards/recommend"
-            className="flex items-center gap-2 px-2.5 py-1.5 rounded-md text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            className="flex items-center gap-2 px-2.5 py-1.5 rounded-md text-xs font-medium text-slate-700 dark:text-[#A8B6C7] hover:bg-slate-100 dark:hover:bg-[#153653] dark:hover:text-[#F1F5F9] transition-colors"
           >
-            <Compass className="w-3.5 h-3.5 text-blue-600" />
+            <Compass className="w-3.5 h-3.5 text-blue-600 dark:text-[#16A9D8]" />
             <span>{t("chat.find_standard", "Find My Standard")}</span>
           </Link>
           <Link
             href="/certification"
-            className="flex items-center gap-2 px-2.5 py-1.5 rounded-md text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            className="flex items-center gap-2 px-2.5 py-1.5 rounded-md text-xs font-medium text-slate-700 dark:text-[#A8B6C7] hover:bg-slate-100 dark:hover:bg-[#153653] dark:hover:text-[#F1F5F9] transition-colors"
           >
-            <Award className="w-3.5 h-3.5 text-amber-600" />
+            <Award className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
             <span>
               {t("chat.certification_schemes", "Certification Schemes")}
             </span>
           </Link>
           <Link
             href="/testing"
-            className="flex items-center gap-2 px-2.5 py-1.5 rounded-md text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            className="flex items-center gap-2 px-2.5 py-1.5 rounded-md text-xs font-medium text-slate-700 dark:text-[#A8B6C7] hover:bg-slate-100 dark:hover:bg-[#153653] dark:hover:text-[#F1F5F9] transition-colors"
           >
-            <FlaskConical className="w-3.5 h-3.5 text-indigo-600" />
+            <FlaskConical className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
             <span>
               {t("chat.testing_requirements", "Testing Requirements")}
             </span>
           </Link>
           <Link
             href="/laboratories"
-            className="flex items-center gap-2 px-2.5 py-1.5 rounded-md text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            className="flex items-center gap-2 px-2.5 py-1.5 rounded-md text-xs font-medium text-slate-700 dark:text-[#A8B6C7] hover:bg-slate-100 dark:hover:bg-[#153653] dark:hover:text-[#F1F5F9] transition-colors"
           >
-            <Building2 className="w-3.5 h-3.5 text-emerald-600" />
+            <Building2 className="w-3.5 h-3.5 text-emerald-600 dark:text-[#22C55E]" />
             <span>{t("chat.find_lab", "Find Recognized Lab")}</span>
           </Link>
           <Link
             href="/reports"
-            className="flex items-center gap-2 px-2.5 py-1.5 rounded-md text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            className="flex items-center gap-2 px-2.5 py-1.5 rounded-md text-xs font-medium text-slate-700 dark:text-[#A8B6C7] hover:bg-slate-100 dark:hover:bg-[#153653] dark:hover:text-[#F1F5F9] transition-colors"
           >
-            <FileBarChart2 className="w-3.5 h-3.5 text-rose-600" />
+            <FileBarChart2 className="w-3.5 h-3.5 text-rose-600 dark:text-rose-400" />
             <span>
               {t("chat.generate_report", "Generate Compliance Report")}
             </span>
@@ -763,17 +763,17 @@ function ChatContent() {
 
         {/* Sessions list */}
         <div className="flex-1 overflow-y-auto p-3 space-y-1">
-          <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-2">
+          <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-[#7F91A5] px-2">
             {t("chat.active_workspace", "Active Workspace")}
           </span>
-          <div className="p-2.5 rounded-lg bg-blue-50/70 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900 text-xs font-semibold text-blue-900 dark:text-blue-200 truncate">
+          <div className="p-2.5 rounded-lg bg-blue-50/70 dark:bg-[#10243A] border border-blue-200 dark:border-[#263B50] text-xs font-semibold text-blue-900 dark:text-[#F1F5F9] truncate">
             {t("chat.current_investigation", "Current Investigation")}
           </div>
         </div>
 
         {/* Footer info */}
-        <div className="p-3 border-t border-slate-200 dark:border-slate-800 text-[11px] text-slate-500 space-y-1 pb-16">
-          <div className="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400 font-semibold">
+        <div className="p-3 border-t border-slate-200 dark:border-[#263B50] text-[11px] text-slate-500 dark:text-[#7F91A5] space-y-1 pb-16">
+          <div className="flex items-center gap-1.5 text-emerald-600 dark:text-[#22C55E] font-semibold">
             <ShieldCheck className="w-3.5 h-3.5" />
             <span>
               {t("chat.grounded_active", "Grounded Retrieval Active")}
@@ -789,26 +789,26 @@ function ChatContent() {
       </aside>
 
       {/* 2. CENTER CONVERSATION AREA */}
-      <section className="flex-1 flex flex-col h-full bg-slate-50 dark:bg-slate-950 overflow-hidden relative min-h-0">
+      <section className="flex-1 flex flex-col h-full bg-slate-50 dark:bg-[#07111F] overflow-hidden relative min-h-0">
         {/* Top Chat Bar */}
-        <div className="px-4 py-2.5 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between shrink-0">
+        <div className="px-4 py-2.5 bg-white dark:bg-[#0B1A2B] border-b border-slate-200 dark:border-[#263B50] flex items-center justify-between shrink-0">
           <div className="flex items-center gap-2">
-            <div className="p-1 rounded bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-400">
+            <div className="p-1 rounded bg-blue-100 dark:bg-[#10243A] text-blue-700 dark:text-[#16A9D8]">
               <Bot className="w-4 h-4" />
             </div>
             <div>
-              <h2 className="text-xs font-bold text-slate-800 dark:text-slate-200">
+              <h2 className="text-xs font-bold text-slate-800 dark:text-[#F1F5F9]">
                 {t("chat.conversation_title", "BIS Saarthi Conversation")}
               </h2>
-              <span className="text-[10px] text-slate-500">
+              <span className="text-[10px] text-slate-500 dark:text-[#7F91A5]">
                 {t("chat.mode", "Mode:")} {initialRole}
               </span>
             </div>
           </div>
 
           <div className="flex items-center gap-2">
-            <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-800/80 px-2 py-0.5 rounded-lg border border-slate-200 dark:border-slate-700">
-              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider hidden sm:inline">
+            <div className="flex items-center gap-1 bg-slate-100 dark:bg-[#10243A] px-2 py-0.5 rounded-lg border border-slate-200 dark:border-[#263B50]">
+              <span className="text-[10px] font-bold text-slate-500 dark:text-[#7F91A5] uppercase tracking-wider hidden sm:inline">
                 {t("chat.language_label", "Language:")}
               </span>
               <LanguageSelector
@@ -822,8 +822,8 @@ function ChatContent() {
               onClick={() => setIsEvidencePanelOpen(!isEvidencePanelOpen)}
               className={`text-xs px-2.5 py-1 rounded font-medium border transition-colors ${
                 isEvidencePanelOpen
-                  ? "bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950 dark:text-blue-300 dark:border-blue-800"
-                  : "bg-white text-slate-600 border-slate-200 dark:bg-slate-800 dark:text-slate-300"
+                  ? "bg-blue-50 text-blue-700 border-blue-200 dark:bg-[#10243A] dark:text-[#16A9D8] dark:border-[#16A9D8]"
+                  : "bg-white text-slate-600 border-slate-200 dark:bg-[#0B1A2B] dark:text-[#A8B6C7] dark:border-[#263B50]"
               }`}
             >
               {t("chat.evidence_panel_btn", "Evidence Panel")} (
@@ -842,7 +842,7 @@ function ChatContent() {
                 className={`flex gap-3 max-w-4xl mx-auto ${isUser ? "justify-end" : "justify-start"}`}
               >
                 {!isUser && (
-                  <div className="w-7 h-7 rounded-lg bg-blue-700 text-white flex items-center justify-center shrink-0 mt-0.5 shadow-sm">
+                  <div className="w-7 h-7 rounded-lg bg-blue-700 dark:bg-[#1268B3] text-white flex items-center justify-center shrink-0 mt-0.5 shadow-sm">
                     <Bot className="w-4 h-4" />
                   </div>
                 )}
@@ -850,13 +850,13 @@ function ChatContent() {
                 <div
                   className={`flex flex-col space-y-2 max-w-[85%] rounded-2xl p-4 shadow-sm ${
                     isUser
-                      ? "bg-blue-700 text-white rounded-tr-none"
-                      : "bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 rounded-tl-none"
+                      ? "bg-blue-700 dark:bg-[#1583D1] text-white rounded-tr-none"
+                      : "bg-white dark:bg-[#10243A] border border-slate-200 dark:border-[#263B50] text-slate-900 dark:text-[#F1F5F9] rounded-tl-none"
                   }`}
                 >
                   {/* Assistant Meta Header */}
                   {!isUser && (
-                    <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2 mb-1">
+                    <div className="flex items-center justify-between border-b border-slate-100 dark:border-[#263B50] pb-2 mb-1">
                       <div className="flex items-center gap-2">
                         {msg.confidence && (
                           <ConfidenceBadge
@@ -865,7 +865,7 @@ function ChatContent() {
                           />
                         )}
                         {msg.sourceFreshnessWarning && (
-                          <span className="text-[10px] px-2 py-0.5 rounded bg-amber-50 text-amber-700 font-medium">
+                          <span className="text-[10px] px-2 py-0.5 rounded bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300 dark:border dark:border-amber-800 font-medium">
                             {t("evidence.freshness_notice", "Source Notice")}
                           </span>
                         )}
@@ -877,10 +877,10 @@ function ChatContent() {
                             onClick={() =>
                               handleCopyMessage(msg.id, msg.content)
                             }
-                            className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1 inline-flex items-center justify-center"
+                            className="text-slate-400 hover:text-slate-600 dark:text-[#7F91A5] dark:hover:text-[#F1F5F9] p-1 inline-flex items-center justify-center"
                           >
                             {copiedMsgId === msg.id ? (
-                              <Check className="w-3.5 h-3.5 text-emerald-600" />
+                              <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-[#22C55E]" />
                             ) : (
                               <Copy className="w-3.5 h-3.5" />
                             )}
@@ -908,8 +908,8 @@ function ChatContent() {
 
                   {/* Citations Badges if available */}
                   {!isUser && msg.citations && msg.citations.length > 0 && (
-                    <div className="pt-3 border-t border-slate-100 dark:border-slate-800 space-y-1.5">
-                      <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">
+                    <div className="pt-3 border-t border-slate-100 dark:border-[#263B50] space-y-1.5">
+                      <span className="text-[10px] font-bold text-slate-500 dark:text-[#7F91A5] uppercase tracking-wider block">
                         {t(
                           "chat.traceable_citations",
                           "Traceable Authoritative Citations:",
@@ -937,7 +937,7 @@ function ChatContent() {
                             key={fIdx}
                             type="button"
                             onClick={() => handleSendMessage(followUp)}
-                            className="text-[11px] px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-blue-50 hover:text-blue-700 dark:hover:bg-blue-950/60 dark:hover:text-blue-300 text-slate-600 dark:text-slate-300 transition-colors text-left"
+                            className="text-[11px] px-2.5 py-1 rounded-full bg-slate-100 dark:bg-[#0B1A2B] hover:bg-blue-50 hover:text-blue-700 dark:hover:bg-[#153653] dark:hover:text-[#16A9D8] text-slate-600 dark:text-[#A8B6C7] dark:border dark:border-[#263B50] transition-colors text-left"
                           >
                             {followUp} →
                           </button>
@@ -947,7 +947,7 @@ function ChatContent() {
 
                   {/* Assistant Footer Feedback */}
                   {!isUser && (
-                    <div className="pt-2 flex items-center justify-between text-[11px] text-slate-400">
+                    <div className="pt-2 flex items-center justify-between text-[11px] text-slate-400 dark:text-[#7F91A5]">
                       <FormattedTime dateString={msg.createdAt} />
                       <div className="flex items-center gap-1.5">
                         <Tooltip>
@@ -955,9 +955,9 @@ function ChatContent() {
                             <button
                               type="button"
                               onClick={() => handleFeedback(msg.id, "HELPFUL")}
-                              className={`p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800 ${
+                              className={`p-1 rounded hover:bg-slate-100 dark:hover:bg-[#153653] ${
                                 msg.feedback === "HELPFUL"
-                                  ? "text-emerald-600"
+                                  ? "text-emerald-600 dark:text-[#22C55E]"
                                   : ""
                               }`}
                             >
@@ -980,7 +980,7 @@ function ChatContent() {
                               onClick={() =>
                                 handleFeedback(msg.id, "NOT_HELPFUL")
                               }
-                              className={`p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800 ${
+                              className={`p-1 rounded hover:bg-slate-100 dark:hover:bg-[#153653] ${
                                 msg.feedback === "NOT_HELPFUL"
                                   ? "text-rose-600"
                                   : ""
@@ -1002,7 +1002,7 @@ function ChatContent() {
                             <button
                               type="button"
                               onClick={() => handleFeedback(msg.id, "REPORTED")}
-                              className={`p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800 ${
+                              className={`p-1 rounded hover:bg-slate-100 dark:hover:bg-[#153653] ${
                                 msg.feedback === "REPORTED"
                                   ? "text-amber-600"
                                   : ""
@@ -1030,7 +1030,7 @@ function ChatContent() {
                 </div>
 
                 {isUser && (
-                  <div className="w-7 h-7 rounded-lg bg-slate-800 text-white flex items-center justify-center shrink-0 mt-0.5 shadow-sm">
+                  <div className="w-7 h-7 rounded-lg bg-slate-800 dark:bg-[#10243A] dark:border dark:border-[#263B50] text-white flex items-center justify-center shrink-0 mt-0.5 shadow-sm">
                     <User className="w-4 h-4" />
                   </div>
                 )}
@@ -1040,11 +1040,11 @@ function ChatContent() {
 
           {isLoading && (
             <div className="flex gap-3 max-w-4xl mx-auto items-start">
-              <div className="w-7 h-7 rounded-lg bg-blue-700 text-white flex items-center justify-center shrink-0 shadow-sm animate-pulse">
+              <div className="w-7 h-7 rounded-lg bg-blue-700 dark:bg-[#1268B3] text-white flex items-center justify-center shrink-0 shadow-sm animate-pulse">
                 <Bot className="w-4 h-4" />
               </div>
-              <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-2">
-                <div className="flex items-center gap-2 text-xs font-semibold text-blue-700 dark:text-blue-400">
+              <div className="p-4 rounded-2xl bg-white dark:bg-[#10243A] border border-slate-200 dark:border-[#263B50] shadow-sm space-y-2">
+                <div className="flex items-center gap-2 text-xs font-semibold text-blue-700 dark:text-[#16A9D8]">
                   <Sparkles className="w-3.5 h-3.5 animate-spin" />
                   <span>
                     {t(
@@ -1053,7 +1053,7 @@ function ChatContent() {
                     )}
                   </span>
                 </div>
-                <div className="w-48 h-2 bg-slate-200 dark:bg-slate-700 rounded animate-pulse" />
+                <div className="w-48 h-2 bg-slate-200 dark:bg-[#153653] rounded animate-pulse" />
               </div>
             </div>
           )}
@@ -1062,7 +1062,7 @@ function ChatContent() {
         </div>
 
         {/* Bottom Input Form */}
-        <div className="p-4 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 shrink-0">
+        <div className="p-4 bg-white dark:bg-[#0B1A2B] border-t border-slate-200 dark:border-[#263B50] shrink-0">
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -1070,7 +1070,7 @@ function ChatContent() {
             }}
             className="max-w-4xl mx-auto"
           >
-            <div className="relative flex items-center bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-300 dark:border-slate-700 focus-within:border-blue-600 transition-all p-1.5">
+            <div className="relative flex items-center bg-slate-50 dark:bg-[#10243A] rounded-xl border border-slate-300 dark:border-[#263B50] focus-within:border-blue-600 dark:focus-within:border-[#16A9D8] transition-all p-1.5">
               <input
                 type="text"
                 value={inputQuery}
@@ -1080,18 +1080,18 @@ function ChatContent() {
                   "Ask about standards, certification, test methods, lab credentials, or clauses...",
                 )}
                 disabled={isLoading}
-                className="w-full px-3 py-2 text-xs sm:text-sm text-slate-900 dark:text-slate-100 bg-transparent focus:outline-none placeholder:text-slate-400"
+                className="w-full px-3 py-2 text-xs sm:text-sm text-slate-900 dark:text-[#F1F5F9] bg-transparent focus:outline-none placeholder:text-slate-400 dark:placeholder:text-[#7F91A5]"
               />
               <button
                 type="submit"
                 disabled={isLoading || !inputQuery.trim()}
-                className="p-2 rounded-lg bg-blue-700 hover:bg-blue-800 disabled:opacity-40 text-white shadow-sm transition-all"
+                className="p-2 rounded-lg bg-blue-700 dark:bg-[#1268B3] hover:bg-blue-800 dark:hover:bg-[#1583D1] disabled:opacity-40 text-white shadow-sm transition-all cursor-pointer"
                 aria-label="Send message"
               >
                 <Send className="w-4 h-4" />
               </button>
             </div>
-            <div className="flex items-center justify-between px-2 pt-2 text-[10px] text-slate-400">
+            <div className="flex items-center justify-between px-2 pt-2 text-[10px] text-slate-400 dark:text-[#7F91A5]">
               <span>
                 {t(
                   "chat.disclaimer",
@@ -1115,7 +1115,7 @@ function ChatContent() {
             className="fixed inset-0 bg-black/40 z-40 lg:hidden"
           />
 
-          <aside className="fixed inset-x-0 bottom-0 z-50 h-[65vh] rounded-t-2xl shadow-xl lg:static lg:h-full lg:w-80 xl:w-96 lg:rounded-none lg:shadow-none lg:border-t-0 lg:border-l border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-y-auto transition-transform">
+          <aside className="fixed inset-x-0 bottom-0 z-50 h-[65vh] rounded-t-2xl shadow-xl lg:static lg:h-full lg:w-80 xl:w-96 lg:rounded-none lg:shadow-none lg:border-t-0 lg:border-l border-slate-200 dark:border-[#263B50] bg-white dark:bg-[#0B1A2B] overflow-y-auto transition-transform">
             <div className="lg:hidden flex justify-center py-2">
               <div className="w-10 h-1 rounded-full bg-slate-300 dark:bg-slate-700" />
             </div>

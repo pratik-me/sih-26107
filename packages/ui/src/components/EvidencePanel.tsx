@@ -478,13 +478,13 @@ export const EvidencePanel: React.FC<EvidencePanelProps> = ({
 
   return (
     <div
-      className={`flex flex-col h-full bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 overflow-hidden ${className}`}
+      className={`flex flex-col h-full bg-white dark:bg-[#0B1A2B] border-l border-slate-200 dark:border-[#263B50] overflow-hidden ${className}`}
     >
       {/* Header */}
-      <div className="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50/80 dark:bg-slate-900/80 backdrop-blur">
+      <div className="p-4 border-b border-slate-200 dark:border-[#263B50] flex items-center justify-between bg-slate-50/80 dark:bg-[#0B1A2B]/90 backdrop-blur">
         <div className="flex items-center gap-2">
-          <FileText className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
-          <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100 tracking-tight">
+          <FileText className="w-4 h-4 text-indigo-600 dark:text-[#16A9D8]" />
+          <h3 className="text-sm font-bold text-slate-900 dark:text-[#F1F5F9] tracking-tight">
             {l.title} ({evidenceList.length})
           </h3>
         </div>
@@ -492,7 +492,7 @@ export const EvidencePanel: React.FC<EvidencePanelProps> = ({
           <button
             type="button"
             onClick={onClose}
-            className="text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1 rounded"
+            className="text-xs text-slate-400 hover:text-slate-600 dark:text-[#7F91A5] dark:hover:text-[#F1F5F9] p-1 rounded cursor-pointer"
           >
             ✕
           </button>
@@ -501,7 +501,7 @@ export const EvidencePanel: React.FC<EvidencePanelProps> = ({
 
       {/* Evidence Tabs if multiple */}
       {evidenceList.length > 1 && (
-        <div className="flex items-center gap-1.5 p-2 bg-slate-100/70 dark:bg-slate-800/40 border-b border-slate-200 dark:border-slate-800 overflow-x-auto">
+        <div className="flex items-center gap-1.5 p-2 bg-slate-100/70 dark:bg-[#07111F] border-b border-slate-200 dark:border-[#263B50] overflow-x-auto">
           {evidenceList.map((ev, index) => {
             const isSelected = activeEvidence?.id === ev.id;
             return (
@@ -509,10 +509,10 @@ export const EvidencePanel: React.FC<EvidencePanelProps> = ({
                 key={ev.id}
                 type="button"
                 onClick={() => onSelectEvidence && onSelectEvidence(ev.id)}
-                className={`text-xs px-2.5 py-1 rounded whitespace-nowrap font-medium transition-all ${
+                className={`text-xs px-2.5 py-1 rounded whitespace-nowrap font-medium transition-all cursor-pointer ${
                   isSelected
-                    ? "bg-white dark:bg-slate-800 text-indigo-600 dark:text-indigo-300 shadow-sm border border-slate-200 dark:border-slate-700"
-                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
+                    ? "bg-white dark:bg-[#10243A] text-indigo-600 dark:text-[#16A9D8] shadow-sm border border-slate-200 dark:border-[#16A9D8]"
+                    : "text-slate-600 dark:text-[#A8B6C7] hover:text-slate-900 dark:hover:text-[#F1F5F9]"
                 }`}
               >
                 [{index + 1}] {ev.standardNumber}
@@ -526,47 +526,47 @@ export const EvidencePanel: React.FC<EvidencePanelProps> = ({
       {activeEvidence && (
         <div className="flex-1 overflow-y-auto p-4 space-y-4">
           {/* Metadata Card */}
-          <div className="p-3.5 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/80 space-y-2">
+          <div className="p-3.5 rounded-lg bg-slate-50 dark:bg-[#10243A] border border-slate-200 dark:border-[#263B50] space-y-2">
             <div className="flex items-start justify-between gap-2">
               <div>
-                <span className="text-[11px] font-bold text-indigo-600 dark:text-indigo-400 tracking-wide uppercase">
+                <span className="text-[11px] font-bold text-indigo-600 dark:text-[#16A9D8] tracking-wide uppercase">
                   {l.indianStandard}
                 </span>
-                <h4 className="text-base font-bold text-slate-900 dark:text-slate-100">
+                <h4 className="text-base font-bold text-slate-900 dark:text-[#F1F5F9]">
                   {activeEvidence.standardNumber}
                 </h4>
               </div>
               <SourceFreshnessBadge status={activeEvidence.status} />
             </div>
 
-            <p className="text-xs font-medium text-slate-600 dark:text-slate-300 line-clamp-2">
+            <p className="text-xs font-medium text-slate-600 dark:text-[#A8B6C7] line-clamp-2">
               {activeEvidence.documentTitle}
             </p>
 
-            <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-200/60 dark:border-slate-700/60 text-xs text-slate-500 dark:text-slate-400">
+            <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-200/60 dark:border-[#263B50] text-xs text-slate-500 dark:text-[#7F91A5]">
               <div>
-                <span className="font-semibold text-slate-700 dark:text-slate-300">
+                <span className="font-semibold text-slate-700 dark:text-[#F1F5F9]">
                   {l.clause}{" "}
                 </span>
                 {activeEvidence.clause || "General Scope"}
               </div>
               <div>
-                <span className="font-semibold text-slate-700 dark:text-slate-300">
+                <span className="font-semibold text-slate-700 dark:text-[#F1F5F9]">
                   {l.page}{" "}
                 </span>
                 {activeEvidence.page || "N/A"}
               </div>
               <div>
-                <span className="font-semibold text-slate-700 dark:text-slate-300">
+                <span className="font-semibold text-slate-700 dark:text-[#F1F5F9]">
                   {l.publication}{" "}
                 </span>
                 {activeEvidence.publicationDate || "Official Publication"}
               </div>
               <div>
-                <span className="font-semibold text-slate-700 dark:text-slate-300">
+                <span className="font-semibold text-slate-700 dark:text-[#F1F5F9]">
                   {l.relevance}{" "}
                 </span>
-                <span className="font-semibold text-indigo-600 dark:text-indigo-400">
+                <span className="font-semibold text-indigo-600 dark:text-[#16A9D8]">
                   {Math.round(activeEvidence.similarityScore * 100)}%
                 </span>
               </div>
@@ -586,7 +586,7 @@ export const EvidencePanel: React.FC<EvidencePanelProps> = ({
           {/* Verbatim Excerpt */}
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
-              <label className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+              <label className="text-xs font-bold text-slate-700 dark:text-[#F1F5F9] uppercase tracking-wider">
                 {l.verbatimExcerpt}
               </label>
               <button
@@ -594,11 +594,11 @@ export const EvidencePanel: React.FC<EvidencePanelProps> = ({
                 onClick={() =>
                   handleCopy(activeEvidence.id, activeEvidence.excerpt)
                 }
-                className="inline-flex items-center gap-1 text-[11px] text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 font-medium"
+                className="inline-flex items-center gap-1 text-[11px] text-slate-500 hover:text-slate-700 dark:text-[#7F91A5] dark:hover:text-[#F1F5F9] font-medium cursor-pointer"
               >
                 {copiedId === activeEvidence.id ? (
                   <>
-                    <Check className="w-3 h-3 text-emerald-600" /> {l.copied}
+                    <Check className="w-3 h-3 text-emerald-600 dark:text-[#22C55E]" /> {l.copied}
                   </>
                 ) : (
                   <>
@@ -608,7 +608,7 @@ export const EvidencePanel: React.FC<EvidencePanelProps> = ({
               </button>
             </div>
 
-            <div className="p-3.5 rounded-lg bg-slate-900 text-slate-100 font-mono text-xs leading-relaxed overflow-x-auto border border-slate-800 shadow-inner">
+            <div className="p-3.5 rounded-lg bg-slate-900 dark:bg-[#07111F] text-slate-100 dark:text-[#F1F5F9] font-mono text-xs leading-relaxed overflow-x-auto border border-slate-800 dark:border-[#263B50] shadow-inner">
               {activeEvidence.excerpt}
             </div>
           </div>
@@ -619,7 +619,7 @@ export const EvidencePanel: React.FC<EvidencePanelProps> = ({
               href={activeEvidence.sourceUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 w-full px-3 py-2 text-xs font-semibold rounded-md bg-indigo-50 text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300 hover:bg-indigo-100 dark:hover:bg-indigo-900 border border-indigo-200 dark:border-indigo-800 transition-colors"
+              className="inline-flex items-center justify-center gap-2 w-full px-3 py-2 text-xs font-semibold rounded-md bg-indigo-50 text-indigo-700 dark:bg-[#10243A] dark:text-[#16A9D8] hover:bg-indigo-100 dark:hover:bg-[#153653] border border-indigo-200 dark:border-[#263B50] dark:hover:border-[#16A9D8] transition-colors"
             >
               <ExternalLink className="w-3.5 h-3.5" />
               <span>{l.viewSource}</span>
