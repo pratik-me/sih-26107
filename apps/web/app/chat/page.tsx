@@ -886,7 +886,7 @@ function ChatContent() {
                             )}
                           </button>
                         </TooltipTrigger>
-                        <TooltipContent className="px-2 py-0.5 text-[11px] rounded bg-gray-500 text-white shadow-sm">
+                        <TooltipContent className="px-2 py-0.5 text-[11px] rounded bg-gray-500 dark:bg-[#10243A] text-white dark:text-[#F1F5F9] dark:border dark:border-[#263B50] shadow-sm dark:shadow-[0_10px_25px_-5px_rgba(0,0,0,0.5)]">
                           <p>
                             {copiedMsgId === msg.id
                               ? t("chat.copied", "Copied")
@@ -965,7 +965,7 @@ function ChatContent() {
                             </button>
                           </TooltipTrigger>
                           <TooltipContent
-                            className="px-2 py-0.5 text-[11px] rounded bg-gray-500 text-white shadow-sm"
+                            className="px-2 py-0.5 text-[11px] rounded bg-gray-500 dark:bg-[#10243A] text-white dark:text-[#F1F5F9] dark:border dark:border-[#263B50] shadow-sm dark:shadow-[0_10px_25px_-5px_rgba(0,0,0,0.5)]"
                             sideOffset={7}
                             side="bottom"
                           >
@@ -990,7 +990,7 @@ function ChatContent() {
                             </button>
                           </TooltipTrigger>
                           <TooltipContent
-                            className="px-2 py-0.5 text-[11px] rounded bg-gray-500 text-white shadow-sm"
+                            className="px-2 py-0.5 text-[11px] rounded bg-gray-500 dark:bg-[#10243A] text-white dark:text-[#F1F5F9] dark:border dark:border-[#263B50] shadow-sm dark:shadow-[0_10px_25px_-5px_rgba(0,0,0,0.5)]"
                             sideOffset={7}
                             side="bottom"
                           >
@@ -1012,7 +1012,7 @@ function ChatContent() {
                             </button>
                           </TooltipTrigger>
                           <TooltipContent
-                            className="px-2 py-0.5 text-[11px] rounded bg-gray-500 text-white shadow-sm"
+                            className="px-2 py-0.5 text-[11px] rounded bg-gray-500 dark:bg-[#10243A] text-white dark:text-[#F1F5F9] dark:border dark:border-[#263B50] shadow-sm dark:shadow-[0_10px_25px_-5px_rgba(0,0,0,0.5)]"
                             sideOffset={7}
                             side="bottom"
                           >

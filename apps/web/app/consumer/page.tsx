@@ -93,15 +93,15 @@ export default function ConsumerHubPage() {
         </div>
 
         {/* ISI Mark Verification Box */}
-        <div className="p-6 rounded-2xl bg-white/95 dark:bg-slate-900/90 backdrop-blur-md border border-[#ADE8F4] dark:border-slate-800 shadow-md shadow-[#0077B6]/5 space-y-5">
-          <div className="border-b border-slate-100 dark:border-slate-800 pb-3">
-            <span className="text-[11px] font-bold text-[#0077B6] dark:text-[#48CAE4] uppercase tracking-wider">
+        <div className="p-6 rounded-2xl bg-white/95 dark:bg-[#10243A] backdrop-blur-md border border-[#ADE8F4] dark:border-[#263B50] shadow-md dark:shadow-[0_10px_25px_-5px_rgba(0,0,0,0.5)] space-y-5">
+          <div className="border-b border-slate-100 dark:border-[#263B50] pb-3">
+            <span className="text-[11px] font-bold text-[#0077B6] dark:text-[#16A9D8] uppercase tracking-wider">
               {t("consumer.verify_tag", "Licence Authentication")}
             </span>
-            <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100 mt-0.5">
+            <h2 className="text-xl font-bold text-slate-900 dark:text-[#F1F5F9] mt-0.5">
               {t("consumer.verify_title", "Verify ISI Mark CM/L Number")}
             </h2>
-            <p className="text-xs text-slate-500 dark:text-slate-400">
+            <p className="text-xs text-slate-500 dark:text-[#A8B6C7]">
               {t(
                 "consumer.verify_subtitle",
                 "Enter the 7 or 8-digit numeric licence code printed beneath the ISI triangular logo.",
@@ -121,55 +121,55 @@ export default function ConsumerHubPage() {
                 "consumer.verify_placeholder",
                 "Enter 7 or 8-digit CM/L Number (e.g. 1454301)",
               )}
-              className="flex-1 px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 text-sm font-mono font-bold text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#0077B6]"
+              className="flex-1 px-4 py-2.5 rounded-xl border border-slate-300 dark:border-[#263B50] bg-white/50 dark:bg-[#0B1A2B] text-sm font-mono font-bold text-slate-900 dark:text-[#F1F5F9] focus:outline-none focus:ring-2 focus:ring-[#0077B6] dark:focus:ring-[#16A9D8]"
             />
             <button
               type="submit"
               disabled={isLoading}
-              className="px-6 py-2.5 rounded-xl text-xs font-bold bg-gradient-to-r from-[#023E8A] via-[#0077B6] to-[#0096C7] hover:from-[#03045E] hover:to-[#023E8A] text-white shadow-md shadow-[#0077B6]/25 transition-all cursor-pointer disabled:opacity-50"
+              className="px-6 py-2.5 rounded-xl text-xs font-bold bg-gradient-to-r from-[#023E8A] via-[#0077B6] to-[#0096C7] hover:from-[#03045E] hover:to-[#023E8A] dark:from-[#1268B3] dark:to-[#1583D1] text-white shadow-md shadow-[#0077B6]/25 transition-all cursor-pointer disabled:opacity-50"
             >
               {t("consumer.btn_check", "Check Licence Structure")}
             </button>
           </form>
 
           {verificationResult && (
-            <div className="p-5 rounded-xl bg-[#CAF0F8]/30 dark:bg-slate-800/50 border border-[#ADE8F4] dark:border-slate-700 space-y-4">
+            <div className="p-5 rounded-xl bg-[#CAF0F8]/30 dark:bg-[#0B1A2B] border border-[#ADE8F4] dark:border-[#263B50] space-y-4">
               <div className="flex items-center gap-2">
                 {verificationResult.isValidFormat ? (
-                  <CheckCircle2 className="w-5 h-5 text-emerald-600" />
+                  <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-[#22C55E]" />
                 ) : (
                   <AlertTriangle className="w-5 h-5 text-rose-600" />
                 )}
-                <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">
+                <h3 className="text-sm font-bold text-slate-900 dark:text-[#F1F5F9]">
                   {verificationResult.cmlNumber} —{" "}
                   {verificationResult.validityStatus}
                 </h3>
               </div>
 
-              <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+              <p className="text-xs text-slate-600 dark:text-[#A8B6C7] leading-relaxed">
                 {verificationResult.guidance}
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs pt-2">
-                <div className="p-3.5 rounded-lg bg-white dark:bg-slate-800 border border-[#ADE8F4]/60 dark:border-slate-700 space-y-1.5 shadow-2xs">
-                  <h4 className="font-semibold text-emerald-700 dark:text-emerald-400 flex items-center gap-1.5">
+                <div className="p-3.5 rounded-lg bg-white dark:bg-[#153653] border border-[#ADE8F4]/60 dark:border-[#263B50] space-y-1.5 shadow-2xs">
+                  <h4 className="font-semibold text-emerald-700 dark:text-[#22C55E] flex items-center gap-1.5">
                     <CheckCircle2 className="w-3.5 h-3.5" />{" "}
                     {t(
                       "consumer.checklist_auth",
                       "Authenticity Verification Checklist:",
                     )}
                   </h4>
-                  <ul className="space-y-1 text-slate-600 dark:text-slate-400">
+                  <ul className="space-y-1 text-slate-600 dark:text-[#A8B6C7]">
                     {verificationResult.authenticityChecklist.map((item, i) => (
                       <li key={i} className="flex items-start gap-1.5">
-                        <span className="text-emerald-500 font-bold">•</span>
+                        <span className="text-emerald-500 dark:text-[#22C55E] font-bold">•</span>
                         <span>{item}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
 
-                <div className="p-3.5 rounded-lg bg-white dark:bg-slate-800 border border-[#ADE8F4]/60 dark:border-slate-700 space-y-1.5 shadow-2xs">
+                <div className="p-3.5 rounded-lg bg-white dark:bg-[#153653] border border-[#ADE8F4]/60 dark:border-[#263B50] space-y-1.5 shadow-2xs">
                   <h4 className="font-semibold text-rose-700 dark:text-rose-400 flex items-center gap-1.5">
                     <FileWarning className="w-3.5 h-3.5" />{" "}
                     {t(
@@ -177,7 +177,7 @@ export default function ConsumerHubPage() {
                       "Red Flag Fraud Indicators:",
                     )}
                   </h4>
-                  <ul className="space-y-1 text-slate-600 dark:text-slate-400">
+                  <ul className="space-y-1 text-slate-600 dark:text-[#A8B6C7]">
                     {verificationResult.fraudIndicators.map((fraud, i) => (
                       <li key={i} className="flex items-start gap-1.5">
                         <span className="text-rose-500 font-bold">•</span>
@@ -193,7 +193,7 @@ export default function ConsumerHubPage() {
                   href={verificationResult.bisCareAppLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-xs font-semibold text-[#0077B6] dark:text-[#48CAE4] hover:underline"
+                  className="inline-flex items-center gap-2 text-xs font-semibold text-[#0077B6] dark:text-[#16A9D8] hover:underline"
                 >
                   <span>
                     {t(
@@ -210,9 +210,9 @@ export default function ConsumerHubPage() {
 
         {/* Redressal Steps & Guidelines */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="p-6 rounded-2xl bg-white/95 dark:bg-slate-900/90 backdrop-blur-md border border-[#ADE8F4] dark:border-slate-800 shadow-md shadow-[#0077B6]/5 space-y-3">
-            <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4 text-[#0077B6] dark:text-[#48CAE4]" />
+          <div className="p-6 rounded-2xl bg-white/95 dark:bg-[#10243A] backdrop-blur-md border border-[#ADE8F4] dark:border-[#263B50] shadow-md dark:shadow-[0_10px_25px_-5px_rgba(0,0,0,0.5)] space-y-3">
+            <h3 className="text-base font-bold text-slate-900 dark:text-[#F1F5F9] flex items-center gap-2">
+              <ShieldCheck className="w-4 h-4 text-[#0077B6] dark:text-[#16A9D8]" />
               <span>
                 {t(
                   "consumer.complaint_title",
@@ -220,13 +220,13 @@ export default function ConsumerHubPage() {
                 )}
               </span>
             </h3>
-            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+            <p className="text-xs text-slate-600 dark:text-[#A8B6C7] leading-relaxed">
               {t(
                 "consumer.complaint_desc",
                 "If you encounter a substandard product or fake ISI/Hallmark, you can submit an anonymous report directly to the BIS Enforcement Branch via the BIS Care App or e-BIS portal.",
               )}
             </p>
-            <ul className="space-y-1.5 text-xs text-slate-600 dark:text-slate-400 pt-2">
+            <ul className="space-y-1.5 text-xs text-slate-600 dark:text-[#A8B6C7] pt-2">
               <li>
                 {t(
                   "consumer.complaint_step1",
@@ -248,9 +248,9 @@ export default function ConsumerHubPage() {
             </ul>
           </div>
 
-          <div className="p-6 rounded-2xl bg-white/95 dark:bg-slate-900/90 backdrop-blur-md border border-[#ADE8F4] dark:border-slate-800 shadow-md shadow-[#0077B6]/5 space-y-3">
-            <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
-              <HelpCircle className="w-4 h-4 text-[#0096C7] dark:text-[#48CAE4]" />
+          <div className="p-6 rounded-2xl bg-white/95 dark:bg-[#10243A] backdrop-blur-md border border-[#ADE8F4] dark:border-[#263B50] shadow-md dark:shadow-[0_10px_25px_-5px_rgba(0,0,0,0.5)] space-y-3">
+            <h3 className="text-base font-bold text-slate-900 dark:text-[#F1F5F9] flex items-center gap-2">
+              <HelpCircle className="w-4 h-4 text-[#0096C7] dark:text-[#16A9D8]" />
               <span>
                 {t(
                   "consumer.categories_title",
