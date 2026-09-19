@@ -15,7 +15,7 @@
     "db:studio": "pnpm prisma studio",
     "db:seed": "dotenv -e .env -- tsx scripts/seed/seed.ts",
     "eval:rag": "dotenv -e .env -- tsx scripts/evaluation/evaluate_rag.ts",
-    "clean": "pnpm dlx rimraf --glob \"./node_modules\" \"./apps/**/node_modules\" \"./packages/**/node_modules\" \"./.turbo\" \"./apps/**/.turbo\" \"./packages/**/.turbo\" \"./apps/web/.next\""
+    "clean": "pnpm dlx rimraf --glob \"./node_modules\" \"./apps/**/node_modules\" \"./packages/**/node_modules\" \"./.turbo\" \"./apps/**/.turbo\" \"./packages/**/.turbo\" \"./apps/**/dist\" \"./packages/**/dist\" \"./apps/web/.next\""
   },
   "dependencies": {
     "@prisma/client": "^5.19.1"

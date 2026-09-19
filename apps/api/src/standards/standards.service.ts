@@ -15,21 +15,44 @@ export class StandardsService {
   constructor(private prisma: PrismaService) {}
 
   async searchStandards(query: string, filter?: { division?: string; isMandatory?: boolean; status?: string }): Promise<{ standards: Standard[]; total: number }> {
+    const qLower = (query || '').toLowerCase().trim();
+    
+    // Extract standard numbers (e.g., 800, 800:2007, 17526, 10500)
+    const stdMatches = query.match(/(?:IS\s*[-:]?\s*|standard\s+)?(\d{2,6}(?:\s*\([^)]+\))?(?::\d{4})?)/gi) || [];
+    const extractedNums = stdMatches.map(m => m.replace(/^(?:IS\s*[-:]?\s*|standard\s+)/i, '').trim()).filter(Boolean);
+
+    const STOP_WORDS = new Set([
+      'what', 'does', 'the', 'is', 'a', 'an', 'standard', 'for', 'used',
+      'how', 'which', 'with', 'and', 'or', 'of', 'to', 'in', 'on', 'by',
+      'this', 'that', 'are', 'was', 'were', 'tell', 'give', 'about', 'explain'
+    ]);
+
+    const meaningfulTokens = qLower
+      .split(/[^a-zA-Z0-9:]+/)
+      .filter(t => t.length > 2 && !STOP_WORDS.has(t));
+
     let dbResults: any[] = [];
     try {
+      const orConditions: any[] = [
+        { standardNumber: { contains: query, mode: 'insensitive' as const } },
+        { title: { contains: query, mode: 'insensitive' as const } },
+        { scope: { contains: query, mode: 'insensitive' as const } }
+      ];
+
+      for (const num of extractedNums) {
+        orConditions.push({ standardNumber: { contains: num, mode: 'insensitive' as const } });
+      }
+      for (const tok of meaningfulTokens) {
+        orConditions.push({ title: { contains: tok, mode: 'insensitive' as const } });
+        orConditions.push({ scope: { contains: tok, mode: 'insensitive' as const } });
+      }
+
       dbResults = await this.prisma.standard.findMany({
         where: {
           AND: [
-            query
-              ? {
-                  OR: [
-                    { standardNumber: { contains: query, mode: 'insensitive' } },
-                    { title: { contains: query, mode: 'insensitive' } },
-                    { scope: { contains: query, mode: 'insensitive' } }
-                  ]
-                }
-              : {},
+            query ? { OR: orConditions } : {},
             filter?.division ? { division: filter.division } : {},
+            filter?.status ? { status: filter.status as any } : {},
             filter?.isMandatory !== undefined ? { isMandatory: filter.isMandatory } : {}
           ]
         },
@@ -47,19 +70,33 @@ export class StandardsService {
     }
 
     // In-memory fallback
-    const qLower = (query || '').toLowerCase();
     const filtered = (SEED_STANDARDS as any[]).filter(s => {
-      const matchQuery =
-        !qLower ||
-        s.standardNumber.toLowerCase().includes(qLower) ||
-        s.title.toLowerCase().includes(qLower) ||
-        s.scope.toLowerCase().includes(qLower) ||
-        s.keywords.some((k: string) => k.toLowerCase().includes(qLower));
+      const sNumLower = s.standardNumber.toLowerCase();
+      const sTitleLower = s.title.toLowerCase();
+      const sScopeLower = s.scope.toLowerCase();
+      const sKeywordsLower = s.keywords.map((k: string) => k.toLowerCase()).join(' ');
 
+      const matchesExtractedNum = extractedNums.some(num => sNumLower.includes(num.toLowerCase()));
+      const matchesDirectQuery = !qLower || sNumLower.includes(qLower) || sTitleLower.includes(qLower) || sScopeLower.includes(qLower);
+      const matchesTokens = meaningfulTokens.length > 0 && meaningfulTokens.some(tok =>
+        sNumLower.includes(tok) || sTitleLower.includes(tok) || sScopeLower.includes(tok) || sKeywordsLower.includes(tok)
+      );
+
+      const matchQuery = matchesExtractedNum || matchesDirectQuery || matchesTokens;
       const matchDivision = !filter?.division || s.division === filter.division;
+      const matchStatus = !filter?.status || s.status === filter.status;
       const matchMandatory = filter?.isMandatory === undefined || s.isMandatory === filter.isMandatory;
 
-      return matchQuery && matchDivision && matchMandatory;
+      return matchQuery && matchDivision && matchStatus && matchMandatory;
+    });
+
+    // Sort by exact standard match first
+    filtered.sort((a, b) => {
+      const aHasNum = extractedNums.some(num => a.standardNumber.toLowerCase().includes(num.toLowerCase()));
+      const bHasNum = extractedNums.some(num => b.standardNumber.toLowerCase().includes(num.toLowerCase()));
+      if (aHasNum && !bHasNum) return -1;
+      if (!aHasNum && bHasNum) return 1;
+      return 0;
     });
 
     return {
@@ -73,7 +110,7 @@ export class StandardsService {
     try {
       std = await this.prisma.standard.findFirst({
         where: {
-          OR: [{ id: idOrNumber }, { standardNumber: { contains: idOrNumber, mode: 'insensitive' } }]
+          OR: [{ id: idOrNumber }, { standardNumber: { contains: idOrNumber, mode: 'insensitive' as const } }]
         },
         include: { clauses: true }
       });
@@ -95,10 +132,22 @@ export class StandardsService {
   }
 
   async recommendStandards(profile: ProductProfileQuery): Promise<ProductRecommendationResult> {
-    const qTokens = `${profile.productName} ${profile.material || ''} ${profile.intendedApplication || ''} ${profile.technicalCharacteristics || ''}`
+    const fullQueryString = `${profile.productName} ${profile.material || ''} ${profile.intendedApplication || ''} ${profile.technicalCharacteristics || ''}`;
+    
+    // Extract standard numbers (e.g., 800, 800:2007, 17526, 10500)
+    const stdMatches = fullQueryString.match(/(?:IS\s*[-:]?\s*|standard\s+)?(\d{2,6}(?:\s*\([^)]+\))?(?::\d{4})?)/gi) || [];
+    const extractedNums = stdMatches.map(m => m.replace(/^(?:IS\s*[-:]?\s*|standard\s+)/i, '').trim()).filter(Boolean);
+
+    const STOP_WORDS = new Set([
+      'what', 'does', 'the', 'is', 'a', 'an', 'standard', 'for', 'used',
+      'how', 'which', 'with', 'and', 'or', 'of', 'to', 'in', 'on', 'by',
+      'this', 'that', 'are', 'was', 'were', 'tell', 'give', 'about', 'explain'
+    ]);
+
+    const qTokens = fullQueryString
       .toLowerCase()
-      .split(/\s+/)
-      .filter(t => t.length > 2);
+      .split(/[^a-zA-Z0-9:]+/)
+      .filter(t => t.length > 2 && !STOP_WORDS.has(t));
 
     const candidates = (SEED_STANDARDS as any[]);
     const matches: StandardRecommendationMatch[] = [];
@@ -109,6 +158,13 @@ export class StandardsService {
       const missingPrompt: string[] = [];
 
       const stdText = `${std.standardNumber} ${std.title} ${std.scope} ${std.abstract} ${std.keywords.join(' ')}`.toLowerCase();
+
+      // Check if standard number is directly requested
+      const hasExactStdNum = extractedNums.some(num => std.standardNumber.toLowerCase().includes(num.toLowerCase()));
+      if (hasExactStdNum) {
+        score += 55;
+        matchedAttrs.push(`Matches standard designation: '${std.standardNumber}'`);
+      }
 
       // Check product name
       if (profile.productName && stdText.includes(profile.productName.toLowerCase())) {
@@ -130,10 +186,10 @@ export class StandardsService {
         matchedAttrs.push(`Matches intended application: '${profile.intendedApplication}'`);
       }
 
-      // Check token overlap
+      // Check meaningful token overlap
       for (const token of qTokens) {
         if (stdText.includes(token)) {
-          score += 3;
+          score += 4;
         }
       }
 
@@ -143,7 +199,7 @@ export class StandardsService {
         matches.push({
           standard: this.mapStandard(std),
           relevanceScore: score,
-          matchReason: `Evaluated strong correlation based on ${matchedAttrs.join(', ')}.`,
+          matchReason: `Evaluated strong correlation based on ${matchedAttrs.length > 0 ? matchedAttrs.join(', ') : 'specification keywords'}.`,
           matchingAttributes: matchedAttrs,
           missingInformationPrompt: missingPrompt.length > 0 ? missingPrompt : ['Verify in-house testing capacity for full Scheme I conformity.'],
           relatedStandards: candidates.filter(c => c.standardNumber !== std.standardNumber && c.division === std.division).map(c => c.standardNumber),

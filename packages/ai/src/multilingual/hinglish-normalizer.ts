@@ -12,7 +12,9 @@ export class HinglishNormalizer {
    * Extract technical BIS entities from raw input query
    */
   extractTechnicalEntities(text: string): string[] {
-    const isPattern = /\bIS\s*\d+(?::\d{4})?\b/gi;
+    const isPattern = /\bIS\s*[-:]?\s*(\d{2,6}(?:\s*\([^)]+\))?(?::\d{4})?)\b/gi;
+    const stdWordPattern = /\bstandard\s+([A-Z]*\s*\d{2,6}(?:\s*\([^)]+\))?(?::\d{4})?)\b/gi;
+    const numYearPattern = /\b(\d{2,5}:\d{4})\b/g;
     const clausePattern = /\bClause\s*[0-9.]+\b/gi;
     const huidPattern = /\b[A-Z0-9]{6}\b/g;
     const cmlPattern = /\bCM\/L[- ]?\d{7,8}\b/gi;
@@ -20,7 +22,38 @@ export class HinglishNormalizer {
     const standardKeywords = /\b(ISI|CRS|FMCS|ECO|TMT|SS\s*304|SS\s*316|BEE)\b/gi;
 
     const entities: string[] = [];
-    const isMatches = text.match(isPattern) || [];
+
+    // 1. IS prefix matches
+    let match: RegExpExecArray | null;
+    while ((match = isPattern.exec(text)) !== null) {
+      entities.push(match[0].trim());
+      const bareNum = match[1].trim();
+      entities.push(bareNum);
+      if (!match[0].toUpperCase().startsWith('IS ')) {
+        entities.push(`IS ${bareNum}`);
+      }
+    }
+
+    // 2. "standard <num>" matches
+    while ((match = stdWordPattern.exec(text)) !== null) {
+      const numPart = match[1].replace(/^IS\s*/i, '').trim();
+      if (/\d/.test(numPart)) {
+        entities.push(`IS ${numPart}`);
+        entities.push(numPart);
+      }
+    }
+
+    // 3. Standalone "<num>:<year>" matches (e.g. 800:2007, 17526:2021)
+    while ((match = numYearPattern.exec(text)) !== null) {
+      entities.push(match[1]);
+      entities.push(`IS ${match[1]}`);
+      const bareNumOnly = match[1].split(':')[0];
+      if (bareNumOnly) {
+        entities.push(`IS ${bareNumOnly}`);
+        entities.push(bareNumOnly);
+      }
+    }
+
     const clauseMatches = text.match(clausePattern) || [];
     const cmlMatches = text.match(cmlPattern) || [];
     const qcoMatches = text.match(qcoPattern) || [];
@@ -28,11 +61,11 @@ export class HinglishNormalizer {
 
     // Filter potential 6-character words from generic text vs actual HUIDs
     const potentialHuids = (text.match(huidPattern) || []).filter(h =>
-      /\d/.test(h) && /[A-Z]/.test(h)
+      /\d/.test(h) && /[A-Z]/.test(h) && !h.startsWith('IS')
     );
 
-    entities.push(...isMatches, ...clauseMatches, ...cmlMatches, ...qcoMatches, ...keywordMatches, ...potentialHuids);
-    return Array.from(new Set(entities));
+    entities.push(...clauseMatches, ...cmlMatches, ...qcoMatches, ...keywordMatches, ...potentialHuids);
+    return Array.from(new Set(entities.filter(Boolean)));
   }
 
   /**

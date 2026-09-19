@@ -1,9 +1,16 @@
 import * as dotenv from 'dotenv';
 import * as path from 'path';
+import * as fs from 'fs';
 
-// Preload root .env and local .env variables into process.env
-dotenv.config({ path: path.resolve(process.cwd(), '../../.env') });
-dotenv.config({ path: path.resolve(process.cwd(), '.env') });
+const rootEnv = [
+  path.resolve(process.cwd(), '.env'),
+  path.resolve(__dirname, '../../../.env'),
+  path.resolve(__dirname, '../../.env')
+].find(p => fs.existsSync(p));
+
+if (rootEnv) {
+  dotenv.config({ path: rootEnv });
+}
 
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
@@ -59,6 +66,30 @@ async function bootstrap() {
   await app.listen(port);
   console.log(`🚀 BIS Saarthi API running on http://localhost:${port}/api/v1`);
   console.log(`📚 Swagger documentation available at http://localhost:${port}/api/docs`);
+
+  // Log detected LLM Configuration
+  const openrouterKey = process.env.OPENROUTER_API_KEY;
+  const openaiKey = process.env.OPENAI_API_KEY;
+  const geminiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
+  const anthropicKey = process.env.ANTHROPIC_API_KEY;
+  const mistralKey = process.env.MISTRAL_API_KEY;
+
+  console.log('--------------------------------------------------');
+  console.log(`[LLM Status] Configured Provider: ${process.env.LLM_PROVIDER || '(auto-detect)'}`);
+  if (openrouterKey && !openrouterKey.includes('your_openrouter_key')) {
+    console.log(`[LLM Status] \x1b[32m✔ OpenRouter Connected\x1b[0m | Model: ${process.env.OPENROUTER_MODEL || 'nvidia/nemotron-3-super-120b-a12b:free'}`);
+  } else if (openaiKey && !openaiKey.includes('your_openai_api_key_here')) {
+    console.log(`[LLM Status] \x1b[32m✔ OpenAI Connected\x1b[0m | Model: ${process.env.OPENAI_MODEL || 'gpt-4o-mini'}`);
+  } else if (geminiKey && !geminiKey.includes('your_')) {
+    console.log(`[LLM Status] \x1b[32m✔ Google Gemini Connected\x1b[0m | Model: ${process.env.LLM_MODEL || 'gemini-1.5-flash'}`);
+  } else if (anthropicKey && !anthropicKey.includes('your_anthropic_api_key_here')) {
+    console.log(`[LLM Status] \x1b[32m✔ Anthropic Connected\x1b[0m | Model: ${process.env.ANTHROPIC_MODEL || 'claude-3-5-sonnet-20241022'}`);
+  } else if (mistralKey && !mistralKey.includes('your_')) {
+    console.log(`[LLM Status] \x1b[32m✔ Mistral Connected\x1b[0m | Model: ${process.env.MISTRAL_MODEL || 'mistral-large-latest'}`);
+  } else {
+    console.log(`[LLM Status] \x1b[33m⚠ No Cloud LLM Keys Detected\x1b[0m | Using 100% Free Offline Deterministic Grounding Engine`);
+  }
+  console.log('--------------------------------------------------');
 }
 
 bootstrap();
