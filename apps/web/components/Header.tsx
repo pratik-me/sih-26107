@@ -18,9 +18,41 @@ import {
   X,
   Compass,
   ChevronDown,
+  LayoutDashboard,
+  LogIn,
+  LogOut,
 } from "lucide-react";
 import Image from "next/image";
 import { ThemeToggle } from "./ThemeToggle";
+
+function isTokenValid(token: string | null): boolean {
+  if (!token || token === "undefined" || token === "null" || token.trim() === "") {
+    return false;
+  }
+  try {
+    const parts = token.split(".");
+    if (parts.length === 3) {
+      const base64Url = parts[1];
+      const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+      const jsonPayload = decodeURIComponent(
+        atob(base64)
+          .split("")
+          .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+          .join("")
+      );
+      const payload = JSON.parse(jsonPayload);
+      if (payload && typeof payload.exp === "number") {
+        if (payload.exp * 1000 <= Date.now()) {
+          return false;
+        }
+      }
+      return true;
+    }
+    return false;
+  } catch {
+    return false;
+  }
+}
 
 export function Header() {
   const pathname = usePathname();
@@ -29,6 +61,46 @@ export function Header() {
   const [standardsDropdownOpen, setStandardsDropdownOpen] = useState(false);
   const [mobileStandardsOpen, setMobileStandardsOpen] = useState(true);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const checkAuth = () => {
+    try {
+      const token = localStorage.getItem("bis_access_token");
+      if (token && isTokenValid(token)) {
+        setIsLoggedIn(true);
+      } else {
+        if (token) {
+          localStorage.removeItem("bis_access_token");
+        }
+        setIsLoggedIn(false);
+      }
+    } catch {
+      setIsLoggedIn(false);
+    }
+  };
+
+  const handleLogout = () => {
+    try {
+      localStorage.removeItem("bis_access_token");
+      window.dispatchEvent(new Event("auth-change"));
+      setIsLoggedIn(false);
+    } catch {
+      // ignore
+    }
+  };
+
+  useEffect(() => {
+    checkAuth();
+
+    window.addEventListener("storage", checkAuth);
+    window.addEventListener("focus", checkAuth);
+    window.addEventListener("auth-change", checkAuth);
+    return () => {
+      window.removeEventListener("storage", checkAuth);
+      window.removeEventListener("focus", checkAuth);
+      window.removeEventListener("auth-change", checkAuth);
+    };
+  }, [pathname]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -75,6 +147,7 @@ export function Header() {
     { href: "/hallmarking", label: t("nav.hallmark", "Hallmark"), icon: Sparkles },
     { href: "/consumer", label: t("nav.consumer", "Consumer"), icon: ShieldCheck },
     { href: "/reports", label: t("nav.reports", "Reports"), icon: FileBarChart2 },
+    { href: "/chat", label: t("nav.ask_ai", "Ask AI"), icon: MessageSquare },
   ];
 
   return (
@@ -280,15 +353,35 @@ export function Header() {
             <ThemeToggle />
 
             {/* Action Button & Mobile Toggle */}
-            <div className="flex items-center gap-2">
-              <Link
-                href="/chat"
-                className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold bg-gradient-to-r from-[#023E8A] to-[#0077B6] hover:from-[#0077B6] hover:to-[#023E8A] dark:from-[#1268B3] dark:to-[#1583D1] dark:hover:from-[#1583D1] dark:hover:to-[#16A9D8] text-white shadow-sm shadow-[#0077B6]/25 dark:shadow-[#1268B3]/25 transition-all whitespace-nowrap"
-              >
-                <MessageSquare className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">{t("nav.ask_bis_ai", "Ask BIS AI")}</span>
-                <span className="sm:hidden">{t("nav.ask_ai", "Ask AI")}</span>
-              </Link>
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              {isLoggedIn ? (
+                <div className="flex items-center gap-1">
+                  <Link
+                    href="/dashboard"
+                    className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold bg-gradient-to-r from-[#023E8A] to-[#0077B6] hover:from-[#0077B6] hover:to-[#023E8A] dark:from-[#1268B3] dark:to-[#1583D1] dark:hover:from-[#1583D1] dark:hover:to-[#16A9D8] text-white shadow-sm shadow-[#0077B6]/25 dark:shadow-[#1268B3]/25 transition-all whitespace-nowrap"
+                  >
+                    <LayoutDashboard className="w-3.5 h-3.5" />
+                    <span>{t("nav.dashboard", "Dashboard")}</span>
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    title="Sign Out"
+                    aria-label="Sign Out"
+                    className="p-1.5 rounded-lg text-slate-500 hover:text-rose-600 dark:text-[#7F91A5] dark:hover:text-rose-400 hover:bg-slate-100 dark:hover:bg-[#153653] transition-colors"
+                  >
+                    <LogOut className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              ) : (
+                <Link
+                  href="/login"
+                  className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold bg-gradient-to-r from-[#023E8A] to-[#0077B6] hover:from-[#0077B6] hover:to-[#023E8A] dark:from-[#1268B3] dark:to-[#1583D1] dark:hover:from-[#1583D1] dark:hover:to-[#16A9D8] text-white shadow-sm shadow-[#0077B6]/25 dark:shadow-[#1268B3]/25 transition-all whitespace-nowrap"
+                >
+                  <LogIn className="w-3.5 h-3.5" />
+                  <span>{t("nav.login", "Login")}</span>
+                </Link>
+              )}
 
               <button
                 type="button"
@@ -402,14 +495,38 @@ export function Header() {
           </div>
 
           <div className="pt-2">
-            <Link
-              href="/chat"
-              onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center justify-center gap-2 w-full px-3 py-2.5 rounded-lg text-sm font-bold bg-gradient-to-r from-[#023E8A] to-[#0077B6] hover:from-[#0077B6] hover:to-[#023E8A] dark:from-[#1268B3] dark:to-[#1583D1] text-white shadow-sm shadow-[#0077B6]/25 dark:shadow-[#1268B3]/25"
-            >
-              <MessageSquare className="w-4 h-4" />
-              <span>{t("nav.ask_bis_ai", "Ask BIS AI")}</span>
-            </Link>
+            {isLoggedIn ? (
+              <div className="space-y-2">
+                <Link
+                  href="/dashboard"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center justify-center gap-2 w-full px-3 py-2.5 rounded-lg text-sm font-bold bg-gradient-to-r from-[#023E8A] to-[#0077B6] hover:from-[#0077B6] hover:to-[#023E8A] dark:from-[#1268B3] dark:to-[#1583D1] text-white shadow-sm shadow-[#0077B6]/25 dark:shadow-[#1268B3]/25"
+                >
+                  <LayoutDashboard className="w-4 h-4" />
+                  <span>{t("nav.dashboard", "Dashboard")}</span>
+                </Link>
+                <button
+                  type="button"
+                  onClick={() => {
+                    handleLogout();
+                    setMobileMenuOpen(false);
+                  }}
+                  className="flex items-center justify-center gap-2 w-full px-3 py-2 rounded-lg text-xs font-semibold text-rose-600 dark:text-rose-400 bg-rose-50/60 dark:bg-rose-950/30 border border-rose-200/60 dark:border-rose-900/40 hover:bg-rose-100 dark:hover:bg-rose-950/50 transition-colors"
+                >
+                  <LogOut className="w-3.5 h-3.5" />
+                  <span>Sign Out</span>
+                </button>
+              </div>
+            ) : (
+              <Link
+                href="/login"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center justify-center gap-2 w-full px-3 py-2.5 rounded-lg text-sm font-bold bg-gradient-to-r from-[#023E8A] to-[#0077B6] hover:from-[#0077B6] hover:to-[#023E8A] dark:from-[#1268B3] dark:to-[#1583D1] text-white shadow-sm shadow-[#0077B6]/25 dark:shadow-[#1268B3]/25"
+              >
+                <LogIn className="w-4 h-4" />
+                <span>{t("nav.login", "Login")}</span>
+              </Link>
+            )}
           </div>
         </div>
       )}
