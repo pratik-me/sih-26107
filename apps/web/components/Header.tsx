@@ -125,6 +125,7 @@ export function Header() {
                     height={34}
                     width={34}
                     priority
+                    unoptimized
                   />
                 </div>
                 <span className="text-sm font-black tracking-tight text-[#0B1F3A] dark:text-[#F1F5F9] whitespace-nowrap">

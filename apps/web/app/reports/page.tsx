@@ -128,6 +128,7 @@ function ComplianceReportsContent() {
                   alt="BIS-LOGO"
                   height={24}
                   width={24}
+                  unoptimized
                 />
                 <span>
                   {t(

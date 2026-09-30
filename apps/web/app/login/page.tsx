@@ -55,7 +55,7 @@ export default function LoginPage() {
     <div className="min-h-[80vh] flex items-center justify-center px-4 py-12 bg-ashoka-pattern">
       <div className="max-w-md w-full bg-white dark:bg-[#10243A] p-8 rounded-2xl border border-slate-200 dark:border-[#263B50] shadow-xl dark:shadow-[0_10px_25px_-5px_rgba(0,0,0,0.5)] space-y-6">
         <div className="text-center space-y-2">
-          <Image src={"/BIS-LOGO.png"} alt='BIS-LOGO' height={42} width={42} className='mx-auto' />
+          <Image src={"/BIS-LOGO.png"} alt='BIS-LOGO' height={42} width={42} className='mx-auto' unoptimized />
           <h1 className="text-xl font-black text-slate-900 dark:text-[#F1F5F9] tracking-tight">
             BIS Saarthi Login
           </h1>

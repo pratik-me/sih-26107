@@ -5,6 +5,9 @@ const nextConfig = {
   reactStrictMode: true,
   outputFileTracingRoot: path.join(__dirname, '../../'),
   transpilePackages: ['@bis/ui', '@bis/shared-types', '@bis/api-client', '@bis/ai'],
+  images: {
+    unoptimized: true
+  },
   experimental: {
     optimizePackageImports: [
       'lucide-react',

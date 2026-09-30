@@ -20,6 +20,7 @@ export function Footer() {
                 alt="BIS-LOGO"
                 height={24}
                 width={24}
+                unoptimized
               />
               <span>BIS Saarthi</span>
             </div>
