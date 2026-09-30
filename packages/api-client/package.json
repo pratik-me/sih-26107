@@ -19,8 +19,9 @@
     "@bis/shared-types": "workspace:*"
   },
   "devDependencies": {
-    "@bis/typescript-config": "workspace:*",
     "@bis/eslint-config": "workspace:*",
+    "@bis/typescript-config": "workspace:*",
+    "@types/node": "^20.19.43",
     "typescript": "^5.5.4"
   }
 }

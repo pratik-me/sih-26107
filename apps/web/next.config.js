@@ -15,10 +15,11 @@ const nextConfig = {
     ]
   },
   async rewrites() {
-    const rawApiUrl = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api/v1';
-    const destination = rawApiUrl.endsWith('/:path*')
-      ? rawApiUrl
-      : `${rawApiUrl.replace(/\/$/, '')}/:path*`;
+    const rawApiUrl = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+    const baseUrl = rawApiUrl.replace(/\/$/, '');
+    const destination = baseUrl.endsWith('/api/v1')
+      ? `${baseUrl}/:path*`
+      : `${baseUrl}/api/v1/:path*`;
 
     return [
       {

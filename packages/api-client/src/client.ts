@@ -31,7 +31,20 @@ export class BisApiClient {
   private token: string | null = null;
 
   constructor(baseUrl?: string) {
-    this.baseUrl = baseUrl || (typeof window !== 'undefined' ? '/api/v1' : 'http://localhost:4000/api/v1');
+    if (baseUrl) {
+      this.baseUrl = baseUrl;
+    } else if (typeof window !== 'undefined') {
+      this.baseUrl = '/api/v1';
+    } else if (typeof process !== 'undefined' && process.env?.API_URL) {
+      const url = process.env.API_URL.replace(/\/$/, '');
+      this.baseUrl = url.endsWith('/api/v1') ? url : `${url}/api/v1`;
+    } else if (typeof process !== 'undefined' && process.env?.NEXT_PUBLIC_API_URL) {
+      const url = process.env.NEXT_PUBLIC_API_URL.replace(/\/$/, '');
+      this.baseUrl = url.endsWith('/api/v1') ? url : `${url}/api/v1`;
+    } else {
+      this.baseUrl = 'http://localhost:4000/api/v1';
+    }
+
     if (typeof window !== 'undefined') {
       this.token = localStorage.getItem('bis_access_token');
     }
