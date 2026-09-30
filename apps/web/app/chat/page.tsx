@@ -699,14 +699,14 @@ function ChatContent() {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row h-[calc(100dvh-105px)] overflow-hidden bg-slate-100 dark:bg-[#07111F]">
+    <div className="flex flex-col lg:flex-row h-[calc(100dvh-105px)] overflow-hidden bg-[#F7FAFC] dark:bg-[#07111F]">
       {/* 1. LEFT SIDEBAR */}
-      <aside className="hidden lg:flex flex-col w-64 bg-white dark:bg-[#0B1A2B] border-r border-slate-200 dark:border-[#263B50] shrink-0">
-        <div className="p-3 border-b border-slate-200 dark:border-[#263B50]">
+      <aside className="hidden lg:flex flex-col w-64 bg-white dark:bg-[#0B1A2B] border-r border-[#D8E3EE] dark:border-[#263B50] shrink-0">
+        <div className="p-3 border-b border-[#D8E3EE] dark:border-[#263B50]">
           <button
             type="button"
             onClick={startNewChat}
-            className="flex items-center justify-center gap-2 w-full py-2 px-3 rounded-lg text-xs font-bold bg-gradient-to-r from-[#023E8A] via-[#0077B6] to-[#0096C7] hover:from-[#0077B6] hover:to-[#023E8A] text-white shadow-sm shadow-[#0077B6]/25 transition-all cursor-pointer"
+            className="flex items-center justify-center gap-2 w-full py-2.5 px-3 rounded-xl text-xs font-bold bg-[#0057A8] hover:bg-[#004783] dark:bg-[#1268B3] dark:hover:bg-[#1679C7] text-white shadow-sm transition-all cursor-pointer"
           >
             <Plus className="w-4 h-4" />
             <span>{t("chat.new_session", "New Chat Session")}</span>
@@ -714,47 +714,47 @@ function ChatContent() {
         </div>
 
         {/* Quick Tools Navigation */}
-        <div className="p-3 border-b border-slate-200 dark:border-[#263B50] space-y-1">
-          <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-[#7F91A5] px-2">
+        <div className="p-3 border-b border-[#D8E3EE] dark:border-[#263B50] space-y-1">
+          <span className="text-[10px] font-bold uppercase tracking-wider text-[#7A8CA0] dark:text-[#7F91A5] px-2">
             {t("chat.specialized_tools", "BIS Specialized Tools")}
           </span>
           <Link
             href="/standards/recommend"
-            className="flex items-center gap-2 px-2.5 py-1.5 rounded-md text-xs font-medium text-slate-700 dark:text-[#A8B6C7] hover:bg-slate-100 dark:hover:bg-[#153653] dark:hover:text-[#F1F5F9] transition-colors"
+            className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-medium text-[#263B53] dark:text-[#A8B6C7] hover:bg-[#F1F7FC] hover:text-[#0057A8] dark:hover:bg-[#153653] dark:hover:text-[#F1F5F9] transition-colors"
           >
-            <Compass className="w-3.5 h-3.5 text-blue-600 dark:text-[#16A9D8]" />
+            <Compass className="w-3.5 h-3.5 text-[#0057A8] dark:text-[#16A9D8]" />
             <span>{t("chat.find_standard", "Find My Standard")}</span>
           </Link>
           <Link
             href="/certification"
-            className="flex items-center gap-2 px-2.5 py-1.5 rounded-md text-xs font-medium text-slate-700 dark:text-[#A8B6C7] hover:bg-slate-100 dark:hover:bg-[#153653] dark:hover:text-[#F1F5F9] transition-colors"
+            className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-medium text-[#263B53] dark:text-[#A8B6C7] hover:bg-[#F1F7FC] hover:text-[#0057A8] dark:hover:bg-[#153653] dark:hover:text-[#F1F5F9] transition-colors"
           >
-            <Award className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+            <Award className="w-3.5 h-3.5 text-[#C58A16] dark:text-amber-400" />
             <span>
               {t("chat.certification_schemes", "Certification Schemes")}
             </span>
           </Link>
           <Link
             href="/testing"
-            className="flex items-center gap-2 px-2.5 py-1.5 rounded-md text-xs font-medium text-slate-700 dark:text-[#A8B6C7] hover:bg-slate-100 dark:hover:bg-[#153653] dark:hover:text-[#F1F5F9] transition-colors"
+            className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-medium text-[#263B53] dark:text-[#A8B6C7] hover:bg-[#F1F7FC] hover:text-[#0057A8] dark:hover:bg-[#153653] dark:hover:text-[#F1F5F9] transition-colors"
           >
-            <FlaskConical className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
+            <FlaskConical className="w-3.5 h-3.5 text-[#0057A8] dark:text-indigo-400" />
             <span>
               {t("chat.testing_requirements", "Testing Requirements")}
             </span>
           </Link>
           <Link
             href="/laboratories"
-            className="flex items-center gap-2 px-2.5 py-1.5 rounded-md text-xs font-medium text-slate-700 dark:text-[#A8B6C7] hover:bg-slate-100 dark:hover:bg-[#153653] dark:hover:text-[#F1F5F9] transition-colors"
+            className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-medium text-[#263B53] dark:text-[#A8B6C7] hover:bg-[#F1F7FC] hover:text-[#0057A8] dark:hover:bg-[#153653] dark:hover:text-[#F1F5F9] transition-colors"
           >
-            <Building2 className="w-3.5 h-3.5 text-emerald-600 dark:text-[#22C55E]" />
+            <Building2 className="w-3.5 h-3.5 text-[#16845B] dark:text-[#22C55E]" />
             <span>{t("chat.find_lab", "Find Recognized Lab")}</span>
           </Link>
           <Link
             href="/reports"
-            className="flex items-center gap-2 px-2.5 py-1.5 rounded-md text-xs font-medium text-slate-700 dark:text-[#A8B6C7] hover:bg-slate-100 dark:hover:bg-[#153653] dark:hover:text-[#F1F5F9] transition-colors"
+            className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-medium text-[#263B53] dark:text-[#A8B6C7] hover:bg-[#F1F7FC] hover:text-[#0057A8] dark:hover:bg-[#153653] dark:hover:text-[#F1F5F9] transition-colors"
           >
-            <FileBarChart2 className="w-3.5 h-3.5 text-rose-600 dark:text-rose-400" />
+            <FileBarChart2 className="w-3.5 h-3.5 text-[#C93636] dark:text-rose-400" />
             <span>
               {t("chat.generate_report", "Generate Compliance Report")}
             </span>
@@ -763,10 +763,10 @@ function ChatContent() {
 
         {/* Sessions list */}
         <div className="flex-1 overflow-y-auto p-3 space-y-1">
-          <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-[#7F91A5] px-2">
+          <span className="text-[10px] font-bold uppercase tracking-wider text-[#7A8CA0] dark:text-[#7F91A5] px-2">
             {t("chat.active_workspace", "Active Workspace")}
           </span>
-          <div className="p-2.5 rounded-lg bg-blue-50/70 dark:bg-[#10243A] border border-blue-200 dark:border-[#263B50] text-xs font-semibold text-blue-900 dark:text-[#F1F5F9] truncate">
+          <div className="p-2.5 rounded-xl bg-[#F0F8FD] dark:bg-[#10243A] border border-[#B9DDED] dark:border-[#263B50] text-xs font-semibold text-[#0057A8] dark:text-[#F1F5F9] truncate">
             {t("chat.current_investigation", "Current Investigation")}
           </div>
         </div>
@@ -789,26 +789,26 @@ function ChatContent() {
       </aside>
 
       {/* 2. CENTER CONVERSATION AREA */}
-      <section className="flex-1 flex flex-col h-full bg-slate-50 dark:bg-[#07111F] overflow-hidden relative min-h-0">
+      <section className="flex-1 flex flex-col h-full bg-[#F7FAFC] dark:bg-[#07111F] overflow-hidden relative min-h-0">
         {/* Top Chat Bar */}
-        <div className="px-4 py-2.5 bg-white dark:bg-[#0B1A2B] border-b border-slate-200 dark:border-[#263B50] flex items-center justify-between shrink-0">
+        <div className="px-4 py-2.5 bg-white dark:bg-[#0B1A2B] border-b border-[#D8E3EE] dark:border-[#263B50] flex items-center justify-between shrink-0">
           <div className="flex items-center gap-2">
-            <div className="p-1 rounded bg-blue-100 dark:bg-[#10243A] text-blue-700 dark:text-[#16A9D8]">
+            <div className="p-1.5 rounded-lg bg-[#EAF6FC] dark:bg-[#10243A] text-[#0057A8] dark:text-[#16A9D8]">
               <Bot className="w-4 h-4" />
             </div>
             <div>
-              <h2 className="text-xs font-bold text-slate-800 dark:text-[#F1F5F9]">
+              <h2 className="text-xs font-bold text-[#0B1F3A] dark:text-[#EAF2F8]">
                 {t("chat.conversation_title", "BIS Saarthi Conversation")}
               </h2>
-              <span className="text-[10px] text-slate-500 dark:text-[#7F91A5]">
+              <span className="text-[10px] text-[#7A8CA0] dark:text-[#7F91A5]">
                 {t("chat.mode", "Mode:")} {initialRole}
               </span>
             </div>
           </div>
 
           <div className="flex items-center gap-2">
-            <div className="flex items-center gap-1 bg-slate-100 dark:bg-[#10243A] px-2 py-0.5 rounded-lg border border-slate-200 dark:border-[#263B50]">
-              <span className="text-[10px] font-bold text-slate-500 dark:text-[#7F91A5] uppercase tracking-wider hidden sm:inline">
+            <div className="flex items-center gap-1 bg-white dark:bg-[#10243A] px-2 py-0.5 rounded-xl border border-[#D8E3EE] dark:border-[#263B50]">
+              <span className="text-[10px] font-bold text-[#7A8CA0] dark:text-[#7F91A5] uppercase tracking-wider hidden sm:inline">
                 {t("chat.language_label", "Language:")}
               </span>
               <LanguageSelector
@@ -820,10 +820,10 @@ function ChatContent() {
             <button
               type="button"
               onClick={() => setIsEvidencePanelOpen(!isEvidencePanelOpen)}
-              className={`text-xs px-2.5 py-1 rounded font-medium border transition-colors ${
+              className={`text-xs px-3 py-1.5 rounded-xl font-medium border transition-colors cursor-pointer ${
                 isEvidencePanelOpen
-                  ? "bg-blue-50 text-blue-700 border-blue-200 dark:bg-[#10243A] dark:text-[#16A9D8] dark:border-[#16A9D8]"
-                  : "bg-white text-slate-600 border-slate-200 dark:bg-[#0B1A2B] dark:text-[#A8B6C7] dark:border-[#263B50]"
+                  ? "bg-[#EAF4FB] text-[#0057A8] border-[#B9DDED] font-semibold dark:bg-[#10243A] dark:text-[#16A9D8] dark:border-[#16A9D8]"
+                  : "bg-white text-[#52657A] border-[#D8E3EE] hover:bg-[#F1F7FC] hover:text-[#0057A8] dark:bg-[#0B1A2B] dark:text-[#A8B6C7] dark:border-[#263B50]"
               }`}
             >
               {t("chat.evidence_panel_btn", "Evidence Panel")} (
@@ -842,7 +842,7 @@ function ChatContent() {
                 className={`flex gap-3 max-w-4xl mx-auto ${isUser ? "justify-end" : "justify-start"}`}
               >
                 {!isUser && (
-                  <div className="w-7 h-7 rounded-lg bg-blue-700 dark:bg-[#1268B3] text-white flex items-center justify-center shrink-0 mt-0.5 shadow-sm">
+                  <div className="w-7 h-7 rounded-lg bg-[#0057A8] dark:bg-[#1268B3] text-white flex items-center justify-center shrink-0 mt-0.5 shadow-sm">
                     <Bot className="w-4 h-4" />
                   </div>
                 )}
@@ -850,8 +850,8 @@ function ChatContent() {
                 <div
                   className={`flex flex-col space-y-2 max-w-[85%] rounded-2xl p-4 shadow-sm ${
                     isUser
-                      ? "bg-blue-700 dark:bg-[#1583D1] text-white rounded-tr-none"
-                      : "bg-white dark:bg-[#10243A] border border-slate-200 dark:border-[#263B50] text-slate-900 dark:text-[#F1F5F9] rounded-tl-none"
+                      ? "bg-[#0057A8] dark:bg-[#1583D1] text-white rounded-tr-none shadow-[0_4px_16px_rgba(0,87,168,0.15)]"
+                      : "bg-white dark:bg-[#10243A] border border-[#D8E3EE] dark:border-[#263B50] text-[#0B1F3A] dark:text-[#EAF2F8] rounded-tl-none shadow-[0_4px_16px_rgba(11,31,58,0.06)]"
                   }`}
                 >
                   {/* Assistant Meta Header */}
@@ -1062,7 +1062,7 @@ function ChatContent() {
         </div>
 
         {/* Bottom Input Form */}
-        <div className="p-4 bg-white dark:bg-[#0B1A2B] border-t border-slate-200 dark:border-[#263B50] shrink-0">
+        <div className="p-4 bg-white dark:bg-[#0B1A2B] border-t border-[#D8E3EE] dark:border-[#263B50] shrink-0">
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -1070,7 +1070,7 @@ function ChatContent() {
             }}
             className="max-w-4xl mx-auto"
           >
-            <div className="relative flex items-center bg-slate-50 dark:bg-[#10243A] rounded-xl border border-slate-300 dark:border-[#263B50] focus-within:border-blue-600 dark:focus-within:border-[#16A9D8] transition-all p-1.5">
+            <div className="relative flex items-center bg-[#F7FAFC] dark:bg-[#10243A] rounded-xl border border-[#D8E3EE] dark:border-[#263B50] focus-within:border-[#0E9FCE] focus-within:ring-2 focus-within:ring-[#0E9FCE]/12 transition-all p-1.5">
               <input
                 type="text"
                 value={inputQuery}
@@ -1080,18 +1080,18 @@ function ChatContent() {
                   "Ask about standards, certification, test methods, lab credentials, or clauses...",
                 )}
                 disabled={isLoading}
-                className="w-full px-3 py-2 text-xs sm:text-sm text-slate-900 dark:text-[#F1F5F9] bg-transparent border-none outline-none ring-0 shadow-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 placeholder:text-slate-400 dark:placeholder:text-[#7F91A5]"
+                className="w-full px-3 py-2 text-xs sm:text-sm text-[#263B53] dark:text-[#EAF2F8] bg-transparent border-none outline-none ring-0 shadow-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 placeholder:text-[#7A8CA0] dark:placeholder:text-[#7F91A5]"
               />
               <button
                 type="submit"
                 disabled={isLoading || !inputQuery.trim()}
-                className="p-2 rounded-lg bg-blue-700 dark:bg-[#1268B3] hover:bg-blue-800 dark:hover:bg-[#1583D1] disabled:opacity-40 text-white shadow-sm transition-all cursor-pointer"
+                className="p-2 rounded-lg bg-[#0057A8] dark:bg-[#1268B3] hover:bg-[#004783] dark:hover:bg-[#1583D1] disabled:opacity-40 text-white shadow-sm transition-all cursor-pointer"
                 aria-label="Send message"
               >
                 <Send className="w-4 h-4" />
               </button>
             </div>
-            <div className="flex items-center justify-between px-2 pt-2 text-[10px] text-slate-400 dark:text-[#7F91A5]">
+            <div className="flex items-center justify-between px-2 pt-2 text-[10px] text-[#7A8CA0] dark:text-[#7F91A5]">
               <span>
                 {t(
                   "chat.disclaimer",
@@ -1115,7 +1115,7 @@ function ChatContent() {
             className="fixed inset-0 bg-black/40 z-40 lg:hidden"
           />
 
-          <aside className="fixed inset-x-0 bottom-0 z-50 h-[65vh] rounded-t-2xl shadow-xl lg:static lg:h-full lg:w-80 xl:w-96 lg:rounded-none lg:shadow-none lg:border-t-0 lg:border-l border-slate-200 dark:border-[#263B50] bg-white dark:bg-[#0B1A2B] overflow-y-auto transition-transform">
+          <aside className="fixed inset-x-0 bottom-0 z-50 h-[65vh] rounded-t-2xl shadow-xl lg:static lg:h-full lg:w-80 xl:w-96 lg:rounded-none lg:shadow-none lg:border-t-0 lg:border-l border-[#D8E3EE] dark:border-[#263B50] bg-white dark:bg-[#0B1A2B] overflow-y-auto transition-transform">
             <div className="lg:hidden flex justify-center py-2">
               <div className="w-10 h-1 rounded-full bg-slate-300 dark:bg-slate-700" />
             </div>
