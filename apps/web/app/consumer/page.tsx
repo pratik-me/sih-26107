@@ -47,31 +47,38 @@ export default function ConsumerHubPage() {
   ];
 
   return (
-    <div className="relative min-h-screen w-full bg-gradient-to-b from-white via-[#CAF0F8]/40 to-[#ADE8F4]/30 dark:from-slate-950 dark:via-[#03045E]/20 dark:to-[#03045E]/40 overflow-hidden">
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[850px] h-[320px] bg-[#90E0EF]/35 dark:bg-[#0077B6]/20 rounded-full blur-3xl pointer-events-none -z-10" />
-      <div className="absolute top-1/3 right-10 w-96 h-96 bg-[#ADE8F4]/45 dark:bg-[#00B4D8]/15 rounded-full blur-3xl pointer-events-none -z-10" />
-      <div className="absolute bottom-10 left-10 w-96 h-96 bg-[#CAF0F8]/55 dark:bg-[#03045E]/30 rounded-full blur-3xl pointer-events-none -z-10" />
+    <div className="relative min-h-screen w-full bg-[#F7FAFC] dark:bg-[#07111F] overflow-hidden text-[#0B1F3A] dark:text-[#EAF2F8]">
+      {/* Subtle atmospheric hero glow */}
+      <div
+        className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[450px] pointer-events-none dark:hidden"
+        style={{
+          background: 'radial-gradient(circle at 50% 15%, #EAF6FC 0%, transparent 45%)',
+        }}
+      />
+      <div
+        className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[450px] pointer-events-none hidden dark:block"
+        style={{
+          background: 'radial-gradient(circle at 50% 15%, rgba(22, 169, 216, 0.08) 0%, transparent 45%)',
+        }}
+      />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 space-y-10 relative z-10">
         {/* Header Banner */}
-        <div className="relative p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-[#03045E] via-[#023E8A] to-[#0077B6] text-white shadow-xl shadow-[#03045E]/15 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 overflow-hidden border border-[#0077B6]/30">
-          <div className="absolute -top-12 -right-12 w-80 h-80 bg-[#00B4D8]/20 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute -bottom-12 -left-12 w-80 h-80 bg-[#48CAE4]/15 rounded-full blur-3xl pointer-events-none" />
-
+        <div className="relative p-6 sm:p-8 rounded-3xl bg-white dark:bg-[#10243A] text-[#0B1F3A] dark:text-[#EAF2F8] shadow-[0_4px_16px_rgba(11,31,58,0.06)] dark:shadow-[0_12px_30px_rgba(0,0,0,0.30)] flex flex-col md:flex-row items-start md:items-center justify-between gap-6 overflow-hidden border border-[#D8E3EE] dark:border-[#263B50]">
           <div className="relative space-y-2 z-10">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#0077B6]/40 border border-[#48CAE4]/40 text-[#CAF0F8] text-xs font-semibold backdrop-blur-sm">
-              <ShieldCheck className="w-3.5 h-3.5 text-[#48CAE4]" />
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EAF6FC] dark:bg-[#0B1A2B] border border-[#B9DDED] dark:border-[#263B50] text-[#0057A8] dark:text-[#16A9D8] text-xs font-semibold">
+              <ShieldCheck className="w-3.5 h-3.5 text-[#0057A8] dark:text-[#16A9D8]" />
               <span>
                 {t("consumer.badge", "Citizen & Consumer Protection")}
               </span>
             </div>
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-white">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-[#0B1F3A] dark:text-[#EAF2F8]">
               {t("consumer.title_prefix", "Consumer Safety &")}{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#CAF0F8] via-[#48CAE4] to-[#00B4D8]">
+              <span className="text-[#0057A8] dark:text-[#16A9D8]">
                 {t("consumer.title_highlight", "ISI Mark Verification Hub")}
               </span>
             </h1>
-            <p className="text-xs sm:text-sm text-[#ADE8F4]/90 max-w-xl leading-relaxed">
+            <p className="text-xs sm:text-sm text-[#52657A] dark:text-[#AFC1D2] max-w-xl leading-relaxed">
               {t(
                 "consumer.subtitle",
                 "Verify genuine ISI Mark Certification Marks Licence (CM/L) numbers, detect counterfeit markings, and access official grievance channels.",
@@ -79,32 +86,35 @@ export default function ConsumerHubPage() {
             </p>
           </div>
 
-          <div className="relative z-10 p-4 rounded-2xl bg-[#03045E]/70 border border-[#0077B6]/50 text-xs text-[#CAF0F8] max-w-xs space-y-1.5 backdrop-blur-md shadow-inner">
-            <div className="font-bold flex items-center gap-1.5 text-white">
-              <PhoneCall className="w-4 h-4 text-[#48CAE4]" />
+          <div className="relative z-10 p-4 rounded-2xl bg-[#F0F8FD] dark:bg-[#0B1A2B] border border-[#B9DDED] dark:border-[#263B50] text-xs text-[#263B53] dark:text-[#AFC1D2] max-w-xs space-y-1.5 shadow-2xs">
+            <div className="font-bold flex items-center gap-1.5 text-[#0B1F3A] dark:text-[#EAF2F8]">
+              <PhoneCall className="w-4 h-4 text-[#0057A8] dark:text-[#16A9D8]" />
               <span>
                 {t("consumer.helpline_badge", "Toll-Free Consumer Helpline")}
               </span>
             </div>
-            <p className="text-lg font-black text-white tracking-wide">
+            <p className="text-lg font-black text-[#0057A8] dark:text-white tracking-wide">
               {t("consumer.helpline_number", "1800-11-4000")}
             </p>
           </div>
         </div>
 
         {/* ISI Mark Verification Box */}
-        <div className="p-6 rounded-2xl bg-white/95 dark:bg-slate-900/90 backdrop-blur-md border border-[#ADE8F4] dark:border-slate-800 shadow-md shadow-[#0077B6]/5 space-y-5">
-          <div className="border-b border-slate-100 dark:border-slate-800 pb-3">
-            <span className="text-[11px] font-bold text-[#0077B6] dark:text-[#48CAE4] uppercase tracking-wider">
+        <div className="p-6 rounded-2xl bg-white dark:bg-[#10243A] border border-[#D8E3EE] dark:border-[#263B50] shadow-[0_4px_16px_rgba(11,31,58,0.06)] dark:shadow-[0_12px_30px_rgba(0,0,0,0.30)] space-y-5">
+          <div className="border-b border-[#D8E3EE] dark:border-[#263B50] pb-3">
+            <span className="text-[11px] font-bold text-[#0057A8] dark:text-[#16A9D8] uppercase tracking-wider">
               {t("consumer.verify_tag", "Licence Authentication")}
             </span>
-            <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100 mt-0.5">
-              {t("consumer.verify_title", "Verify ISI Mark CM/L Number")}
+            <h2 className="text-base font-bold text-[#0B1F3A] dark:text-[#EAF2F8] mt-0.5">
+              {t(
+                "consumer.verify_title",
+                "CM/L 7-Digit Format Validation",
+              )}
             </h2>
-            <p className="text-xs text-slate-500 dark:text-slate-400">
+            <p className="text-xs text-[#7A8CA0] dark:text-[#8299AD]">
               {t(
                 "consumer.verify_subtitle",
-                "Enter the 7 or 8-digit numeric licence code printed beneath the ISI triangular logo.",
+                "Every genuine ISI Mark carries a 7 or 8-digit CM/L license number directly beneath the ISI monogram.",
               )}
             </p>
           </div>
@@ -121,55 +131,55 @@ export default function ConsumerHubPage() {
                 "consumer.verify_placeholder",
                 "Enter 7 or 8-digit CM/L Number (e.g. 1454301)",
               )}
-              className="flex-1 px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 text-sm font-mono font-bold text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#0077B6]"
+              className="flex-1 px-4 py-2.5 rounded-xl border border-[#D8E3EE] dark:border-[#263B50] bg-white dark:bg-[#0B1A2B] text-sm font-mono font-bold text-[#263B53] dark:text-[#EAF2F8] placeholder:text-[#7A8CA0] focus:outline-none focus:border-[#0E9FCE] focus:ring-2 focus:ring-[#0E9FCE]/12"
             />
             <button
               type="submit"
               disabled={isLoading}
-              className="px-6 py-2.5 rounded-xl text-xs font-bold bg-gradient-to-r from-[#023E8A] via-[#0077B6] to-[#0096C7] hover:from-[#03045E] hover:to-[#023E8A] text-white shadow-md shadow-[#0077B6]/25 transition-all cursor-pointer disabled:opacity-50"
+              className="px-6 py-2.5 rounded-xl text-xs font-bold bg-[#0057A8] hover:bg-[#004783] dark:bg-[#1268B3] dark:hover:bg-[#1679C7] text-white shadow-sm transition-all cursor-pointer disabled:opacity-50"
             >
               {t("consumer.btn_check", "Check Licence Structure")}
             </button>
           </form>
 
           {verificationResult && (
-            <div className="p-5 rounded-xl bg-[#CAF0F8]/30 dark:bg-slate-800/50 border border-[#ADE8F4] dark:border-slate-700 space-y-4">
+            <div className="p-5 rounded-xl bg-[#CAF0F8]/30 dark:bg-[#0B1A2B] border border-[#ADE8F4] dark:border-[#263B50] space-y-4">
               <div className="flex items-center gap-2">
                 {verificationResult.isValidFormat ? (
-                  <CheckCircle2 className="w-5 h-5 text-emerald-600" />
+                  <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-[#22C55E]" />
                 ) : (
                   <AlertTriangle className="w-5 h-5 text-rose-600" />
                 )}
-                <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">
+                <h3 className="text-sm font-bold text-slate-900 dark:text-[#F1F5F9]">
                   {verificationResult.cmlNumber} —{" "}
                   {verificationResult.validityStatus}
                 </h3>
               </div>
 
-              <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+              <p className="text-xs text-slate-600 dark:text-[#A8B6C7] leading-relaxed">
                 {verificationResult.guidance}
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs pt-2">
-                <div className="p-3.5 rounded-lg bg-white dark:bg-slate-800 border border-[#ADE8F4]/60 dark:border-slate-700 space-y-1.5 shadow-2xs">
-                  <h4 className="font-semibold text-emerald-700 dark:text-emerald-400 flex items-center gap-1.5">
+                <div className="p-3.5 rounded-lg bg-white dark:bg-[#153653] border border-[#ADE8F4]/60 dark:border-[#263B50] space-y-1.5 shadow-2xs">
+                  <h4 className="font-semibold text-emerald-700 dark:text-[#22C55E] flex items-center gap-1.5">
                     <CheckCircle2 className="w-3.5 h-3.5" />{" "}
                     {t(
                       "consumer.checklist_auth",
                       "Authenticity Verification Checklist:",
                     )}
                   </h4>
-                  <ul className="space-y-1 text-slate-600 dark:text-slate-400">
+                  <ul className="space-y-1 text-slate-600 dark:text-[#A8B6C7]">
                     {verificationResult.authenticityChecklist.map((item, i) => (
                       <li key={i} className="flex items-start gap-1.5">
-                        <span className="text-emerald-500 font-bold">•</span>
+                        <span className="text-emerald-500 dark:text-[#22C55E] font-bold">•</span>
                         <span>{item}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
 
-                <div className="p-3.5 rounded-lg bg-white dark:bg-slate-800 border border-[#ADE8F4]/60 dark:border-slate-700 space-y-1.5 shadow-2xs">
+                <div className="p-3.5 rounded-lg bg-white dark:bg-[#153653] border border-[#ADE8F4]/60 dark:border-[#263B50] space-y-1.5 shadow-2xs">
                   <h4 className="font-semibold text-rose-700 dark:text-rose-400 flex items-center gap-1.5">
                     <FileWarning className="w-3.5 h-3.5" />{" "}
                     {t(
@@ -177,7 +187,7 @@ export default function ConsumerHubPage() {
                       "Red Flag Fraud Indicators:",
                     )}
                   </h4>
-                  <ul className="space-y-1 text-slate-600 dark:text-slate-400">
+                  <ul className="space-y-1 text-slate-600 dark:text-[#A8B6C7]">
                     {verificationResult.fraudIndicators.map((fraud, i) => (
                       <li key={i} className="flex items-start gap-1.5">
                         <span className="text-rose-500 font-bold">•</span>
@@ -193,7 +203,7 @@ export default function ConsumerHubPage() {
                   href={verificationResult.bisCareAppLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-xs font-semibold text-[#0077B6] dark:text-[#48CAE4] hover:underline"
+                  className="inline-flex items-center gap-2 text-xs font-semibold text-[#0077B6] dark:text-[#16A9D8] hover:underline"
                 >
                   <span>
                     {t(
@@ -210,9 +220,9 @@ export default function ConsumerHubPage() {
 
         {/* Redressal Steps & Guidelines */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="p-6 rounded-2xl bg-white/95 dark:bg-slate-900/90 backdrop-blur-md border border-[#ADE8F4] dark:border-slate-800 shadow-md shadow-[#0077B6]/5 space-y-3">
-            <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4 text-[#0077B6] dark:text-[#48CAE4]" />
+          <div className="p-6 rounded-2xl bg-white/95 dark:bg-[#10243A] backdrop-blur-md border border-[#ADE8F4] dark:border-[#263B50] shadow-md dark:shadow-[0_10px_25px_-5px_rgba(0,0,0,0.5)] space-y-3">
+            <h3 className="text-base font-bold text-slate-900 dark:text-[#F1F5F9] flex items-center gap-2">
+              <ShieldCheck className="w-4 h-4 text-[#0077B6] dark:text-[#16A9D8]" />
               <span>
                 {t(
                   "consumer.complaint_title",
@@ -220,13 +230,13 @@ export default function ConsumerHubPage() {
                 )}
               </span>
             </h3>
-            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+            <p className="text-xs text-slate-600 dark:text-[#A8B6C7] leading-relaxed">
               {t(
                 "consumer.complaint_desc",
                 "If you encounter a substandard product or fake ISI/Hallmark, you can submit an anonymous report directly to the BIS Enforcement Branch via the BIS Care App or e-BIS portal.",
               )}
             </p>
-            <ul className="space-y-1.5 text-xs text-slate-600 dark:text-slate-400 pt-2">
+            <ul className="space-y-1.5 text-xs text-slate-600 dark:text-[#A8B6C7] pt-2">
               <li>
                 {t(
                   "consumer.complaint_step1",
@@ -248,9 +258,9 @@ export default function ConsumerHubPage() {
             </ul>
           </div>
 
-          <div className="p-6 rounded-2xl bg-white/95 dark:bg-slate-900/90 backdrop-blur-md border border-[#ADE8F4] dark:border-slate-800 shadow-md shadow-[#0077B6]/5 space-y-3">
-            <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
-              <HelpCircle className="w-4 h-4 text-[#0096C7] dark:text-[#48CAE4]" />
+          <div className="p-6 rounded-2xl bg-white/95 dark:bg-[#10243A] backdrop-blur-md border border-[#ADE8F4] dark:border-[#263B50] shadow-md dark:shadow-[0_10px_25px_-5px_rgba(0,0,0,0.5)] space-y-3">
+            <h3 className="text-base font-bold text-slate-900 dark:text-[#F1F5F9] flex items-center gap-2">
+              <HelpCircle className="w-4 h-4 text-[#0096C7] dark:text-[#16A9D8]" />
               <span>
                 {t(
                   "consumer.categories_title",

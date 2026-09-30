@@ -15,6 +15,7 @@
   "hero.select_profile": "SELECT YOUR PROFILE MODE:",
   "hero.search_placeholder": "Ask about product standards, Scheme I/CRS certification, lab testing, or clauses...",
   "hero.ask_ai_btn": "Ask AI",
+  "hero.ask_ai_tooltip": "Ask BIS Saarthi AI",
   "hero.suggested_queries": "Suggested queries for:",
   "chat.new_session": "New Chat Session",
   "chat.specialized_tools": "BIS Specialized Tools",

@@ -145,7 +145,7 @@ export default function LandingPage() {
         "Search standards, schemes, reports, or administrative guidelines...",
       ),
       accentBadge:
-        "text-white bg-gradient-to-r from-[#03045E] to-[#023E8A] border border-[#03045E]/50 shadow-xs shadow-[#03045E]/20",
+        "text-white bg-gradient-to-r from-[#023E8A] to-[#0077B6] border border-[#023E8A]/50 shadow-xs shadow-[#023E8A]/20",
       prompts: [
         t(
           "prompts.admin.1",
@@ -182,24 +182,35 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="flex flex-col min-h-full">
-      {/* Hero Section with White-to-Blue Gradient */}
-      <section className="relative w-full bg-gradient-to-b from-white via-[#CAF0F8]/50 to-[#ADE8F4]/60 dark:from-slate-950 dark:via-[#03045E]/20 dark:to-[#03045E]/40 overflow-hidden">
-        {/* Ambient Light Blue Glows concentrated towards bottom */}
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[850px] h-[320px] bg-[#90E0EF]/35 dark:bg-[#0077B6]/20 rounded-full blur-3xl pointer-events-none -z-10" />
-        <div className="absolute -bottom-10 right-10 w-96 h-96 bg-[#ADE8F4]/45 dark:bg-[#00B4D8]/15 rounded-full blur-3xl pointer-events-none -z-10" />
-        <div className="absolute -bottom-10 left-10 w-96 h-96 bg-[#CAF0F8]/55 dark:bg-[#03045E]/30 rounded-full blur-3xl pointer-events-none -z-10" />
+    <div className="relative min-h-full w-full bg-[#F7FAFC] dark:bg-[#07111F] overflow-hidden">
+      {/* Subtle atmospheric glow behind hero only */}
+      <div
+        className="absolute top-0 left-0 right-0 h-[520px] pointer-events-none -z-10 dark:hidden"
+        style={{
+          background: "radial-gradient(circle at 50% 15%, #EAF6FC 0%, transparent 38%)"
+        }}
+      />
+      <div
+        className="absolute top-0 left-0 right-0 h-[520px] pointer-events-none -z-10 hidden dark:block"
+        style={{
+          background: "radial-gradient(circle at 50% 15%, rgba(22, 169, 216, 0.08) 0%, transparent 38%)"
+        }}
+      />
 
+      {/* Hero Section */}
+      <section className="relative w-full overflow-hidden">
         <div className="relative pt-12 pb-20 px-4 sm:px-6 max-w-7xl mx-auto w-full text-center">
           {/* Main Headline */}
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-900 dark:text-slate-100 tracking-tight leading-tight max-w-4xl mx-auto">
-            {t(
-              "hero.title",
-              "Your AI Assistant for Indian Standards & BIS Services",
-            )}
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-[#0B1F3A] dark:text-[#EAF2F8] tracking-tight leading-tight max-w-4xl mx-auto">
+            <span className="block sm:inline">
+              {t("hero.title_prefix", "Your AI Assistant for")}{" "}
+            </span>
+            <span className="text-[#0057A8] dark:text-[#16A9D8]">
+              {t("hero.title_highlight", "Indian Standards & BIS Services")}
+            </span>
           </h1>
 
-          <p className="mt-4 text-base sm:text-lg text-slate-700 dark:text-slate-300 max-w-2xl mx-auto leading-relaxed font-medium">
+          <p className="mt-4 text-base sm:text-lg text-[#52657A] dark:text-[#AFC1D2] max-w-2xl mx-auto leading-relaxed font-medium">
             {t(
               "hero.subtitle",
               "Find the right standard. Understand certification schemes. Verify hallmarking and test clauses with evidence-backed, zero-hallucination AI.",
@@ -209,7 +220,7 @@ export default function LandingPage() {
           {/* User Mode Selector */}
           <div className="mt-8 max-w-3xl mx-auto text-left">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+              <span className="text-xs font-bold text-[#52657A] dark:text-[#AFC1D2] uppercase tracking-wider">
                 {t("hero.select_profile", "SELECT YOUR PROFILE MODE:")}
               </span>
             </div>
@@ -224,20 +235,20 @@ export default function LandingPage() {
             onSubmit={handleSearchSubmit}
             className="mt-8 max-w-3xl mx-auto"
           >
-            <div className="relative flex items-center bg-white/95 dark:bg-slate-900/90 backdrop-blur-md rounded-2xl border-2 border-[#ADE8F4] dark:border-slate-700 shadow-xl shadow-[#0077B6]/10 hover:border-[#0077B6] focus-within:border-[#0077B6] focus-within:ring-4 focus-within:ring-[#0077B6]/20 dark:focus-within:border-[#48CAE4] dark:focus-within:ring-[#48CAE4]/20 transition-all p-2">
-              <Search className="w-5 h-5 text-slate-400 ml-3 shrink-0" />
+            <div className="relative flex items-center bg-[#FFFFFF] dark:bg-[#10243A] rounded-2xl border-[1.5px] border-[#8DD5EA] dark:border-[#263B50] shadow-[0_4px_16px_rgba(14,159,206,0.08)] dark:shadow-black/25 hover:border-[#0E9FCE] dark:hover:border-[#16A9D8] focus-within:border-[#0E9FCE] dark:focus-within:border-[#16A9D8] focus-within:ring-3 focus-within:ring-[#0E9FCE]/10 transition-all p-2">
+              <Search className="w-5 h-5 text-[#7A9BB5] dark:text-[#A8B6C7] ml-3 shrink-0" />
               <input
                 type="text"
                 suppressHydrationWarning
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder={currentModeConfig.placeholder}
-                className="w-full px-3 py-2 text-sm sm:text-base text-slate-900 dark:text-slate-100 bg-transparent border-none outline-none ring-0 shadow-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 placeholder:text-slate-400 transition-all"
+                className="w-full px-3 py-2 text-sm sm:text-base text-[#263B53] dark:text-[#F1F5F9] bg-transparent outline-none placeholder:text-[#8AA0B5] dark:placeholder:text-[#7F91A5] transition-all"
               />
               <button
                 type="submit"
                 suppressHydrationWarning
-                className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-gradient-to-r from-[#023E8A] via-[#0077B6] to-[#0096C7] hover:from-[#03045E] hover:to-[#023E8A] text-white shadow-md shadow-[#0077B6]/25 transition-all shrink-0 cursor-pointer"
+                className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-[#0057A8] hover:bg-[#004783] dark:bg-[#1268B3] dark:hover:bg-[#1679C7] text-white shadow-sm transition-all shrink-0 cursor-pointer"
               >
                 <span>{t("hero.ask_ai_btn", "Ask AI")}</span>
                 <ArrowRight className="w-4 h-4" />
@@ -248,11 +259,11 @@ export default function LandingPage() {
           {/* Suggested Prompts */}
           <div className="mt-6 max-w-3xl mx-auto text-left">
             <div className="flex items-center justify-between mb-2.5">
-              <span className="text-xs font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5 text-[#0077B6] dark:text-[#48CAE4] shrink-0" />
+              <span className="text-xs font-bold text-[#0B1F3A] dark:text-[#AFC1D2] flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5 text-[#0E9FCE] dark:text-[#16A9D8] shrink-0" />
                 <span>{t("hero.suggested_queries", "Suggested queries for:")}</span>
                 <span
-                  className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold ${currentModeConfig.accentBadge} transition-all duration-300`}
+                  className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#EAF4FB] text-[#0057A8] border border-[#B9DDED] dark:bg-[#163B59] dark:text-[#16A9D8] dark:border-[#263B50] transition-all duration-200"
                 >
                   {currentModeConfig.label}
                 </span>
@@ -260,7 +271,7 @@ export default function LandingPage() {
             </div>
             <div
               key={currentMode}
-              className="flex flex-wrap gap-2 transition-all duration-300"
+              className="flex flex-wrap gap-2 transition-all duration-200"
             >
               {currentModeConfig.prompts.map((prompt, idx) => (
                 <button
@@ -268,9 +279,9 @@ export default function LandingPage() {
                   type="button"
                   suppressHydrationWarning
                   onClick={() => handlePromptClick(prompt)}
-                  className="group text-xs px-3.5 py-2 rounded-xl bg-white dark:bg-slate-800/90 border border-slate-300/80 dark:border-slate-700 hover:border-[#0077B6] dark:hover:border-[#48CAE4] text-slate-800 dark:text-slate-200 hover:text-[#023E8A] dark:hover:text-[#90E0EF] dark:hover:bg-slate-800 shadow-xs hover:shadow-md hover:shadow-[#0077B6]/15 hover:ring-2 hover:ring-[#0077B6]/15 transition-all duration-200 text-left hover:-translate-y-0.5 cursor-pointer flex items-center gap-1.5"
+                  className="group text-xs px-3.5 py-2 rounded-xl bg-white dark:bg-[#10243A] border border-[#D8E3EE] dark:border-[#263B50] hover:border-[#B9DDED] dark:hover:border-[#16A9D8] text-[#263B53] dark:text-[#AFC1D2] hover:text-[#0057A8] dark:hover:text-[#FFFFFF] hover:bg-[#F1F7FC] dark:hover:bg-[#172F47] shadow-[0_2px_8px_rgba(11,31,58,0.04)] hover:shadow-sm transition-all duration-150 text-left hover:-translate-y-0.5 cursor-pointer flex items-center gap-1.5"
                 >
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#0077B6]/40 group-hover:bg-[#0077B6] dark:group-hover:bg-[#48CAE4] transition-colors shrink-0" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#0057A8]/40 group-hover:bg-[#0057A8] dark:group-hover:bg-[#16A9D8] transition-colors shrink-0" />
                   <span>{prompt}</span>
                 </button>
               ))}
@@ -280,23 +291,18 @@ export default function LandingPage() {
       </section>
 
       {/* Feature Cards Grid */}
-      <section className="relative py-20 bg-gradient-to-b from-[#03045E] via-[#023E8A] to-[#03045E] border-y border-[#0077B6]/30 px-4 sm:px-6 overflow-hidden">
-        {/* Ambient Glowing Blobs / Backdrop Effects */}
-        <div className="absolute top-12 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-[#00B4D8]/15 rounded-full blur-3xl pointer-events-none animate-pulse" />
-        <div className="absolute top-0 right-10 w-80 h-80 bg-[#0077B6]/20 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-10 w-80 h-80 bg-[#48CAE4]/15 rounded-full blur-3xl pointer-events-none" />
-
+      <section className="relative py-16 px-4 sm:px-6 overflow-hidden">
         <div className="relative max-w-7xl mx-auto">
-          {/* Header Box with Badge and Animated Typography */}
+          {/* Header Box with Badge and Typography */}
           <div className="text-center max-w-3xl mx-auto mb-14">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#0B1F3A] dark:text-white tracking-tight leading-tight">
               {t(
                 "home.features_title",
                 "Comprehensive Bureau of Indian Standards Intelligence",
               )}
             </h2>
 
-            <p className="mt-3 text-sm sm:text-base text-[#ADE8F4]/90 max-w-2xl mx-auto leading-relaxed font-normal">
+            <p className="mt-3 text-sm sm:text-base text-[#52657A] dark:text-[#AFC1D2] max-w-2xl mx-auto leading-relaxed font-normal">
               {t(
                 "home.features_subtitle",
                 "Structured modules for manufacturers, compliance officers, consumers, and research scholars.",
@@ -320,12 +326,6 @@ export default function LandingPage() {
                 ),
                 action: t("home.features_find_action", "Start Profiler →"),
                 icon: Compass,
-                iconBg: "bg-gradient-to-br from-[#03045E] to-[#023E8A]",
-                ring: "ring-[#0077B6]/30",
-                bar: "from-[#03045E] via-[#023E8A] to-[#0077B6]",
-                dot: "bg-[#023E8A]",
-                badgeStyle:
-                  "border-[#023E8A]/30 bg-[#CAF0F8]/70 text-[#023E8A] dark:bg-[#03045E]/60 dark:text-[#90E0EF]",
               },
               {
                 href: "/certification",
@@ -341,12 +341,6 @@ export default function LandingPage() {
                 ),
                 action: t("home.features_cert_action", "Explore Schemes →"),
                 icon: Award,
-                iconBg: "bg-gradient-to-br from-[#023E8A] to-[#0077B6]",
-                ring: "ring-[#0096C7]/30",
-                bar: "from-[#023E8A] via-[#0077B6] to-[#0096C7]",
-                dot: "bg-[#0077B6]",
-                badgeStyle:
-                  "border-[#0077B6]/30 bg-[#ADE8F4]/60 text-[#0077B6] dark:bg-[#023E8A]/60 dark:text-[#90E0EF]",
               },
               {
                 href: "/testing",
@@ -365,12 +359,6 @@ export default function LandingPage() {
                   "Inspect Test Schedules →",
                 ),
                 icon: FlaskConical,
-                iconBg: "bg-gradient-to-br from-[#0077B6] to-[#0096C7]",
-                ring: "ring-[#00B4D8]/30",
-                bar: "from-[#0077B6] via-[#0096C7] to-[#00B4D8]",
-                dot: "bg-[#0096C7]",
-                badgeStyle:
-                  "border-[#0096C7]/30 bg-[#90E0EF]/60 text-[#0077B6] dark:bg-[#0077B6]/50 dark:text-[#CAF0F8]",
               },
               {
                 href: "/laboratories",
@@ -389,12 +377,6 @@ export default function LandingPage() {
                   "Locate Accredited Lab →",
                 ),
                 icon: Building2,
-                iconBg: "bg-gradient-to-br from-[#0096C7] to-[#00B4D8]",
-                ring: "ring-[#48CAE4]/30",
-                bar: "from-[#0096C7] via-[#00B4D8] to-[#48CAE4]",
-                dot: "bg-[#00B4D8]",
-                badgeStyle:
-                  "border-[#00B4D8]/30 bg-[#CAF0F8]/70 text-[#0096C7] dark:bg-[#0096C7]/50 dark:text-[#ADE8F4]",
               },
               {
                 href: "/hallmarking",
@@ -413,12 +395,6 @@ export default function LandingPage() {
                   "Hallmarking Guidance →",
                 ),
                 icon: Sparkles,
-                iconBg: "bg-gradient-to-br from-[#00B4D8] to-[#48CAE4]",
-                ring: "ring-[#90E0EF]/40",
-                bar: "from-[#00B4D8] via-[#48CAE4] to-[#90E0EF]",
-                dot: "bg-[#48CAE4]",
-                badgeStyle:
-                  "border-[#00B4D8]/40 bg-[#ADE8F4]/60 text-[#0077B6] dark:bg-[#00B4D8]/40 dark:text-white",
               },
               {
                 href: "/consumer",
@@ -434,12 +410,6 @@ export default function LandingPage() {
                 ),
                 action: t("home.features_consumer_action", "Consumer Hub →"),
                 icon: ShieldCheck,
-                iconBg: "bg-gradient-to-br from-[#03045E] to-[#0077B6]",
-                ring: "ring-[#0077B6]/30",
-                bar: "from-[#03045E] via-[#0077B6] to-[#00B4D8]",
-                dot: "bg-[#0077B6]",
-                badgeStyle:
-                  "border-[#023E8A]/30 bg-[#CAF0F8]/70 text-[#023E8A] dark:bg-[#023E8A]/60 dark:text-[#90E0EF]",
               },
             ].map((card, idx) => {
               const Icon = card.icon;
@@ -447,11 +417,11 @@ export default function LandingPage() {
                 <Link
                   key={idx}
                   href={card.href}
-                  className="group relative p-5 sm:p-6 rounded-2xl border border-white/20 dark:border-slate-800/90 bg-white/95 dark:bg-slate-900/90 shadow-md hover:shadow-2xl hover:shadow-[#00B4D8]/20 hover:border-[#48CAE4] dark:hover:border-[#0077B6] hover:bg-gradient-to-br hover:from-white hover:via-[#CAF0F8]/30 hover:to-[#ADE8F4]/20 dark:hover:from-[#03045E]/40 dark:hover:via-[#023E8A]/20 dark:hover:to-slate-900 hover:-translate-y-1.5 transition-all duration-300 ease-out overflow-hidden flex flex-col justify-between cursor-pointer backdrop-blur-sm"
+                  className="group relative p-5 sm:p-6 rounded-2xl border border-[#D8E3EE] dark:border-[#263B50] bg-[#FFFFFF] dark:bg-[#10243A] shadow-[0_4px_16px_rgba(11,31,58,0.06)] dark:shadow-black/25 hover:shadow-[0_8px_24px_rgba(11,31,58,0.10)] dark:hover:shadow-black/50 hover:border-[#B9DDED] dark:hover:border-[#16A9D8] hover:bg-[#F1F7FC]/50 dark:hover:bg-[#153653] hover:-translate-y-1 transition-all duration-200 ease-out overflow-hidden flex flex-col justify-between cursor-pointer"
                 >
                   {/* Top Glowing Accent Line */}
                   <div
-                    className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${card.bar} opacity-70 group-hover:opacity-100 group-hover:h-1.5 transition-all duration-300`}
+                    className="absolute top-0 left-0 right-0 h-1 bg-[#0057A8] dark:bg-[#16A9D8] opacity-70 group-hover:opacity-100 transition-all duration-200"
                   />
 
                   <div>
@@ -459,36 +429,36 @@ export default function LandingPage() {
                     <div className="flex items-start justify-between gap-3 mb-3">
                       <div className="flex items-center gap-3">
                         <span
-                          className={`p-2.5 rounded-xl ${card.iconBg} text-white shadow-md shadow-[#023E8A]/20 ring-2 ${card.ring} group-hover:scale-110 group-hover:-rotate-3 transition-all duration-300 shrink-0`}
+                          className="p-2.5 rounded-xl bg-[#EAF6FC] dark:bg-[#153653] text-[#0057A8] dark:text-[#16A9D8] shadow-xs group-hover:scale-105 transition-all duration-200 shrink-0"
                         >
                           <Icon className="w-5 h-5" />
                         </span>
-                        <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-slate-100 group-hover:text-[#0077B6] dark:group-hover:text-[#48CAE4] transition-colors leading-snug">
+                        <h3 className="text-base sm:text-lg font-bold text-[#0B1F3A] dark:text-[#F1F5F9] group-hover:text-[#0057A8] dark:group-hover:text-[#16A9D8] transition-colors leading-snug">
                           {card.title}
                         </h3>
                       </div>
                       <span
-                        className={`inline-flex items-center text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border shadow-2xs transition-all duration-300 shrink-0 ${card.badgeStyle} group-hover:scale-105`}
+                        className="inline-flex items-center text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border shadow-2xs transition-all duration-200 shrink-0 bg-[#F0F8FD] text-[#0057A8] border-[#B9DDED] dark:bg-[#153653] dark:text-[#16A9D8] dark:border-[#263B50]"
                       >
                         {card.badge}
                       </span>
                     </div>
 
                     {/* Description */}
-                    <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-3 pl-0.5">
+                    <p className="text-xs text-[#52657A] dark:text-[#AFC1D2] leading-relaxed line-clamp-3 pl-0.5">
                       {card.desc}
                     </p>
                   </div>
 
                   {/* Bottom Divider: Category Tag + Action CTA */}
-                  <div className="mt-5 pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between">
-                    <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+                  <div className="mt-5 pt-3 border-t border-[#D8E3EE] dark:border-[#263B50] flex items-center justify-between">
+                    <span className="text-[10px] font-semibold uppercase tracking-wider text-[#7A8CA0] dark:text-[#7F91A5] flex items-center gap-1.5">
                       <span
-                        className={`w-1.5 h-1.5 rounded-full ${card.dot} transition-transform duration-300 group-hover:scale-125`}
+                        className="w-1.5 h-1.5 rounded-full bg-[#0057A8] dark:bg-[#16A9D8] transition-transform duration-200 group-hover:scale-125"
                       />
                       {card.tag}
                     </span>
-                    <span className="text-xs font-semibold text-[#0077B6] dark:text-[#48CAE4] group-hover:text-[#023E8A] dark:group-hover:text-white flex items-center gap-1 group-hover:translate-x-1 transition-all duration-200">
+                    <span className="text-xs font-semibold text-[#0057A8] dark:text-[#16A9D8] group-hover:text-[#004783] dark:group-hover:text-[#FFFFFF] flex items-center gap-1 group-hover:translate-x-1 transition-all duration-150">
                       {card.action}
                     </span>
                   </div>
@@ -499,26 +469,22 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* "How it Works" Architecture Pipeline with Light Blue Shade Backdrop */}
-      <section className="relative py-20 bg-gradient-to-b from-[#CAF0F8]/50 via-[#ADE8F4]/25 to-[#CAF0F8]/40 dark:from-[#03045E]/30 dark:via-[#023E8A]/15 dark:to-[#03045E]/30 border-y border-[#ADE8F4] dark:border-slate-800 px-4 sm:px-6 w-full overflow-hidden">
-        {/* Ambient Light Blue Glowing Blobs */}
-        <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-96 h-96 bg-[#90E0EF]/30 dark:bg-[#0077B6]/15 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-96 h-96 bg-[#48CAE4]/20 dark:bg-[#00B4D8]/10 rounded-full blur-3xl pointer-events-none" />
-
+      {/* "How it Works" Architecture Pipeline */}
+      <section className="relative py-16 px-4 sm:px-6 w-full overflow-hidden">
         <div className="relative max-w-7xl mx-auto">
           <div className="text-center max-w-2xl mx-auto mb-14">
-            <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/90 dark:bg-[#03045E]/60 text-[#023E8A] dark:text-[#90E0EF] text-xs font-bold mb-3.5 border border-[#ADE8F4] dark:border-[#0077B6]/30 shadow-xs backdrop-blur-sm">
-              <Sparkles className="w-3.5 h-3.5 text-[#0077B6] dark:text-[#48CAE4]" />
+            <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white dark:bg-[#10243A] text-[#0057A8] dark:text-[#16A9D8] text-xs font-bold mb-3.5 border border-[#D8E3EE] dark:border-[#263B50] shadow-xs">
+              <Sparkles className="w-3.5 h-3.5 text-[#0E9FCE] dark:text-[#16A9D8]" />
               <span>
                 {t("home.how_badge", "Architecture & Verification Pipeline")}
               </span>
             </div>
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 dark:text-slate-100 tracking-tight">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#0B1F3A] dark:text-[#F1F5F9] tracking-tight">
               {t("home.how_title", "How BIS Saarthi Works")}
             </h2>
-            <p className="mt-2.5 text-sm sm:text-base text-slate-700 dark:text-slate-300 font-medium">
+            <p className="mt-2.5 text-sm sm:text-base text-[#52657A] dark:text-[#AFC1D2] font-medium">
               {t("home.how_subtitle_prefix", "Strict adherence to")}{" "}
-              <span className="font-bold text-[#0077B6] dark:text-[#48CAE4]">
+              <span className="font-bold text-[#0057A8] dark:text-[#16A9D8]">
                 &quot;Retrieve First → Reason Second → Cite Everything&quot;
               </span>
             </p>
@@ -576,15 +542,15 @@ export default function LandingPage() {
               return (
                 <div
                   key={item.step}
-                  className="group p-5 rounded-2xl bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-[#ADE8F4] dark:border-slate-800 text-center space-y-3 shadow-sm hover:shadow-xl hover:shadow-[#0077B6]/15 hover:border-[#00B4D8] dark:hover:border-[#0077B6] hover:-translate-y-1.5 transition-all duration-300"
+                  className="group p-5 rounded-2xl bg-white dark:bg-[#10243A] border border-[#D8E3EE] dark:border-[#263B50] text-center space-y-3 shadow-[0_4px_16px_rgba(11,31,58,0.06)] hover:shadow-[0_8px_24px_rgba(11,31,58,0.10)] hover:border-[#B9DDED] dark:hover:border-[#16A9D8] dark:hover:bg-[#153653] hover:-translate-y-1 transition-all duration-200"
                 >
-                  <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#023E8A] via-[#0077B6] to-[#0096C7] text-white font-black text-xs flex items-center justify-center mx-auto shadow-sm shadow-[#0077B6]/30 group-hover:scale-110 transition-transform">
+                  <div className="w-9 h-9 rounded-full bg-[#0057A8] dark:bg-[#1268B3] text-white font-black text-xs flex items-center justify-center mx-auto shadow-xs group-hover:scale-105 transition-transform">
                     {item.step}
                   </div>
-                  <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100 group-hover:text-[#0077B6] dark:group-hover:text-[#48CAE4] transition-colors">
+                  <h4 className="text-sm font-bold text-[#0B1F3A] dark:text-[#F1F5F9] group-hover:text-[#0057A8] dark:group-hover:text-[#16A9D8] transition-colors">
                     {item.title}
                   </h4>
-                  <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-normal">
+                  <p className="text-xs text-[#52657A] dark:text-[#AFC1D2] leading-relaxed font-normal">
                     {item.desc}
                   </p>
                 </div>
@@ -595,12 +561,11 @@ export default function LandingPage() {
       </section>
 
       {/* Trust & Grounding Guarantee Section */}
-      <section className="py-14 bg-gradient-to-r from-[#03045E] via-[#023E8A] to-[#0077B6] text-white px-4 sm:px-6 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-[#00B4D8]/20 rounded-full blur-3xl pointer-events-none" />
-        <div className="relative max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
+      <section className="py-14 px-4 sm:px-6 relative overflow-hidden">
+        <div className="relative max-w-5xl mx-auto p-8 rounded-3xl bg-white dark:bg-[#10243A] border border-[#D8E3EE] dark:border-[#263B50] shadow-[0_8px_24px_rgba(11,31,58,0.08)] flex flex-col md:flex-row items-center justify-between gap-8">
           <div className="space-y-2">
-            <div className="flex items-center gap-2 text-[#48CAE4] font-bold text-sm">
-              <ShieldCheck className="w-5 h-5 text-[#90E0EF]" />
+            <div className="flex items-center gap-2 text-[#0057A8] dark:text-[#16A9D8] font-bold text-sm">
+              <ShieldCheck className="w-5 h-5 text-[#0077B6] dark:text-[#16A9D8]" />
               <span className="tracking-wide">
                 {t(
                   "home.trust_badge",
@@ -608,13 +573,13 @@ export default function LandingPage() {
                 )}
               </span>
             </div>
-            <h3 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+            <h3 className="text-2xl sm:text-3xl font-black text-[#0B1F3A] dark:text-[#F1F5F9] tracking-tight">
               {t(
                 "home.trust_title",
                 "Trusted by MSMEs, Compliance Teams & Citizens",
               )}
             </h3>
-            <p className="text-xs sm:text-sm text-[#CAF0F8]/90 max-w-xl leading-relaxed">
+            <p className="text-xs sm:text-sm text-[#52657A] dark:text-[#AFC1D2] max-w-xl leading-relaxed">
               {t(
                 "home.trust_desc",
                 "BIS Saarthi never invents Indian Standard numbers, test clauses, or lab recognition statuses. If official evidence is not available in the database, the system will explicitly state that the requirement cannot be verified.",
@@ -623,7 +588,7 @@ export default function LandingPage() {
           </div>
           <Link
             href="/chat"
-            className="px-6 py-3.5 rounded-xl text-sm font-bold bg-gradient-to-r from-[#0096C7] via-[#00B4D8] to-[#48CAE4] hover:from-[#0077B6] hover:to-[#00B4D8] text-slate-950 hover:text-white shadow-lg shadow-[#03045E]/40 transition-all shrink-0 hover:scale-105 active:scale-95"
+            className="px-6 py-3.5 rounded-xl text-sm font-bold bg-[#0057A8] hover:bg-[#004783] dark:bg-[#1268B3] dark:hover:bg-[#1679C7] text-white shadow-sm transition-all shrink-0 hover:scale-102 active:scale-98"
           >
             {t("home.trust_action", "Launch AI Workspace →")}
           </Link>

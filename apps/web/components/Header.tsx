@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 import { LanguageSelector } from "@bis/ui";
 import { useTranslation } from "@/lib/i18n";
 import {
-  MessageSquare,
   Search,
   Award,
   FlaskConical,
@@ -18,8 +17,13 @@ import {
   X,
   Compass,
   ChevronDown,
+  LayoutDashboard,
+  LogIn,
+  LogOut,
 } from "lucide-react";
 import Image from "next/image";
+import { ThemeToggle } from "./ThemeToggle";
+import { isAuthenticated, clearAuthToken } from "@/lib/auth";
 
 export function Header() {
   const pathname = usePathname();
@@ -28,6 +32,29 @@ export function Header() {
   const [standardsDropdownOpen, setStandardsDropdownOpen] = useState(false);
   const [mobileStandardsOpen, setMobileStandardsOpen] = useState(true);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const checkAuth = () => {
+    setIsLoggedIn(isAuthenticated());
+  };
+
+  const handleLogout = () => {
+    clearAuthToken();
+    setIsLoggedIn(false);
+  };
+
+  useEffect(() => {
+    checkAuth();
+
+    window.addEventListener("storage", checkAuth);
+    window.addEventListener("focus", checkAuth);
+    window.addEventListener("auth-change", checkAuth);
+    return () => {
+      window.removeEventListener("storage", checkAuth);
+      window.removeEventListener("focus", checkAuth);
+      window.removeEventListener("auth-change", checkAuth);
+    };
+  }, [pathname]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -38,9 +65,6 @@ export function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Keep the dropdown open while the cursor travels from the trigger
-  // to the menu. A small close delay + a padding bridge (no margin gap)
-  // prevents the flicker/accidental-close on mouseleave.
   const closeTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const openStandardsMenu = () => {
@@ -78,10 +102,10 @@ export function Header() {
 
   return (
     <header
-      className={`sticky top-0 z-50 transition-all duration-300 backdrop-blur-xl supports-[backdrop-filter]:bg-white/70 dark:supports-[backdrop-filter]:bg-slate-900/75 backdrop-saturate-180 ${
+      className={`sticky top-0 z-50 transition-all duration-300 backdrop-blur-xl backdrop-saturate-150 ${
         isScrolled
-          ? "bg-white/80 dark:bg-slate-900/85 border-b border-slate-200/80 dark:border-slate-800/80 shadow-sm shadow-[#03045E]/5"
-          : "bg-white/60 dark:bg-slate-900/60 border-b border-slate-200/40 dark:border-slate-800/40"
+          ? "bg-white/80 dark:bg-[#07111F]/80 border-b border-[#E2EAF1]/80 dark:border-[#263B50]/80 shadow-xs shadow-[#0B1F3A]/5"
+          : "bg-white/70 dark:bg-[#07111F]/70 border-b border-[#E2EAF1]/50 dark:border-[#263B50]/50"
       }`}
     >
       {/* Main Nav Bar */}
@@ -103,14 +127,14 @@ export function Header() {
                     priority
                   />
                 </div>
-                <span className="text-sm font-black tracking-tight text-slate-900 dark:text-slate-100 whitespace-nowrap">
+                <span className="text-sm font-black tracking-tight text-[#0B1F3A] dark:text-[#F1F5F9] whitespace-nowrap">
                   BIS{" "}
-                  <span className="text-[#0077B6] dark:text-[#48CAE4] font-extrabold">
+                  <span className="text-[#0057A8] dark:text-[#16A9D8] font-extrabold">
                     Saarthi
                   </span>
                 </span>
               </div>
-              <p className="text-[10px] text-slate-500 font-medium leading-none whitespace-nowrap">
+              <p className="text-[10px] text-[#52657A] dark:text-[#8299AD] font-medium leading-none whitespace-nowrap">
                 {t("header.subtitle", "Indian Standards Intelligence")}
               </p>
             </div>
@@ -118,7 +142,6 @@ export function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-0.5 xl:gap-1.5 flex-nowrap">
-            {/* Standards Dropdown Heading */}
             <div
               className="relative"
               onMouseEnter={openStandardsMenu}
@@ -143,59 +166,61 @@ export function Header() {
                 onKeyDown={(e) => {
                   if (e.key === "Escape") setStandardsDropdownOpen(false);
                 }}
-                className={`inline-flex items-center gap-1 xl:gap-1.5 px-2 xl:px-2.5 py-1.5 rounded-xl text-[11px] xl:text-xs font-semibold whitespace-nowrap transition-all duration-200 cursor-pointer ${
+                className={`group inline-flex items-center gap-1 xl:gap-1.5 px-2.5 py-1.5 rounded-xl text-[11px] xl:text-xs font-semibold whitespace-nowrap transition-all duration-200 cursor-pointer ${
                   isStandardsActive
-                    ? "bg-gradient-to-r from-[#CAF0F8] to-[#ADE8F4]/70 dark:from-[#03045E]/80 dark:to-[#023E8A]/60 text-[#023E8A] dark:text-[#90E0EF] font-bold border border-[#ADE8F4] dark:border-[#0077B6]/40 shadow-xs"
-                    : "text-slate-700 dark:text-slate-300 hover:text-[#0077B6] dark:hover:text-white hover:bg-[#CAF0F8]/40 dark:hover:bg-slate-800/80"
+                    ? "bg-[#EAF4FB] text-[#0057A8] font-bold border border-[#B9DDED] dark:bg-[#163B59] dark:text-[#16A9D8] dark:border-[#263B50] shadow-2xs"
+                    : "text-[#263B53] dark:text-[#AFC1D2] hover:text-[#0057A8] dark:hover:text-[#FFFFFF] hover:bg-[#F1F7FC] dark:hover:bg-[#172F47]"
                 }`}
               >
                 <Search
                   className={`w-3.5 h-3.5 shrink-0 transition-colors ${
                     isStandardsActive
-                      ? "text-[#0077B6] dark:text-[#48CAE4]"
-                      : "text-slate-500 dark:text-slate-400"
+                      ? "text-[#0057A8] dark:text-[#16A9D8]"
+                      : "text-[#526B83] dark:text-[#AFC1D2] group-hover:text-[#0057A8] dark:group-hover:text-[#16A9D8]"
                   }`}
                 />
                 <span>{t("nav.standards", "Standards")}</span>
                 <ChevronDown
                   className={`w-3 h-3 transition-transform duration-200 ${
                     standardsDropdownOpen
-                      ? "rotate-180 text-[#0077B6] dark:text-[#48CAE4]"
+                      ? "rotate-180 text-[#0057A8] dark:text-[#16A9D8]"
                       : isStandardsActive
-                      ? "text-[#0077B6] dark:text-[#48CAE4]"
-                      : "text-slate-400"
+                      ? "text-[#0057A8] dark:text-[#16A9D8]"
+                      : "text-[#526B83] dark:text-[#AFC1D2] group-hover:text-[#0057A8] dark:group-hover:text-[#16A9D8]"
                   }`}
                 />
               </button>
 
               {/* Dropdown Menu */}
               {standardsDropdownOpen && (
-                <div className="absolute top-full left-0 mt-1 w-72 rounded-2xl border border-[#ADE8F4] dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl shadow-xl shadow-[#03045E]/10 p-1.5 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
+                <div className="absolute top-full left-0 mt-1 w-72 rounded-xl border border-[#D8E3EE]/80 dark:border-[#263B50]/80 bg-white/90 dark:bg-[#10243A]/90 backdrop-blur-2xl backdrop-saturate-150 shadow-[0_12px_30px_rgba(11,31,58,0.12)] dark:shadow-[0_12px_30px_rgba(0,0,0,0.30)] p-1.5 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
                   <Link
                     href="/standards/recommend"
                     onClick={() => setStandardsDropdownOpen(false)}
                     className={`group flex items-start gap-3 p-2.5 rounded-xl transition-all duration-200 ${
                       pathname === "/standards/recommend"
-                        ? "bg-gradient-to-r from-[#CAF0F8] to-[#ADE8F4]/60 dark:from-[#03045E]/70 dark:to-[#023E8A]/50 text-[#023E8A] dark:text-[#90E0EF] font-bold border border-[#ADE8F4] dark:border-[#0077B6]/40 shadow-2xs"
-                        : "text-slate-700 dark:text-slate-300 hover:bg-[#CAF0F8]/40 dark:hover:bg-slate-800/80 hover:text-[#0077B6] dark:hover:text-[#48CAE4]"
+                        ? "bg-[#EAF4FB] text-[#0057A8] font-bold border border-[#B9DDED] dark:bg-[#163B59] dark:text-[#16A9D8] dark:border-[#263B50] shadow-2xs"
+                        : "text-[#263B53] dark:text-[#EAF2F8] hover:bg-[#F1F7FC] dark:hover:bg-[#172F47] hover:text-[#0057A8] dark:hover:text-[#FFFFFF]"
                     }`}
                   >
                     <span
                       className={`p-2 rounded-lg shrink-0 transition-all ${
                         pathname === "/standards/recommend"
-                          ? "bg-white dark:bg-slate-800 text-[#0077B6] dark:text-[#48CAE4] shadow-xs"
-                          : "bg-[#CAF0F8]/50 dark:bg-slate-800 text-[#0077B6] dark:text-[#48CAE4] group-hover:scale-110"
+                          ? "bg-white dark:bg-[#153653] text-[#0057A8] dark:text-[#16A9D8] shadow-xs"
+                          : "bg-[#EAF6FC] dark:bg-[#153653] text-[#0057A8] dark:text-[#16A9D8] group-hover:scale-105"
                       }`}
                     >
                       <Compass className="w-4 h-4" />
                     </span>
                     <div className="min-w-0">
-                      <div className="text-xs font-bold leading-snug">{t("nav.find_standard", "Find Your Standards")}</div>
+                      <div className="text-xs font-bold leading-snug text-[#0B1F3A] dark:text-[#F1F5F9] group-hover:text-[#0057A8] dark:group-hover:text-[#FFFFFF]">
+                        {t("nav.find_standard", "Find Your Standards")}
+                      </div>
                       <p
                         className={`text-[11px] leading-tight mt-0.5 ${
                           pathname === "/standards/recommend"
-                            ? "text-[#023E8A]/80 dark:text-[#90E0EF]/80 font-normal"
-                            : "text-slate-500 dark:text-slate-400"
+                            ? "text-[#52657A] dark:text-[#AFC1D2] font-normal"
+                            : "text-[#7A8CA0] dark:text-[#AFC1D2]"
                         }`}
                       >
                         {t("header.find_standard_desc", "AI product profiler matching your product to IS")}
@@ -208,26 +233,28 @@ export function Header() {
                     onClick={() => setStandardsDropdownOpen(false)}
                     className={`group flex items-start gap-3 p-2.5 rounded-xl transition-all duration-200 mt-1 ${
                       pathname === "/standards"
-                        ? "bg-gradient-to-r from-[#CAF0F8] to-[#ADE8F4]/60 dark:from-[#03045E]/70 dark:to-[#023E8A]/50 text-[#023E8A] dark:text-[#90E0EF] font-bold border border-[#ADE8F4] dark:border-[#0077B6]/40 shadow-2xs"
-                        : "text-slate-700 dark:text-slate-300 hover:bg-[#CAF0F8]/40 dark:hover:bg-slate-800/80 hover:text-[#0077B6] dark:hover:text-[#48CAE4]"
+                        ? "bg-[#EAF4FB] text-[#0057A8] font-bold border border-[#B9DDED] dark:bg-[#163B59] dark:text-[#16A9D8] dark:border-[#263B50] shadow-2xs"
+                        : "text-[#263B53] dark:text-[#EAF2F8] hover:bg-[#F1F7FC] dark:hover:bg-[#172F47] hover:text-[#0057A8] dark:hover:text-[#FFFFFF]"
                     }`}
                   >
                     <span
                       className={`p-2 rounded-lg shrink-0 transition-all ${
                         pathname === "/standards"
-                          ? "bg-white dark:bg-slate-800 text-[#0077B6] dark:text-[#48CAE4] shadow-xs"
-                          : "bg-[#CAF0F8]/50 dark:bg-slate-800 text-[#0077B6] dark:text-[#48CAE4] group-hover:scale-110"
+                          ? "bg-white dark:bg-[#153653] text-[#0057A8] dark:text-[#16A9D8] shadow-xs"
+                          : "bg-[#EAF6FC] dark:bg-[#153653] text-[#0057A8] dark:text-[#16A9D8] group-hover:scale-105"
                       }`}
                     >
                       <Search className="w-4 h-4" />
                     </span>
                     <div className="min-w-0">
-                      <div className="text-xs font-bold leading-snug">{t("nav.catalogue", "Standards Catalogue")}</div>
+                      <div className="text-xs font-bold leading-snug text-[#0B1F3A] dark:text-[#F1F5F9] group-hover:text-[#0057A8] dark:group-hover:text-[#FFFFFF]">
+                        {t("nav.catalogue", "Standards Catalogue")}
+                      </div>
                       <p
                         className={`text-[11px] leading-tight mt-0.5 ${
                           pathname === "/standards"
-                            ? "text-[#023E8A]/80 dark:text-[#90E0EF]/80 font-normal"
-                            : "text-slate-500 dark:text-slate-400"
+                            ? "text-[#52657A] dark:text-[#AFC1D2] font-normal"
+                            : "text-[#7A8CA0] dark:text-[#AFC1D2]"
                         }`}
                       >
                         {t("header.catalogue_desc", "Search and explore Indian Standards catalogue")}
@@ -246,17 +273,17 @@ export function Header() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`inline-flex items-center gap-1 xl:gap-1.5 px-2 xl:px-2.5 py-1.5 rounded-xl text-[11px] xl:text-xs font-semibold whitespace-nowrap transition-all duration-200 ${
+                  className={`group inline-flex items-center gap-1 xl:gap-1.5 px-2.5 py-1.5 rounded-xl text-[11px] xl:text-xs font-semibold whitespace-nowrap transition-all duration-200 ${
                     isActive
-                      ? "bg-gradient-to-r from-[#CAF0F8] to-[#ADE8F4]/70 dark:from-[#03045E]/80 dark:to-[#023E8A]/60 text-[#023E8A] dark:text-[#90E0EF] font-bold border border-[#ADE8F4] dark:border-[#0077B6]/40 shadow-xs"
-                      : "text-slate-700 dark:text-slate-300 hover:text-[#0077B6] dark:hover:text-white hover:bg-[#CAF0F8]/40 dark:hover:bg-slate-800/80"
+                      ? "bg-[#EAF4FB] text-[#0057A8] font-bold border border-[#B9DDED] dark:bg-[#163B59] dark:text-[#16A9D8] dark:border-[#263B50] shadow-2xs"
+                      : "text-[#263B53] dark:text-[#AFC1D2] hover:text-[#0057A8] dark:hover:text-[#FFFFFF] hover:bg-[#F1F7FC] dark:hover:bg-[#172F47]"
                   }`}
                 >
                   <Icon
-                    className={`w-3.5 h-3.5 shrink-0 ${
+                    className={`w-3.5 h-3.5 shrink-0 transition-colors ${
                       isActive
-                        ? "text-[#0077B6] dark:text-[#48CAE4]"
-                        : "text-slate-500 dark:text-slate-400"
+                        ? "text-[#0057A8] dark:text-[#16A9D8]"
+                        : "text-[#526B83] dark:text-[#AFC1D2] group-hover:text-[#0057A8] dark:group-hover:text-[#16A9D8]"
                     }`}
                   />
                   <span>{link.label}</span>
@@ -272,21 +299,43 @@ export function Header() {
               onLanguageChange={setSelectedLanguage}
             />
 
+            <ThemeToggle />
+
             {/* Action Button & Mobile Toggle */}
-            <div className="flex items-center gap-2">
-              <Link
-                href="/chat"
-                className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold bg-gradient-to-r from-[#023E8A] to-[#0077B6] hover:from-[#03045E] hover:to-[#023E8A] text-white shadow-sm shadow-[#0077B6]/25 transition-all whitespace-nowrap"
-              >
-                <MessageSquare className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">{t("nav.ask_bis_ai", "Ask BIS AI")}</span>
-                <span className="sm:hidden">{t("nav.ask_ai", "Ask AI")}</span>
-              </Link>
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              {isLoggedIn ? (
+                <div className="flex items-center gap-1">
+                  <Link
+                    href="/dashboard"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-[#0057A8] hover:bg-[#004783] dark:bg-[#1268B3] dark:hover:bg-[#1679C7] text-white shadow-sm transition-all whitespace-nowrap"
+                  >
+                    <LayoutDashboard className="w-3.5 h-3.5" />
+                    <span>{t("nav.dashboard", "Dashboard")}</span>
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    title="Sign Out"
+                    aria-label="Sign Out"
+                    className="p-1.5 rounded-lg text-[#52657A] hover:text-[#C93636] dark:text-[#8299AD] dark:hover:text-[#EF4444] hover:bg-[#F1F7FC] dark:hover:bg-[#172F47] transition-colors"
+                  >
+                    <LogOut className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              ) : (
+                <Link
+                  href="/login"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-[#0057A8] hover:bg-[#004783] dark:bg-[#1268B3] dark:hover:bg-[#1679C7] text-white shadow-sm transition-all whitespace-nowrap"
+                >
+                  <LogIn className="w-3.5 h-3.5" />
+                  <span>{t("nav.login", "Login")}</span>
+                </Link>
+              )}
 
               <button
                 type="button"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="lg:hidden p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+                className="lg:hidden p-2 rounded-lg text-[#263B53] dark:text-[#AFC1D2] hover:bg-[#F1F7FC] dark:hover:bg-[#172F47] dark:hover:text-[#FFFFFF]"
                 aria-label="Toggle navigation menu"
               >
                 {mobileMenuOpen ? (
@@ -302,25 +351,25 @@ export function Header() {
 
       {/* Mobile Menu Dropdown */}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 pt-2 pb-4 space-y-1 shadow-lg">
+        <div className="lg:hidden border-t border-[#E2EAF1]/80 dark:border-[#263B50]/80 bg-white/90 dark:bg-[#10243A]/90 backdrop-blur-2xl backdrop-saturate-150 px-4 pt-2 pb-4 space-y-1 shadow-[0_12px_30px_rgba(11,31,58,0.12)] dark:shadow-[0_12px_30px_rgba(0,0,0,0.30)]">
           {/* Mobile Standards Dropdown Accordion */}
           <div className="py-1">
             <button
               type="button"
               onClick={() => setMobileStandardsOpen(!mobileStandardsOpen)}
-              className={`flex items-center justify-between w-full px-3 py-2 rounded-lg text-sm font-semibold ${
+              className={`flex items-center justify-between w-full px-3 py-2 rounded-lg text-sm font-semibold transition-colors ${
                 isStandardsActive
-                  ? "bg-[#CAF0F8]/80 text-[#023E8A] dark:bg-[#03045E]/60 dark:text-[#90E0EF] font-bold border border-[#ADE8F4]"
-                  : "text-slate-700 dark:text-slate-300 hover:bg-[#CAF0F8]/30 dark:hover:bg-slate-800"
+                  ? "bg-[#EAF4FB] text-[#0057A8] font-bold border border-[#B9DDED] dark:bg-[#163B59] dark:text-[#16A9D8] dark:border-[#263B50]"
+                  : "text-[#263B53] dark:text-[#EAF2F8] hover:bg-[#F1F7FC] dark:hover:bg-[#172F47]"
               }`}
             >
               <div className="flex items-center gap-2.5">
-                <Search className="w-4 h-4 text-[#0077B6]" />
+                <Search className="w-4 h-4 text-[#0057A8] dark:text-[#16A9D8]" />
                 <span>{t("nav.standards", "Standards")}</span>
               </div>
               <ChevronDown
                 className={`w-4 h-4 transition-transform duration-200 ${
-                  mobileStandardsOpen ? "rotate-180" : ""
+                  mobileStandardsOpen ? "rotate-180 text-[#0057A8] dark:text-[#16A9D8]" : "text-[#526B83] dark:text-[#AFC1D2]"
                 }`}
               />
             </button>
@@ -329,25 +378,25 @@ export function Header() {
                 <Link
                   href="/standards/recommend"
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-medium ${
+                  className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
                     pathname === "/standards/recommend"
-                      ? "bg-[#CAF0F8] text-[#023E8A] dark:bg-[#03045E]/60 dark:text-[#90E0EF] font-bold"
-                      : "text-slate-600 dark:text-slate-400 hover:text-[#0077B6] dark:hover:text-slate-100"
+                      ? "bg-[#EAF4FB] text-[#0057A8] font-bold border border-[#B9DDED] dark:bg-[#163B59] dark:text-[#16A9D8] dark:border-[#263B50]"
+                      : "text-[#52657A] dark:text-[#AFC1D2] hover:bg-[#F1F7FC] hover:text-[#0057A8] dark:hover:bg-[#172F47] dark:hover:text-[#FFFFFF]"
                   }`}
                 >
-                  <Compass className="w-3.5 h-3.5 text-[#0077B6]" />
+                  <Compass className="w-3.5 h-3.5 text-[#0057A8] dark:text-[#16A9D8]" />
                   <span>{t("nav.find_standard", "Find Your Standards")}</span>
                 </Link>
                 <Link
                   href="/standards"
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-medium ${
+                  className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
                     pathname === "/standards"
-                      ? "bg-[#CAF0F8] text-[#023E8A] dark:bg-[#03045E]/60 dark:text-[#90E0EF] font-bold"
-                      : "text-slate-600 dark:text-slate-400 hover:text-[#0077B6] dark:hover:text-slate-100"
+                      ? "bg-[#EAF4FB] text-[#0057A8] font-bold border border-[#B9DDED] dark:bg-[#163B59] dark:text-[#16A9D8] dark:border-[#263B50]"
+                      : "text-[#52657A] dark:text-[#AFC1D2] hover:bg-[#F1F7FC] hover:text-[#0057A8] dark:hover:bg-[#172F47] dark:hover:text-[#FFFFFF]"
                   }`}
                 >
-                  <Search className="w-3.5 h-3.5 text-[#0077B6]" />
+                  <Search className="w-3.5 h-3.5 text-[#0057A8] dark:text-[#16A9D8]" />
                   <span>{t("nav.catalogue", "Standards Catalogue")}</span>
                 </Link>
               </div>
@@ -362,20 +411,20 @@ export function Header() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium ${
+                className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                   isActive
-                    ? "bg-[#CAF0F8]/80 text-[#023E8A] dark:bg-[#03045E]/60 dark:text-[#90E0EF] font-bold border border-[#ADE8F4]"
-                    : "text-slate-700 dark:text-slate-300 hover:bg-[#CAF0F8]/30 dark:hover:bg-slate-800"
+                    ? "bg-[#EAF4FB] text-[#0057A8] font-bold border border-[#B9DDED] dark:bg-[#163B59] dark:text-[#16A9D8] dark:border-[#263B50]"
+                    : "text-[#263B53] dark:text-[#AFC1D2] hover:bg-[#F1F7FC] hover:text-[#0057A8] dark:hover:bg-[#172F47] dark:hover:text-[#FFFFFF]"
                 }`}
               >
-                <Icon className="w-4 h-4 text-[#0077B6]" />
+                <Icon className={`w-4 h-4 ${isActive ? "text-[#0057A8] dark:text-[#16A9D8]" : "text-[#526B83] dark:text-[#AFC1D2]"}`} />
                 <span>{link.label}</span>
               </Link>
             );
           })}
 
-          <div className="pt-3 pb-1 flex items-center justify-between border-t border-slate-200 dark:border-slate-800">
-            <span className="text-xs font-semibold text-slate-500">
+          <div className="pt-3 pb-1 flex items-center justify-between border-t border-[#E2EAF1] dark:border-[#263B50]">
+            <span className="text-xs font-semibold text-[#52657A] dark:text-[#AFC1D2]">
               {t("chat.language_label", "Language:")}
             </span>
             <LanguageSelector
@@ -387,15 +436,46 @@ export function Header() {
             />
           </div>
 
+          <div className="pt-2 pb-1 flex items-center justify-between border-t border-[#E2EAF1] dark:border-[#263B50]">
+            <span className="text-xs font-semibold text-[#52657A] dark:text-[#AFC1D2]">
+              Theme:
+            </span>
+            <ThemeToggle showLabel={true} />
+          </div>
+
           <div className="pt-2">
-            <Link
-              href="/chat"
-              onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center justify-center gap-2 w-full px-3 py-2.5 rounded-lg text-sm font-bold bg-gradient-to-r from-[#023E8A] to-[#0077B6] hover:from-[#03045E] hover:to-[#023E8A] text-white shadow-sm shadow-[#0077B6]/25"
-            >
-              <MessageSquare className="w-4 h-4" />
-              <span>{t("nav.ask_bis_ai", "Ask BIS AI")}</span>
-            </Link>
+            {isLoggedIn ? (
+              <div className="space-y-2">
+                <Link
+                  href="/dashboard"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center justify-center gap-2 w-full px-3 py-2.5 rounded-lg text-sm font-bold bg-[#0057A8] hover:bg-[#004783] dark:bg-[#1268B3] dark:hover:bg-[#1679C7] text-white shadow-sm"
+                >
+                  <LayoutDashboard className="w-4 h-4" />
+                  <span>{t("nav.dashboard", "Dashboard")}</span>
+                </Link>
+                <button
+                  type="button"
+                  onClick={() => {
+                    handleLogout();
+                    setMobileMenuOpen(false);
+                  }}
+                  className="flex items-center justify-center gap-2 w-full px-3 py-2 rounded-lg text-xs font-semibold text-[#C93636] dark:text-[#EF4444] bg-rose-50/60 dark:bg-rose-950/30 border border-rose-200/60 dark:border-rose-900/40 hover:bg-rose-100 dark:hover:bg-rose-950/50 transition-colors"
+                >
+                  <LogOut className="w-3.5 h-3.5" />
+                  <span>Sign Out</span>
+                </button>
+              </div>
+            ) : (
+              <Link
+                href="/login"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center justify-center gap-2 w-full px-3 py-2.5 rounded-lg text-sm font-bold bg-[#0057A8] hover:bg-[#004783] dark:bg-[#1268B3] dark:hover:bg-[#1679C7] text-white shadow-sm"
+              >
+                <LogIn className="w-4 h-4" />
+                <span>{t("nav.login", "Login")}</span>
+              </Link>
+            )}
           </div>
         </div>
       )}

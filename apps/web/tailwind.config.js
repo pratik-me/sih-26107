@@ -18,7 +18,41 @@ module.exports = {
           slate: '#F8FAFC',
           gold: '#B45309'
         },
+        navy: {
+          bg: '#07111F',
+          section: '#0B1A2B',
+          card: '#10243A',
+          'card-hover': '#153653',
+          'card-active': '#102E47',
+          border: '#263B50',
+          blue: '#1268B3',
+          action: '#1583D1',
+          cyan: '#16A9D8',
+          text: '#F1F5F9',
+          'text-secondary': '#A8B6C7',
+          'text-muted': '#7F91A5',
+          success: '#22C55E'
+        },
         bis: {
+          navy: '#0B1F3A',
+          blue: '#0057A8',
+          'blue-hover': '#004783',
+          cyan: '#0E9FCE',
+          border: '#D8E3EE',
+          'border-light': '#E2EAF1',
+          'border-accent': '#B9DDED',
+          bg: '#F7FAFC',
+          card: '#FFFFFF',
+          hover: '#F1F7FC',
+          selected: '#EAF4FB',
+          'selected-card': '#F0F8FD',
+          secondary: '#52657A',
+          muted: '#7A8CA0',
+          text: '#263B53',
+          icon: '#526B83',
+          success: '#16845B',
+          gold: '#C58A16',
+          error: '#C93636',
           900: '#03045E', // Deep Twilight
           800: '#023E8A', // French Blue
           700: '#0077B6', // Bright Teal Blue
