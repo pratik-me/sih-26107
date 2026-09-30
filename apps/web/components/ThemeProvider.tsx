@@ -34,10 +34,12 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       root.classList.add('dark');
       root.setAttribute('data-theme', 'dark');
       root.style.colorScheme = 'dark';
+      root.style.backgroundColor = '#07111F';
     } else {
       root.classList.remove('dark');
       root.setAttribute('data-theme', 'light');
       root.style.colorScheme = 'light';
+      root.style.backgroundColor = '#F7FAFC';
     }
   };
 

@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
+import { FloatingAskAI } from "../components/FloatingAskAI";
 
 export const metadata: Metadata = {
   title: "BIS Saarthi — AI Assistant for Indian Standards & Services",
@@ -24,7 +25,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning className={cn("font-sans", GeistSans.variable)}>
+    <html lang="en" suppressHydrationWarning className={cn("font-sans bg-[#F7FAFC] dark:bg-[#07111F]", GeistSans.variable)}>
       <head>
         <script
           dangerouslySetInnerHTML={{
@@ -35,9 +36,13 @@ export default function RootLayout({
                   if (theme === 'dark') {
                     document.documentElement.classList.add('dark');
                     document.documentElement.setAttribute('data-theme', 'dark');
+                    document.documentElement.style.backgroundColor = '#07111F';
+                    document.documentElement.style.colorScheme = 'dark';
                   } else {
                     document.documentElement.classList.remove('dark');
                     document.documentElement.setAttribute('data-theme', 'light');
+                    document.documentElement.style.backgroundColor = '#F7FAFC';
+                    document.documentElement.style.colorScheme = 'light';
                   }
                 } catch (e) {}
               })();
@@ -45,11 +50,12 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="min-h-screen flex flex-col font-sans bg-slate-50 text-slate-900 dark:bg-[#07111F] dark:text-[#F1F5F9] antialiased">
+      <body className="min-h-screen flex flex-col font-sans bg-[#F7FAFC] text-[#0B1F3A] dark:bg-[#07111F] dark:text-[#EAF2F8] antialiased">
         <Providers>
           <Header />
-          <main className="flex-1">{children}</main>
+          <main className="flex-1 bg-[#F7FAFC] dark:bg-[#07111F]">{children}</main>
           <Footer />
+          <FloatingAskAI />
         </Providers>
       </body>
     </html>

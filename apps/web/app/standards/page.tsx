@@ -55,53 +55,62 @@ export default function StandardsCatalogPage() {
   };
 
   return (
-    <div className="relative min-h-screen w-full bg-gradient-to-b from-white via-[#CAF0F8]/40 to-[#90E0EF]/55 dark:from-[#07111F] dark:via-[#0A1A2E] dark:to-[#0F2942] overflow-hidden text-slate-900 dark:text-white">
-      {/* Ambient Glowing Blobs */}
-      <div className="absolute top-12 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-[#90E0EF]/35 dark:bg-[#00B4D8]/15 rounded-full blur-3xl pointer-events-none animate-pulse" />
-      <div className="absolute top-0 right-10 w-80 h-80 bg-[#ADE8F4]/45 dark:bg-[#0077B6]/20 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 left-10 w-80 h-80 bg-[#CAF0F8]/55 dark:bg-[#48CAE4]/15 rounded-full blur-3xl pointer-events-none" />
+    <div className="relative min-h-screen w-full bg-[#F7FAFC] dark:bg-[#07111F] overflow-hidden text-[#0B1F3A] dark:text-[#EAF2F8]">
+      {/* Subtle atmospheric hero glow */}
+      <div
+        className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[450px] pointer-events-none dark:hidden"
+        style={{
+          background: 'radial-gradient(circle at 50% 15%, #EAF6FC 0%, transparent 45%)',
+        }}
+      />
+      <div
+        className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[450px] pointer-events-none hidden dark:block"
+        style={{
+          background: 'radial-gradient(circle at 50% 15%, rgba(22, 169, 216, 0.08) 0%, transparent 45%)',
+        }}
+      />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 space-y-8 relative z-10">
         {/* Header */}
         <div className="space-y-2">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/80 dark:bg-white/10 text-[#0077B6] dark:text-[#CAF0F8] text-xs font-semibold border border-[#ADE8F4] dark:border-[#48CAE4]/30 backdrop-blur-md shadow-2xs">
-            <BookOpen className="w-3.5 h-3.5 text-[#0077B6] dark:text-[#48CAE4]" />
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white dark:bg-[#10243A] text-[#0057A8] dark:text-[#16A9D8] text-xs font-semibold border border-[#D8E3EE] dark:border-[#263B50] shadow-2xs">
+            <BookOpen className="w-3.5 h-3.5 text-[#0057A8] dark:text-[#16A9D8]" />
             <span>{t('standards.badge', 'Bureau of Indian Standards Repository')}</span>
           </div>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#0B1F3A] dark:text-[#EAF2F8] tracking-tight">
             {t('standards.title', 'Indian Standards Directory & Search')}
           </h1>
-          <p className="text-sm sm:text-base text-slate-600 dark:text-[#ADE8F4]/90 max-w-2xl leading-relaxed">
+          <p className="text-sm sm:text-base text-[#52657A] dark:text-[#AFC1D2] max-w-2xl leading-relaxed">
             {t('standards.subtitle', 'Search authoritative Indian Standards (IS), explore technical scopes, mandatory Quality Control Orders (QCO), and testing clause schedules.')}
           </p>
         </div>
 
         {/* Search & Filter Bar */}
-        <div className="bg-white/95 dark:bg-[#10243A] backdrop-blur-md p-5 rounded-2xl border border-[#ADE8F4] dark:border-[#263B50] shadow-md shadow-[#0077B6]/10 dark:shadow-[0_10px_25px_-5px_rgba(0,0,0,0.5)] space-y-4">
+        <div className="bg-white dark:bg-[#10243A] p-5 rounded-2xl border border-[#D8E3EE] dark:border-[#263B50] shadow-[0_4px_16px_rgba(11,31,58,0.06)] dark:shadow-[0_12px_30px_rgba(0,0,0,0.30)] space-y-4">
           <form onSubmit={handleSearchSubmit} className="flex gap-2">
             <div className="relative flex-1">
-              <Search className="w-4 h-4 text-slate-400 dark:text-[#7F91A5] absolute left-3.5 top-3.5" />
+              <Search className="w-4 h-4 text-[#7A8CA0] dark:text-[#7F91A5] absolute left-3.5 top-3.5" />
               <input
                 type="text"
                 value={query}
                 onChange={e => setQuery(e.target.value)}
                 placeholder={t('standards.search_placeholder', 'Search by IS number (e.g. IS 10500, IS 17526) or keyword (cement, cable, steel, bottle)...')}
-                className="w-full pl-10 pr-3.5 py-2.5 text-xs sm:text-sm rounded-xl border border-slate-300 dark:border-[#263B50] bg-white/50 dark:bg-[#0B1A2B] text-slate-900 dark:text-[#F1F5F9] focus:outline-none focus:ring-2 focus:ring-[#0077B6] dark:focus:ring-[#16A9D8] focus:border-[#023E8A]"
+                className="w-full pl-10 pr-3.5 py-2.5 text-xs sm:text-sm rounded-xl border border-[#D8E3EE] dark:border-[#263B50] bg-white dark:bg-[#0B1A2B] text-[#263B53] dark:text-[#EAF2F8] placeholder:text-[#7A8CA0] dark:placeholder:text-[#7A8CA0] focus:outline-none focus:border-[#0E9FCE] focus:ring-2 focus:ring-[#0E9FCE]/12"
               />
             </div>
             <button
               type="submit"
-              className="px-6 py-2.5 text-xs sm:text-sm font-bold bg-gradient-to-r from-[#023E8A] via-[#0077B6] to-[#0096C7] hover:from-[#0077B6] hover:to-[#023E8A] dark:from-[#1268B3] dark:to-[#1583D1] text-white rounded-xl shadow-md shadow-[#0077B6]/20 transition-all cursor-pointer"
+              className="px-6 py-2.5 text-xs sm:text-sm font-bold bg-[#0057A8] hover:bg-[#004783] dark:bg-[#1268B3] dark:hover:bg-[#1679C7] text-white rounded-xl shadow-sm transition-all cursor-pointer"
             >
               {t('standards.search_btn', 'Search')}
             </button>
           </form>
 
           {/* Division Pills & Mandatory Filter */}
-          <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-100 dark:border-[#263B50] text-xs">
+          <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-[#D8E3EE] dark:border-[#263B50] text-xs">
             <div className="flex flex-wrap items-center gap-1.5">
-              <span className="font-semibold text-slate-500 dark:text-[#A8B6C7] mr-1 flex items-center gap-1">
-                <Filter className="w-3 h-3 text-[#0077B6] dark:text-[#16A9D8]" /> {t('standards.filter_division', 'Division:')}
+              <span className="font-semibold text-[#7A8CA0] dark:text-[#A8B6C7] mr-1 flex items-center gap-1">
+                <Filter className="w-3 h-3 text-[#0057A8] dark:text-[#16A9D8]" /> {t('standards.filter_division', 'Division:')}
               </span>
               {divisions.map(div => {
                 const isSel = (selectedDivision === '' && div === t('standards.filter_all', 'All Divisions')) || selectedDivision === div;
@@ -112,8 +121,8 @@ export default function StandardsCatalogPage() {
                     onClick={() => setSelectedDivision(div === t('standards.filter_all', 'All Divisions') ? '' : div)}
                     className={`px-3 py-1 rounded-full text-[11px] transition-all cursor-pointer ${
                       isSel
-                        ? 'bg-gradient-to-r from-[#023E8A] to-[#0077B6] dark:from-[#1268B3] dark:to-[#1583D1] text-white font-bold shadow-xs'
-                        : 'bg-slate-100 dark:bg-[#0B1A2B] text-slate-700 dark:text-[#A8B6C7] dark:border dark:border-[#263B50] hover:bg-[#CAF0F8]/80 hover:text-[#023E8A] dark:hover:bg-[#153653] dark:hover:text-[#F1F5F9]'
+                        ? 'bg-[#EAF4FB] dark:bg-[#163B59] text-[#0057A8] dark:text-[#16A9D8] border border-[#B9DDED] dark:border-[#16A9D8] font-bold shadow-2xs'
+                        : 'bg-white dark:bg-[#0B1A2B] text-[#52657A] dark:text-[#A8B6C7] border border-[#D8E3EE] dark:border-[#263B50] hover:bg-[#F1F7FC] hover:text-[#0057A8] hover:border-[#B9DDED] dark:hover:bg-[#153653] dark:hover:text-[#F1F5F9]'
                     }`}
                   >
                     {div}
@@ -122,12 +131,12 @@ export default function StandardsCatalogPage() {
               })}
             </div>
 
-            <label className="flex items-center gap-2 cursor-pointer select-none font-semibold text-slate-700 dark:text-[#F1F5F9]">
+            <label className="flex items-center gap-2 cursor-pointer select-none font-semibold text-[#263B53] dark:text-[#F1F5F9]">
               <input
                 type="checkbox"
                 checked={mandatoryOnly}
                 onChange={e => setMandatoryOnly(e.target.checked)}
-                className="w-4 h-4 rounded text-[#0077B6] dark:accent-[#16A9D8] focus:ring-[#0077B6]"
+                className="w-4 h-4 rounded text-[#0057A8] accent-[#0057A8] dark:accent-[#16A9D8] focus:ring-[#0057A8]"
               />
               <span>{t('standards.filter_mandatory', 'Mandatory QCO Only')}</span>
             </label>

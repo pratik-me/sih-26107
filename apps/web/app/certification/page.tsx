@@ -64,29 +64,38 @@ function CertificationContent() {
   };
 
   return (
-    <div className="relative min-h-screen w-full bg-gradient-to-b from-white via-[#CAF0F8]/40 to-[#90E0EF]/55 dark:from-[#07111F] dark:via-[#0A1A2E] dark:to-[#0F2942] overflow-hidden text-slate-900 dark:text-white">
-      {/* Ambient Glowing Blobs */}
-      <div className="absolute top-12 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-[#90E0EF]/35 dark:bg-[#00B4D8]/15 rounded-full blur-3xl pointer-events-none animate-pulse" />
-      <div className="absolute top-0 right-10 w-80 h-80 bg-[#ADE8F4]/45 dark:bg-[#0077B6]/20 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 left-10 w-80 h-80 bg-[#CAF0F8]/55 dark:bg-[#48CAE4]/15 rounded-full blur-3xl pointer-events-none" />
+    <div className="relative min-h-screen w-full bg-[#F7FAFC] dark:bg-[#07111F] overflow-hidden text-[#0B1F3A] dark:text-[#EAF2F8]">
+      {/* Subtle atmospheric hero glow */}
+      <div
+        className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[450px] pointer-events-none dark:hidden"
+        style={{
+          background: 'radial-gradient(circle at 50% 15%, #EAF6FC 0%, transparent 45%)',
+        }}
+      />
+      <div
+        className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[450px] pointer-events-none hidden dark:block"
+        style={{
+          background: 'radial-gradient(circle at 50% 15%, rgba(22, 169, 216, 0.08) 0%, transparent 45%)',
+        }}
+      />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 space-y-8 relative z-10">
         {/* Header */}
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div className="space-y-2">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/80 dark:bg-white/10 text-[#0077B6] dark:text-[#CAF0F8] text-xs font-semibold border border-[#ADE8F4] dark:border-[#48CAE4]/30 backdrop-blur-md shadow-2xs">
-              <Award className="w-3.5 h-3.5 text-[#0077B6] dark:text-[#48CAE4]" />
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white dark:bg-[#10243A] text-[#0057A8] dark:text-[#16A9D8] text-xs font-semibold border border-[#D8E3EE] dark:border-[#263B50] shadow-2xs">
+              <Award className="w-3.5 h-3.5 text-[#0057A8] dark:text-[#16A9D8]" />
               <span>
                 {t("certification.badge", "BIS Conformity Assessment Schemes")}
               </span>
             </div>
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#0B1F3A] dark:text-[#EAF2F8] tracking-tight">
               {t(
                 "certification.title",
                 "Certification Schemes & Compliance Roadmap",
               )}
             </h1>
-            <p className="text-sm sm:text-base text-slate-600 dark:text-[#ADE8F4]/90 max-w-2xl leading-relaxed">
+            <p className="text-sm sm:text-base text-[#52657A] dark:text-[#AFC1D2] max-w-2xl leading-relaxed">
               {t(
                 "certification.subtitle",
                 "Understand statutory conformity schemes, mandatory factory audits, laboratory sample testing, and step-by-step licence grant procedures.",
@@ -97,7 +106,7 @@ function CertificationContent() {
           <button
             type="button"
             onClick={handleGenerateReport}
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-xs font-bold bg-gradient-to-r from-[#023E8A] via-[#0077B6] to-[#0096C7] hover:from-[#0077B6] hover:to-[#023E8A] dark:from-[#0096C7] dark:via-[#00B4D8] dark:to-[#48CAE4] dark:hover:from-[#0077B6] dark:hover:to-[#00B4D8] text-white dark:text-slate-950 dark:hover:text-white shadow-lg shadow-[#0077B6]/20 dark:shadow-[#03045E]/40 transition-all shrink-0 cursor-pointer"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-xs font-bold bg-[#0057A8] hover:bg-[#004783] dark:bg-[#1268B3] dark:hover:bg-[#1679C7] text-white shadow-sm transition-all shrink-0 cursor-pointer"
           >
             <FileBarChart2 className="w-4 h-4" />
             <span>
@@ -107,23 +116,23 @@ function CertificationContent() {
         </div>
 
         {/* Active Product Notice */}
-        <div className="p-4 sm:p-5 rounded-2xl bg-white/95 dark:bg-white/10 backdrop-blur-md border border-[#ADE8F4] dark:border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs shadow-sm">
+        <div className="p-4 sm:p-5 rounded-2xl bg-white dark:bg-[#10243A] border border-[#D8E3EE] dark:border-[#263B50] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs shadow-[0_4px_16px_rgba(11,31,58,0.06)]">
           <div>
-            <span className="font-bold text-[#0077B6] dark:text-[#CAF0F8]">
+            <span className="font-bold text-[#0057A8] dark:text-[#16A9D8]">
               {t(
                 "certification.active_product",
                 "Active Product Roadmap:",
               )}{" "}
             </span>
-            <span className="font-black text-slate-900 dark:text-white">{productParam}</span>
-            <span className="text-[#023E8A] dark:text-[#90E0EF] ml-2 font-mono font-bold">
+            <span className="font-black text-[#0B1F3A] dark:text-[#EAF2F8]">{productParam}</span>
+            <span className="text-[#0057A8] dark:text-[#16A9D8] ml-2 font-mono font-bold">
               ({stdParam})
             </span>
           </div>
           <button
             type="button"
             onClick={() => router.push("/standards/recommend")}
-            className="text-[#0077B6] dark:text-[#48CAE4] font-bold hover:text-[#023E8A] dark:hover:text-white hover:underline shrink-0 cursor-pointer flex items-center gap-1 transition-colors"
+            className="text-[#0057A8] dark:text-[#16A9D8] font-bold hover:text-[#004783] dark:hover:text-white hover:underline shrink-0 cursor-pointer flex items-center gap-1 transition-colors"
           >
             <span>
               {t("certification.btn_change", "Change Product Profile →")}
@@ -140,19 +149,19 @@ function CertificationContent() {
                 key={s.code}
                 type="button"
                 onClick={() => setSelectedSchemeCode(s.code)}
-                className={`p-4 rounded-xl border text-left transition-all ${
+                className={`p-4 rounded-2xl border text-left transition-all cursor-pointer ${
                   isSelected
-                    ? "bg-white/95 dark:bg-[#153653] border-[#0077B6] dark:border-[#16A9D8] shadow-lg ring-2 ring-[#0077B6]/30 dark:ring-[#16A9D8]/50"
-                    : "bg-white/90 dark:bg-[#10243A] border-[#ADE8F4]/80 dark:border-[#263B50] hover:bg-white dark:hover:bg-[#153653] shadow-2xs"
+                    ? "bg-[#F0F8FD] dark:bg-[#163B59] border-2 border-[#0057A8] dark:border-[#16A9D8] shadow-[0_8px_24px_rgba(0,87,168,0.12)]"
+                    : "bg-white dark:bg-[#10243A] border-[#D8E3EE] dark:border-[#263B50] hover:border-[#B9DDED] dark:hover:bg-[#153653] shadow-[0_4px_16px_rgba(11,31,58,0.06)]"
                 }`}
               >
-                <span className="text-[10px] font-mono font-bold text-[#0077B6] dark:text-[#16A9D8] block uppercase">
+                <span className="text-[10px] font-mono font-bold text-[#0057A8] dark:text-[#16A9D8] block uppercase">
                   {s.code}
                 </span>
-                <h3 className="text-sm font-bold text-slate-900 dark:text-[#F1F5F9] mt-0.5">
+                <h3 className="text-sm font-bold text-[#0B1F3A] dark:text-[#EAF2F8] mt-0.5">
                   {s.name.split("—")[0]}
                 </h3>
-                <p className="text-xs text-slate-600 dark:text-[#A8B6C7] line-clamp-2 mt-1">
+                <p className="text-xs text-[#52657A] dark:text-[#AFC1D2] line-clamp-2 mt-1">
                   {s.applicability}
                 </p>
               </button>

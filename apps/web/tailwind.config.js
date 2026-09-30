@@ -34,6 +34,25 @@ module.exports = {
           success: '#22C55E'
         },
         bis: {
+          navy: '#0B1F3A',
+          blue: '#0057A8',
+          'blue-hover': '#004783',
+          cyan: '#0E9FCE',
+          border: '#D8E3EE',
+          'border-light': '#E2EAF1',
+          'border-accent': '#B9DDED',
+          bg: '#F7FAFC',
+          card: '#FFFFFF',
+          hover: '#F1F7FC',
+          selected: '#EAF4FB',
+          'selected-card': '#F0F8FD',
+          secondary: '#52657A',
+          muted: '#7A8CA0',
+          text: '#263B53',
+          icon: '#526B83',
+          success: '#16845B',
+          gold: '#C58A16',
+          error: '#C93636',
           900: '#03045E', // Deep Twilight
           800: '#023E8A', // French Blue
           700: '#0077B6', // Bright Teal Blue
