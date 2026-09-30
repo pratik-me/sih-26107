@@ -1,9 +1,11 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { RAGEvaluationResultMetrics } from '@bis/shared-types';
 import { apiClient } from '@bis/api-client';
 import { LoadingState } from '@bis/ui';
+import { isAuthenticated, isAdmin } from '@/lib/auth';
 import {
   ShieldCheck,
   Play,
@@ -17,8 +19,25 @@ import {
 } from 'lucide-react';
 
 export default function AdminConsolePage() {
+  const router = useRouter();
+  const [isAuthorized, setIsAuthorized] = useState(false);
   const [metrics, setMetrics] = useState<RAGEvaluationResultMetrics | null>(null);
   const [isRunningEval, setIsRunningEval] = useState(false);
+
+  useEffect(() => {
+    if (!isAuthenticated()) {
+      router.replace('/login');
+      return;
+    }
+
+    if (!isAdmin()) {
+      router.replace('/dashboard');
+      return;
+    }
+
+    setIsAuthorized(true);
+    runEvaluation();
+  }, [router]);
 
   const runEvaluation = async () => {
     setIsRunningEval(true);
@@ -32,9 +51,17 @@ export default function AdminConsolePage() {
     }
   };
 
-  useEffect(() => {
-    runEvaluation();
-  }, []);
+  if (!isAuthorized) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 py-20">
+        <LoadingState
+          message="Verifying Administrative Privileges..."
+          submessage="Checking cryptographic security tokens and RBAC credentials..."
+        />
+      </div>
+    );
+  }
+
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 space-y-8">
