@@ -65,9 +65,6 @@ export function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Keep the dropdown open while the cursor travels from the trigger
-  // to the menu. A small close delay + a padding bridge (no margin gap)
-  // prevents the flicker/accidental-close on mouseleave.
   const closeTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const openStandardsMenu = () => {
@@ -105,10 +102,10 @@ export function Header() {
 
   return (
     <header
-      className={`sticky top-0 z-50 transition-colors duration-200 backdrop-blur-xl ${
+      className={`sticky top-0 z-50 transition-all duration-300 backdrop-blur-xl backdrop-saturate-150 ${
         isScrolled
-          ? "bg-white/95 dark:bg-[#07111F]/95 border-b border-[#E2EAF1] dark:border-[#263B50] shadow-sm shadow-[#0B1F3A]/5"
-          : "bg-white/95 dark:bg-[#07111F]/95 border-b border-[#E2EAF1] dark:border-[#263B50]/60"
+          ? "bg-white/80 dark:bg-[#07111F]/80 border-b border-[#E2EAF1]/80 dark:border-[#263B50]/80 shadow-xs shadow-[#0B1F3A]/5"
+          : "bg-white/70 dark:bg-[#07111F]/70 border-b border-[#E2EAF1]/50 dark:border-[#263B50]/50"
       }`}
     >
       {/* Main Nav Bar */}
@@ -145,7 +142,6 @@ export function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-0.5 xl:gap-1.5 flex-nowrap">
-            {/* Standards Dropdown Heading */}
             <div
               className="relative"
               onMouseEnter={openStandardsMenu}
@@ -197,7 +193,7 @@ export function Header() {
 
               {/* Dropdown Menu */}
               {standardsDropdownOpen && (
-                <div className="absolute top-full left-0 mt-1 w-72 rounded-xl border border-[#D8E3EE] dark:border-[#263B50] bg-[#FFFFFF] dark:bg-[#10243A] backdrop-blur-xl shadow-[0_12px_30px_rgba(11,31,58,0.12)] dark:shadow-[0_12px_30px_rgba(0,0,0,0.30)] p-1.5 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
+                <div className="absolute top-full left-0 mt-1 w-72 rounded-xl border border-[#D8E3EE]/80 dark:border-[#263B50]/80 bg-white/90 dark:bg-[#10243A]/90 backdrop-blur-2xl backdrop-saturate-150 shadow-[0_12px_30px_rgba(11,31,58,0.12)] dark:shadow-[0_12px_30px_rgba(0,0,0,0.30)] p-1.5 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
                   <Link
                     href="/standards/recommend"
                     onClick={() => setStandardsDropdownOpen(false)}
@@ -355,7 +351,7 @@ export function Header() {
 
       {/* Mobile Menu Dropdown */}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-t border-[#E2EAF1] dark:border-[#263B50] bg-[#FFFFFF] dark:bg-[#10243A] px-4 pt-2 pb-4 space-y-1 shadow-[0_12px_30px_rgba(11,31,58,0.12)] dark:shadow-[0_12px_30px_rgba(0,0,0,0.30)]">
+        <div className="lg:hidden border-t border-[#E2EAF1]/80 dark:border-[#263B50]/80 bg-white/90 dark:bg-[#10243A]/90 backdrop-blur-2xl backdrop-saturate-150 px-4 pt-2 pb-4 space-y-1 shadow-[0_12px_30px_rgba(11,31,58,0.12)] dark:shadow-[0_12px_30px_rgba(0,0,0,0.30)]">
           {/* Mobile Standards Dropdown Accordion */}
           <div className="py-1">
             <button
