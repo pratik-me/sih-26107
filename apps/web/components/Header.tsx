@@ -24,35 +24,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { ThemeToggle } from "./ThemeToggle";
-
-function isTokenValid(token: string | null): boolean {
-  if (!token || token === "undefined" || token === "null" || token.trim() === "") {
-    return false;
-  }
-  try {
-    const parts = token.split(".");
-    if (parts.length === 3) {
-      const base64Url = parts[1];
-      const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
-      const jsonPayload = decodeURIComponent(
-        atob(base64)
-          .split("")
-          .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
-          .join("")
-      );
-      const payload = JSON.parse(jsonPayload);
-      if (payload && typeof payload.exp === "number") {
-        if (payload.exp * 1000 <= Date.now()) {
-          return false;
-        }
-      }
-      return true;
-    }
-    return false;
-  } catch {
-    return false;
-  }
-}
+import { isAuthenticated, clearAuthToken } from "@/lib/auth";
 
 export function Header() {
   const pathname = usePathname();
@@ -64,29 +36,12 @@ export function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const checkAuth = () => {
-    try {
-      const token = localStorage.getItem("bis_access_token");
-      if (token && isTokenValid(token)) {
-        setIsLoggedIn(true);
-      } else {
-        if (token) {
-          localStorage.removeItem("bis_access_token");
-        }
-        setIsLoggedIn(false);
-      }
-    } catch {
-      setIsLoggedIn(false);
-    }
+    setIsLoggedIn(isAuthenticated());
   };
 
   const handleLogout = () => {
-    try {
-      localStorage.removeItem("bis_access_token");
-      window.dispatchEvent(new Event("auth-change"));
-      setIsLoggedIn(false);
-    } catch {
-      // ignore
-    }
+    clearAuthToken();
+    setIsLoggedIn(false);
   };
 
   useEffect(() => {

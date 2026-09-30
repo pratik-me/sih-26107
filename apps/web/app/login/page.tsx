@@ -1,19 +1,28 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { apiClient } from '@bis/api-client';
-import { AshokaMotif } from '@bis/ui';
-import { Lock, Mail, ArrowRight, ShieldCheck } from 'lucide-react';
+import { Lock, Mail, ArrowRight, Loader2 } from 'lucide-react';
 import Image from 'next/image';
+import { isAuthenticated } from '@/lib/auth';
 
 export default function LoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState('industry.msme@example.gov.in');
-  const [password, setPassword] = useState('Password@123');
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (isAuthenticated()) {
+      router.replace('/dashboard');
+    } else {
+      setIsCheckingAuth(false);
+    }
+  }, [router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,7 +31,8 @@ export default function LoginPage() {
 
     try {
       await apiClient.login(email, password);
-      router.push('/chat');
+      window.dispatchEvent(new Event('auth-change'));
+      router.push('/dashboard');
     } catch (err: any) {
       setError(err.message || 'Login failed. Please verify credentials.');
     } finally {
@@ -30,13 +40,23 @@ export default function LoginPage() {
     }
   };
 
+  if (isCheckingAuth) {
+    return (
+      <div className="min-h-[80vh] flex items-center justify-center px-4 py-12 bg-ashoka-pattern">
+        <div className="flex flex-col items-center justify-center space-y-3">
+          <Loader2 className="w-8 h-8 animate-spin text-blue-600 dark:text-[#16A9D8]" />
+          <p className="text-xs text-slate-500 dark:text-[#A8B6C7]">Checking authentication...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-[80vh] flex items-center justify-center px-4 py-12 bg-ashoka-pattern">
       <div className="max-w-md w-full bg-white dark:bg-[#10243A] p-8 rounded-2xl border border-slate-200 dark:border-[#263B50] shadow-xl dark:shadow-[0_10px_25px_-5px_rgba(0,0,0,0.5)] space-y-6">
         <div className="text-center space-y-2">
-          {/* <AshokaMotif size={42} className="mx-auto text-blue-700 dark:text-blue-500" /> */}
-          <Image src={"/BIS-LOGO.png"} alt='BIS-LOGO' height={42} width={42} />
-          <h1 className="text-2xl font-black text-slate-900 dark:text-[#F1F5F9] tracking-tight">
+          <Image src={"/BIS-LOGO.png"} alt='BIS-LOGO' height={42} width={42} className='mx-auto' />
+          <h1 className="text-xl font-black text-slate-900 dark:text-[#F1F5F9] tracking-tight">
             BIS Saarthi Login
           </h1>
           <p className="text-xs text-slate-500 dark:text-[#A8B6C7]">
@@ -61,6 +81,7 @@ export default function LoginPage() {
                 type="email"
                 required
                 value={email}
+                placeholder='industry.msme@example.gov.in'
                 onChange={e => setEmail(e.target.value)}
                 className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-slate-300 dark:border-[#263B50] bg-transparent dark:bg-[#0B1A2B] text-slate-900 dark:text-[#F1F5F9] focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-[#16A9D8]"
               />
@@ -77,15 +98,11 @@ export default function LoginPage() {
                 type="password"
                 required
                 value={password}
+                placeholder='••••••••'
                 onChange={e => setPassword(e.target.value)}
                 className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-slate-300 dark:border-[#263B50] bg-transparent dark:bg-[#0B1A2B] text-slate-900 dark:text-[#F1F5F9] focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-[#16A9D8]"
               />
             </div>
-          </div>
-
-          <div className="p-2.5 rounded-lg bg-slate-50 dark:bg-[#0B1A2B] dark:border dark:border-[#263B50] text-[11px] text-slate-500 dark:text-[#A8B6C7] flex items-center gap-1.5">
-            <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-[#22C55E] shrink-0" />
-            <span>Demo credentials prefilled for instant testing.</span>
           </div>
 
           <button
