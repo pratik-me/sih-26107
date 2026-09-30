@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 import { LanguageSelector } from "@bis/ui";
 import { useTranslation } from "@/lib/i18n";
 import {
-  MessageSquare,
   Search,
   Award,
   FlaskConical,
@@ -147,7 +146,6 @@ export function Header() {
     { href: "/hallmarking", label: t("nav.hallmark", "Hallmark"), icon: Sparkles },
     { href: "/consumer", label: t("nav.consumer", "Consumer"), icon: ShieldCheck },
     { href: "/reports", label: t("nav.reports", "Reports"), icon: FileBarChart2 },
-    { href: "/chat", label: t("nav.ask_ai", "Ask AI"), icon: MessageSquare },
   ];
 
   return (

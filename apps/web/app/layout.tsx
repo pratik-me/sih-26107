@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
+import { FloatingAskAI } from "../components/FloatingAskAI";
 
 export const metadata: Metadata = {
   title: "BIS Saarthi — AI Assistant for Indian Standards & Services",
@@ -54,6 +55,7 @@ export default function RootLayout({
           <Header />
           <main className="flex-1 bg-[#F7FAFC] dark:bg-[#07111F]">{children}</main>
           <Footer />
+          <FloatingAskAI />
         </Providers>
       </body>
     </html>
