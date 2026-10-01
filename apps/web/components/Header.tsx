@@ -23,7 +23,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { ThemeToggle } from "./ThemeToggle";
-import { isAuthenticated, clearAuthToken } from "@/lib/auth";
+import { isAuthenticated, clearAuthToken, isAdmin } from "@/lib/auth";
 
 export function Header() {
   const pathname = usePathname();
@@ -33,15 +33,19 @@ export function Header() {
   const [mobileStandardsOpen, setMobileStandardsOpen] = useState(true);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAdminUser, setIsAdminUser] = useState(false);
 
   const checkAuth = () => {
     setIsLoggedIn(isAuthenticated());
+    setIsAdminUser(isAdmin());
   };
 
   const handleLogout = () => {
     clearAuthToken();
     setIsLoggedIn(false);
+    setIsAdminUser(false);
   };
+
 
   useEffect(() => {
     checkAuth();
@@ -306,6 +310,15 @@ export function Header() {
             <div className="flex items-center gap-1.5 sm:gap-2">
               {isLoggedIn ? (
                 <div className="flex items-center gap-1">
+                  {isAdminUser && (
+                    <Link
+                      href="/admin"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-indigo-700 hover:bg-indigo-800 dark:bg-indigo-600 dark:hover:bg-indigo-500 text-white shadow-sm transition-all whitespace-nowrap"
+                    >
+                      <ShieldCheck className="w-3.5 h-3.5" />
+                      <span>Admin</span>
+                    </Link>
+                  )}
                   <Link
                     href="/dashboard"
                     className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-[#0057A8] hover:bg-[#004783] dark:bg-[#1268B3] dark:hover:bg-[#1679C7] text-white shadow-sm transition-all whitespace-nowrap"
@@ -447,6 +460,16 @@ export function Header() {
           <div className="pt-2">
             {isLoggedIn ? (
               <div className="space-y-2">
+                {isAdminUser && (
+                  <Link
+                    href="/admin"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center justify-center gap-2 w-full px-3 py-2.5 rounded-lg text-sm font-bold bg-indigo-700 hover:bg-indigo-800 dark:bg-indigo-600 dark:hover:bg-indigo-500 text-white shadow-sm"
+                  >
+                    <ShieldCheck className="w-4 h-4" />
+                    <span>Admin</span>
+                  </Link>
+                )}
                 <Link
                   href="/dashboard"
                   onClick={() => setMobileMenuOpen(false)}

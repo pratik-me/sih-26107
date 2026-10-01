@@ -1,6 +1,14 @@
-export function isTokenValid(token: string | null): boolean {
+export interface JwtUserPayload {
+  sub: string;
+  email: string;
+  role: string;
+  exp?: number;
+  iat?: number;
+}
+
+export function decodeToken(token: string | null): JwtUserPayload | null {
   if (!token || token === 'undefined' || token === 'null' || token.trim() === '') {
-    return false;
+    return null;
   }
   try {
     const parts = token.split('.');
@@ -13,18 +21,23 @@ export function isTokenValid(token: string | null): boolean {
           .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
           .join('')
       );
-      const payload = JSON.parse(jsonPayload);
-      if (payload && typeof payload.exp === 'number') {
-        if (payload.exp * 1000 <= Date.now()) {
-          return false;
-        }
-      }
-      return true;
+      return JSON.parse(jsonPayload);
     }
-    return false;
+    return null;
   } catch {
-    return false;
+    return null;
   }
+}
+
+export function isTokenValid(token: string | null): boolean {
+  const payload = decodeToken(token);
+  if (!payload) return false;
+  if (payload.exp && typeof payload.exp === 'number') {
+    if (payload.exp * 1000 <= Date.now()) {
+      return false;
+    }
+  }
+  return true;
 }
 
 export function getAuthToken(): string | null {
@@ -34,6 +47,22 @@ export function getAuthToken(): string | null {
   } catch {
     return null;
   }
+}
+
+export function getAuthPayload(): JwtUserPayload | null {
+  if (typeof window === 'undefined') return null;
+  const token = getAuthToken();
+  if (!token || !isTokenValid(token)) return null;
+  return decodeToken(token);
+}
+
+export function getUserRole(): string | null {
+  const payload = getAuthPayload();
+  return payload?.role || null;
+}
+
+export function isAdmin(): boolean {
+  return getUserRole() === 'ADMIN';
 }
 
 export function isAuthenticated(): boolean {
@@ -70,3 +99,4 @@ export function setAuthToken(token: string | null): void {
 export function clearAuthToken(): void {
   setAuthToken(null);
 }
+

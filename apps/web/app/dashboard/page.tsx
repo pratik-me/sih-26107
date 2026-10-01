@@ -1,9 +1,11 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { QueryAnalyticsData } from '@bis/shared-types';
 import { apiClient } from '@bis/api-client';
 import { LoadingState } from '@bis/ui';
+import { isAuthenticated } from '@/lib/auth';
 import {
   BarChart,
   Bar,
@@ -28,10 +30,16 @@ import {
 } from 'lucide-react';
 
 export default function AnalyticsDashboardPage() {
+  const router = useRouter();
   const [data, setData] = useState<QueryAnalyticsData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    if (!isAuthenticated()) {
+      router.replace('/login');
+      return;
+    }
+
     const fetchAnalytics = async () => {
       try {
         const analytics = await apiClient.getAnalytics();
@@ -43,7 +51,8 @@ export default function AnalyticsDashboardPage() {
       }
     };
     fetchAnalytics();
-  }, []);
+  }, [router]);
+
 
   if (isLoading || !data) {
     return (

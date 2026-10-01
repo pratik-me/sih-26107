@@ -1,18 +1,35 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { apiClient } from '@bis/api-client';
 import { LoadingState, SourceFreshnessBadge } from '@bis/ui';
+import { isAuthenticated, isAdmin } from '@/lib/auth';
 import { FileText, Upload, RefreshCw, CheckCircle2, AlertCircle, ExternalLink, BookOpen } from 'lucide-react';
 
 export default function AdminDocumentsPage() {
+  const router = useRouter();
+  const [isAuthorized, setIsAuthorized] = useState(false);
   const [documents, setDocuments] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    if (!isAuthenticated()) {
+      router.replace('/login');
+      return;
+    }
+
+    if (!isAdmin()) {
+      router.replace('/dashboard');
+      return;
+    }
+
+    setIsAuthorized(true);
+
     const fetchDocs = async () => {
       try {
         const docs = await apiClient.getEvaluationMetrics(); // trigger verification
+
         setDocuments([
           {
             id: 'doc-17526',
@@ -66,9 +83,21 @@ export default function AdminDocumentsPage() {
       }
     };
     fetchDocs();
-  }, []);
+  }, [router]);
+
+  if (!isAuthorized) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 py-20">
+        <LoadingState
+          message="Verifying Administrative Privileges..."
+          submessage="Checking cryptographic security tokens and RBAC credentials..."
+        />
+      </div>
+    );
+  }
 
   return (
+
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 space-y-8">
       {/* Header */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
