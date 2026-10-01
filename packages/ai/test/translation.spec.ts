@@ -9,10 +9,12 @@ describe('IndicLanguageEngine', () => {
     expect(lang).toBe(IndianLanguage.HI);
   });
 
-  it('should detect Hinglish correctly', async () => {
-    const lang = await engine.detectLanguage('ISI mark kaise verify karein?');
-    expect(lang).toBe(IndianLanguage.HINGLISH);
+   it('should detect Hinglish correctly', async () => {
+    const res = await engine.detectFullLanguage('ISI mark kaise verify karein?');
+    expect(res.language).toBe(IndianLanguage.HI);
+    expect(res.isHinglish).toBe(true);
   });
+
 
   it('should detect English correctly', async () => {
     const lang = await engine.detectLanguage('What is the applicable standard for stainless steel water bottles?');
@@ -31,7 +33,7 @@ describe('IndicLanguageEngine', () => {
 
   it('should preserve technical IS numbers and clause references during query processing', async () => {
     const query = 'IS 10500 Clause 4.2 me total dissolved solids ka limit kya hai?';
-    const { translatedText, preservedEntities } = await engine.translateToEnglish(query, IndianLanguage.HINGLISH);
+    const { translatedText, preservedEntities } = await engine.translateToEnglish(query, IndianLanguage.HI);
 
     expect(preservedEntities).toContain('IS 10500');
     expect(preservedEntities).toContain('Clause 4.2');

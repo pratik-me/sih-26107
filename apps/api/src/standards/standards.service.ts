@@ -134,9 +134,9 @@ export class StandardsService {
   async recommendStandards(profile: ProductProfileQuery): Promise<ProductRecommendationResult> {
     const fullQueryString = `${profile.productName} ${profile.material || ''} ${profile.intendedApplication || ''} ${profile.technicalCharacteristics || ''}`;
     
-    // Extract standard numbers (e.g., 800, 800:2007, 17526, 10500)
-    const stdMatches = fullQueryString.match(/(?:IS\s*[-:]?\s*|standard\s+)?(\d{2,6}(?:\s*\([^)]+\))?(?::\d{4})?)/gi) || [];
-    const extractedNums = stdMatches.map(m => m.replace(/^(?:IS\s*[-:]?\s*|standard\s+)/i, '').trim()).filter(Boolean);
+    // Extract standard numbers (e.g., IS 800, IS 800:2007, IS 17526, IS 10500)
+    const stdMatches = fullQueryString.match(/\bIS\s*[-:]?\s*(\d{2,6}(?:\s*\([^)]+\))?(?::\d{4})?)\b/gi) || [];
+    const extractedNums = stdMatches.map(m => m.replace(/^IS\s*[-:]?\s*/i, '').trim()).filter(Boolean);
 
     const STOP_WORDS = new Set([
       'what', 'does', 'the', 'is', 'a', 'an', 'standard', 'for', 'used',
