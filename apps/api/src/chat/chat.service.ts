@@ -5,7 +5,6 @@ import {
   ChatSession,
   ConfidenceLevel,
   IndianLanguage,
-  QueryIntent,
 } from "@bis/shared-types";
 import { AiAgentService } from "../ai-agent/ai-agent.service";
 import { RAGService } from "../rag/rag.service";

@@ -12,9 +12,8 @@ coverage/
 
 # Environment
 .env
-.env.local
-.env.production
-.env.test
+.env.*
+!.env.example
 
 # IDE
 .idea/
@@ -29,3 +28,4 @@ coverage/
 # Prisma
 dev.db
 dev.db-journal
+.vercel

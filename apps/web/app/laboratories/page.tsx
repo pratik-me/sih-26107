@@ -5,7 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import { Laboratory } from '@bis/shared-types';
 import { apiClient } from '@bis/api-client';
 import { LaboratoryCard, LoadingState, EmptyState } from '@bis/ui';
-import { Building2, Search, MapPin, Filter, CheckCircle2 } from 'lucide-react';
+import { Building2, Search, MapPin } from 'lucide-react';
 import { useTranslation } from "@/lib/i18n";
 
 function LaboratoriesFinderContent() {

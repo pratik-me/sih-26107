@@ -3,8 +3,8 @@
 import React, { useState } from 'react';
 import { RAGSearchResponse } from '@bis/shared-types';
 import { apiClient } from '@bis/api-client';
-import { CitationBadge, LoadingState, SourceFreshnessBadge } from '@bis/ui';
-import { BookOpen, Search, Filter, ExternalLink, FileText, CheckCircle2 } from 'lucide-react';
+import { LoadingState, SourceFreshnessBadge } from '@bis/ui';
+import { BookOpen, Search, ExternalLink } from 'lucide-react';
 
 export default function KnowledgeExplorerPage() {
   const [query, setQuery] = useState('Stainless steel vacuum insulated water bottle');

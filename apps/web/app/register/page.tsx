@@ -43,8 +43,8 @@ export default function RegisterPage() {
       });
       window.dispatchEvent(new Event('auth-change'));
       router.push('/dashboard');
-    } catch (err: any) {
-      setError(err.message || 'Registration failed.');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Registration failed.');
     } finally {
       setIsLoading(false);
     }

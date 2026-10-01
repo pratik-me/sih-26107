@@ -16,7 +16,6 @@ import {
   YAxis,
   Tooltip,
   ResponsiveContainer,
-  Legend
 } from 'recharts';
 import {
   BarChart3,
@@ -24,8 +23,6 @@ import {
   ShieldCheck,
   Clock,
   ThumbsUp,
-  Flag,
-  Globe,
   Award
 } from 'lucide-react';
 

@@ -5,7 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import { TestingRequirement } from '@bis/shared-types';
 import { apiClient } from '@bis/api-client';
 import { TestingRequirementCard, LoadingState, EmptyState } from '@bis/ui';
-import { FlaskConical, Search, Filter, ShieldCheck, CheckCircle2 } from 'lucide-react';
+import { FlaskConical, Search } from 'lucide-react';
 import { useTranslation } from "@/lib/i18n";
 
 function TestingRequirementsContent() {

@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../common/prisma.service';
 import {
   Evidence,
-  IndianLanguage,
   QueryIntent,
   RAGSearchRequest,
   RAGSearchResponse,

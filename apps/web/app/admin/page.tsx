@@ -7,15 +7,12 @@ import { apiClient } from '@bis/api-client';
 import { LoadingState } from '@bis/ui';
 import { isAuthenticated, isAdmin } from '@/lib/auth';
 import {
-  ShieldCheck,
   Play,
-  FileCheck2,
   Database,
   Activity,
   Layers,
   Cpu,
-  CheckCircle2,
-  AlertCircle
+  CheckCircle2
 } from 'lucide-react';
 
 export default function AdminConsolePage() {

@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { UserRole } from "@bis/shared-types";
-import { AshokaMotif, ModeSelector } from "@bis/ui";
+import { ModeSelector } from "@bis/ui";
 import {
   Search,
   Sparkles,
@@ -14,7 +14,6 @@ import {
   Award,
   FlaskConical,
   Building2,
-  CheckCircle2,
   FileCheck2,
   Scale,
   Compass,
@@ -538,7 +537,6 @@ export default function LandingPage() {
                 icon: Scale,
               },
             ].map((item) => {
-              const Icon = item.icon;
               return (
                 <div
                   key={item.step}

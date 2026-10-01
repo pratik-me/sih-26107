@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { apiClient } from '@bis/api-client';
 import { LoadingState, SourceFreshnessBadge } from '@bis/ui';
 import { isAuthenticated, isAdmin } from '@/lib/auth';
-import { FileText, Upload, RefreshCw, CheckCircle2, AlertCircle, ExternalLink, BookOpen } from 'lucide-react';
+import { FileText, Upload, CheckCircle2, ExternalLink } from 'lucide-react';
 
 export default function AdminDocumentsPage() {
   const router = useRouter();
@@ -28,7 +28,7 @@ export default function AdminDocumentsPage() {
 
     const fetchDocs = async () => {
       try {
-        const docs = await apiClient.getEvaluationMetrics(); // trigger verification
+        await apiClient.getEvaluationMetrics(); // trigger verification
 
         setDocuments([
           {

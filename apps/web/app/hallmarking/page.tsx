@@ -11,12 +11,9 @@ import { HallmarkingCard, LoadingState } from "@bis/ui";
 import {
   Sparkles,
   ShieldCheck,
-  Search,
   CheckCircle2,
   AlertTriangle,
   Scale,
-  ExternalLink,
-  MapPin,
 } from "lucide-react";
 import { useTranslation } from "@/lib/i18n";
 

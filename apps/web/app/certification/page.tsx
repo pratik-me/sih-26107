@@ -10,10 +10,7 @@ import {
   Award,
   CheckCircle2,
   FileText,
-  Clock,
   ExternalLink,
-  ShieldCheck,
-  ArrowRight,
   FileBarChart2,
 } from "lucide-react";
 

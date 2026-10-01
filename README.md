@@ -97,7 +97,7 @@ bis-saarthi/
 │   ├── shared-types/            # Shared TypeScript domain types, enums, DTOs
 │   ├── api-client/               # Typed REST client (TanStack Query compatible)
 │   ├── ai/                      # RAG engine, multilingual tokenizer, reranker, prompts, agent tools
-│   ├── ui/                      # Design system (EvidencePanel, Badges, Cards, AshokaMotif)
+│   ├── ui/                      # Design system (EvidencePanel, Badges, Cards)
 │   ├── typescript-config/       # Shared tsconfig definitions
 │   └── eslint-config/           # Shared ESLint rules
 ├── prisma/

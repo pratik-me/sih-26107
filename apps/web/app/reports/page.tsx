@@ -7,20 +7,14 @@ import {
   ProductProfileQuery,
 } from "@bis/shared-types";
 import { apiClient } from "@bis/api-client";
-import { AshokaMotif, LoadingState } from "@bis/ui";
+import { LoadingState } from "@bis/ui";
 import { useTranslation } from "@/lib/i18n";
 import {
   Printer,
-  Download,
   FileBarChart2,
   ShieldCheck,
   CheckCircle2,
   AlertTriangle,
-  FileText,
-  Building2,
-  FlaskConical,
-  Award,
-  ExternalLink,
 } from "lucide-react";
 import Image from "next/image";
 

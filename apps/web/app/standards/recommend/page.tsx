@@ -10,9 +10,7 @@ import { apiClient } from "@bis/api-client";
 import { RecommendationCard, LoadingState, EmptyState } from "@bis/ui";
 import {
   Compass,
-  Sparkles,
   AlertCircle,
-  ArrowRight,
   ShieldCheck,
 } from "lucide-react";
 import { SampleFormData } from "@/lib/sample";

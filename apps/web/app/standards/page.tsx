@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Standard } from '@bis/shared-types';
 import { apiClient } from '@bis/api-client';
 import { StandardCard, LoadingState, EmptyState } from '@bis/ui';
-import { Search, Filter, BookOpen, Award, CheckCircle } from 'lucide-react';
+import { Search, Filter, BookOpen } from 'lucide-react';
 import { useTranslation } from "@/lib/i18n";
 
 export default function StandardsCatalogPage() {

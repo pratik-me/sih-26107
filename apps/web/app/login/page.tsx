@@ -33,8 +33,8 @@ export default function LoginPage() {
       await apiClient.login(email, password);
       window.dispatchEvent(new Event('auth-change'));
       router.push('/dashboard');
-    } catch (err: any) {
-      setError(err.message || 'Login failed. Please verify credentials.');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Login failed. Please verify credentials.');
     } finally {
       setIsLoading(false);
     }

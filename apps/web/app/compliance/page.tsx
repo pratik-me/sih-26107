@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Compass, Award, FlaskConical, Building2, FileBarChart2, ArrowRight } from 'lucide-react';
+import { Compass, Award, FlaskConical, FileBarChart2 } from 'lucide-react';
 
 export default function CompliancePage() {
   return (
