@@ -1,17 +1,3 @@
-import * as dotenv from 'dotenv';
-import * as path from 'path';
-import * as fs from 'fs';
-
-const rootEnv = [
-  path.resolve(process.cwd(), '.env'),
-  path.resolve(__dirname, '../../../.env'),
-  path.resolve(__dirname, '../../.env')
-].find(p => fs.existsSync(p));
-
-if (rootEnv) {
-  dotenv.config({ path: rootEnv });
-}
-
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';

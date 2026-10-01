@@ -79,8 +79,8 @@ importers:
         specifier: ^0.14.1
         version: 0.14.4
       dotenv:
-        specifier: ^17.4.2
-        version: 17.4.2
+        specifier: ^16.4.5
+        version: 16.4.5
       passport:
         specifier: ^0.7.0
         version: 0.7.0
