@@ -3,7 +3,12 @@
   "services": {
     "api": {
       "root": "apps/api",
-      "framework": "nestjs"
+      "framework": "nestjs",
+      "functions": {
+        "**": {
+          "includeFiles": "{dist/*.node,*.node}"
+        }
+      }
     },
     "web": {
       "root": "apps/web",
